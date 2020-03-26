@@ -6,11 +6,15 @@
 
 .row-container {
   display: grid;
-  grid-template-columns: 120px 1fr 20px;
+  grid-template-columns: 10px 120px 1fr 50px 50px;
   grid-template-rows: auto;
   grid-column-gap: 10px;
   grid-template-areas:
-    "predicate operation remove";
+    "step predicate operation result remove";
+}
+
+.area-step {
+  grid-area: step;
 }
 
 .area-predicate {
@@ -19,6 +23,14 @@
 
 .area-operation {
   grid-area: operation;
+}
+
+.area-result {
+  grid-area: result;
+}
+
+.area-remove {
+  grid-area: remove;
 }
 
 .table-title {
@@ -34,7 +46,51 @@
   display: grid;
 }
 
+.plot-op-container {
+  display: grid;
+}
+
 .table-container > .selectize-control {
   margin: 0;
   top: 2px;
+}
+
+/*Custom close button (cross)*/
+div .div-btn-close button {
+  border-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
+  padding: 0;
+}
+
+.span-btn-move button {
+  border-color: rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
+  padding: 0;
+}
+
+.bttn.bttn-material-flat.bttn-default {
+  color: #444;
+}
+
+.div-btn-close-tablist button {
+  float: right;
+  position: absolute;
+  right: 40px;
+  top: 9px;
+}
+
+div .div-btn-close {
+  display: inline;
+}
+
+div .collapsible-tab-box {
+  padding: 0;
+}
+
+.box-body>div {
+  padding: 0;
+}
+
+.box {
+  margin-bottom: 10px;
 }

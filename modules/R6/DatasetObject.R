@@ -55,7 +55,7 @@ DatasetObject <- R6::R6Class(
     initialize = function(name = "", dataset) {
       super$initialize(name = name)
       
-      private$dataset <- reactive_member(dataset)
+      private$dataset <- shiny::reactiveVal(dataset)
     },
     
     get_dataset = function() {

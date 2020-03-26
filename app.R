@@ -7,7 +7,9 @@ library(R.utils)
 
 library(purrr)
 library(dplyr)
+
 library(ggplot2)
+library(plotly)
 
 # Source files inside of function, so that globalenv doesn't get polluted
 init <- function() {

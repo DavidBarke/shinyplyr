@@ -14,6 +14,9 @@ m_table_ui <- function(id) {
       htmltools::div(
         class = "row-container",
         htmltools::div(
+          class = "area-step table-title"
+        ),
+        htmltools::div(
           class = "area-predicate table-title",
           "Predicate"
         ),
@@ -22,29 +25,46 @@ m_table_ui <- function(id) {
           htmltools::div(
             "Operation"
           )
+        ),
+        htmltools::div(
+          class = "area-result table-title",
+          htmltools::div(
+            "Result"
+          )
+        ),
+        htmltools::div(
+          class = "area-remove"
         )
       ),
       htmltools::div(
         id = ns("row_0"),
         class = "row-container",
         htmltools::div(
+          class = "area-step",
+          "0"
+        ),
+        htmltools::div(
           class = "area-predicate",
           "data"
         ),
         htmltools::div(
           class = "area-operation",
-          htmltools::div(
-            shiny::uiOutput(
-              outputId = ns("select_dataset")
-            )
+          shiny::uiOutput(
+            outputId = ns("select_dataset")
           )
+        ),
+        htmltools::div(
+          class = "area-result",
+          m_action_button(
+            inputId = ns("open_data"),
+            label = NULL,
+            icon = shiny::icon("table")
+          )
+        ),
+        htmltools::div(
+          class = "area-remove"
         )
       )
-    ),
-    htmltools::tags$hr(),
-    m_action_button(
-      inputId = ns("apply"),
-      label = "Apply"
     )
   )
 }
@@ -71,14 +91,26 @@ m_table <- function(
   
   output$select_dataset <- shiny::renderUI({
     shiny::selectInput(
-      inputId = ns("selected_dataset"),
+      inputId = ns("selected_dataset_object"),
       label = NULL,
       choices = dataset_choices_r()
     )
   })
   
+  dataset_object_r <- shiny::reactive({
+    .values$dataset_storage$get_object(shiny::req(input$selected_dataset_object))
+  })
+  
   data_r <- shiny::reactive({
-    .values$dataset_storage$get_object(shiny::req(input$selected_dataset))$get_dataset()
+    dataset_object_r()$get_dataset()
+  })
+  
+  name_r <- shiny::reactive({
+    dataset_object_r()$get_name()
+  })
+  
+  id_r <- shiny::reactive({
+    dataset_object_r()$get_id()
   })
   
   shiny::observeEvent(data_r(), {
@@ -108,7 +140,8 @@ m_table <- function(
     
     ui <- m_row_ui(
       id = ns("id_m_row" %_% rvs$n_row),
-      container_id = ns("row" %_% rvs$n_row)
+      container_id = ns("row" %_% rvs$n_row),
+      index = rvs$n_row
     )
     
     shiny::insertUI(
@@ -131,6 +164,8 @@ m_table <- function(
         id = "id_m_row" %_% rvs$n_row,
         .values = .values,
         data_r = prev_data_r,
+        name_r = name_r,
+        id_r = id_r,
         row_index = rvs$n_row,
         remove_row_fun = remove_row_fun
       ) 
@@ -152,7 +187,11 @@ m_table <- function(
         )
         
         shinyjs::disable(
-          selector = paste0("#", ns("row_"), row_index)
+          selector = paste0("#", ns("row_"), row_index, " > .area-predicate")
+        )
+        
+        shinyjs::disable(
+          selector = paste0("#", ns("row_"), row_index, " > .area-operation")
         )
       })
     }
@@ -169,14 +208,6 @@ m_table <- function(
     )
   })
   
-  shiny::observeEvent(input$apply, {
-    if (rvs$n_row == 0) {
-      rvs$data <- data_r()
-    } else {
-      rvs$data <- m_row_env[["m_row" %_% rvs$n_row]]$data_r()
-    }
-  })
-  
   remove_row_fun = function() {
     shiny::removeUI(
       selector = paste0("#", ns("row_"), rvs$n_row)
@@ -184,6 +215,26 @@ m_table <- function(
     
     rvs$n_row <- rvs$n_row - 1
   } 
+  
+  shiny::observeEvent(input$open_data, {
+    new <- .values$home$viewer$append_tab(
+      tab = shiny::tabPanel(
+        title = paste("0", dataset_object_r()$get_name(), sep = ": "),
+        value = ns("0" %_% input$selected_dataset),
+        DT::dataTableOutput(
+          outputId = ns("dataset")
+        )
+      )
+    )
+    
+    if (new) {
+      output$dataset <- DT::renderDataTable({
+        DT::datatable(
+          shiny::isolate(data_r())
+        )
+      })
+    }
+  })
   
   return_list <- list(
     data_r = shiny::reactive(rvs$data)
