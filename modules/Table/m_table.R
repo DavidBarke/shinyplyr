@@ -40,11 +40,11 @@ m_table_ui <- function(id) {
         id = ns("row_0"),
         class = "row-container",
         htmltools::div(
-          class = "area-step",
+          class = "area-step vertical-center",
           "0"
         ),
         htmltools::div(
-          class = "area-predicate",
+          class = "area-predicate vertical-center",
           "data"
         ),
         htmltools::div(
@@ -54,7 +54,7 @@ m_table_ui <- function(id) {
           )
         ),
         htmltools::div(
-          class = "area-result",
+          class = "area-result vertical-center",
           m_action_button(
             inputId = ns("open_data"),
             label = NULL,
@@ -62,7 +62,7 @@ m_table_ui <- function(id) {
           )
         ),
         htmltools::div(
-          class = "area-remove"
+          class = "area-remove vertical-center"
         )
       )
     )

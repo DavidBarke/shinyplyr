@@ -2,6 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(shinyWidgets)
+library(DT)
 
 library(R.utils)
 

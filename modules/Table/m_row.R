@@ -5,7 +5,7 @@ m_row_ui <- function(id, container_id, index) {
     id = container_id,
     class = "row-container",
     htmltools::div(
-      class = "area-step",
+      class = "area-step vertical-center",
       index
     ),
     htmltools::div(
@@ -26,15 +26,18 @@ m_row_ui <- function(id, container_id, index) {
     ),
     shiny::uiOutput(
       outputId = ns("result"),
-      class = "area-result"
+      class = "area-result vertical-center"
     ),
     htmltools::div(
-      class = "area-remove",
+      class = "area-remove vertical-center",
       m_action_button(
         inputId = ns("remove"),
         label = NULL,
         icon = shiny::icon("times")
       )
+    ),
+    shiny::uiOutput(
+      outputId = ns("operation_label")
     )
   )
 }

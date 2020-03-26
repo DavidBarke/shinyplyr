@@ -3,8 +3,24 @@ select_operation_ui <- function(id) {
   
   htmltools::div(
     class = "select-op-container",
-    shiny::uiOutput(
-      outputId = ns("select")
+    # Grid layout
+    htmltools::div(
+      shiny::selectInput(
+        inputId = ns("select_type"),
+        label = NULL,
+        choices = c(
+          "=" = "eq",
+          starts_with = "s_w",
+          ends_with = "e_w",
+          contains = "contains",
+          matches = "matches"
+        )
+      )
+    ),
+    htmltools::div(
+      shiny::uiOutput(
+        outputId = ns("select_val")
+      )
     )
   )
 }
@@ -19,9 +35,17 @@ select_operation <- function(
     names(data_r())
   })
   
-  output$select <- shiny::renderUI({
+  output$select_val <- shiny::renderUI({
+    if (shiny::req(input$select_type) == "eq") {
+      eq_val_ui_r()
+    } else {
+      text_val_ui_r()
+    }
+  })
+  
+  eq_val_ui_r <- shiny::reactive({
     shiny::selectInput(
-      inputId = ns("selected_columns"),
+      inputId = ns("eq_val"),
       label = NULL,
       choices = choices_r(),
       selected = choices_r(),
@@ -29,9 +53,64 @@ select_operation <- function(
     )
   })
   
+  text_val_ui_r <- shiny::reactive({
+    htmltools::div(
+      class = "fifty-fifty-grid",
+      htmltools::div(
+        class = "adjust-form-control-height",
+        shiny::textInput(
+          inputId = ns("text_val"),
+          label = NULL,
+          placeholder = choices_r()[1]
+        )
+      ),
+      htmltools::div(
+        shiny::uiOutput(
+          outputId = ns("matched_columns"),
+          inline = TRUE
+        )
+      )
+    )
+  })
+  
+  output$matched_columns <- shiny::renderUI({
+    shinyjs::disabled(
+      shiny::selectInput(
+        inputId = ns("matched_columns"),
+        label = NULL,
+        choices = selected_names_r(),
+        selected = selected_names_r(),
+        multiple = TRUE
+      )
+    )
+  })
+  
+  select_fun_r <- shiny::reactive({
+    switch(
+      shiny::req(input$select_type),
+      "eq" = tidyselect::all_of,
+      "s_w" = tidyselect::starts_with,
+      "e_w" = tidyselect::ends_with,
+      "contains" = tidyselect::contains,
+      "matches" = tidyselect::matches
+    )
+  })
+  
+  select_val_r <- shiny::reactive({
+    if (shiny::req(input$select_type) == "eq") {
+      shiny::req(input$eq_val)
+    } else {
+      shiny::req(input$text_val)
+    }
+  })
+  
   selected_data_r <- shiny::reactive({
     data_r() %>%
-      select(shiny::req(input$selected_columns))
+      select(select_fun_r()(select_val_r()))
+  })
+  
+  selected_names_r <- shiny::reactive({
+    names(selected_data_r())
   })
   
   return_list <- list(

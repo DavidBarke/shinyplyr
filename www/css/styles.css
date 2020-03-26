@@ -1,7 +1,24 @@
+/* General */
+.vertical-center {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fifty-fifty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-control {
+  position: relative;
+  top: 2px;
+}
+
+/* Table */
 .table-container {
   display: grid;
   grid-template-columns: auto;
-  grid-auto-rows: 40px;
 }
 
 .row-container {
@@ -11,6 +28,8 @@
   grid-column-gap: 10px;
   grid-template-areas:
     "step predicate operation result remove";
+  padding: 5px 0;
+  position: relative;
 }
 
 .area-step {
@@ -37,22 +56,30 @@
   font-weight: bold;
 }
 
+.table-container .selectize-control {
+  margin: 0;
+  top: 2px;
+}
+
+.table-container .form-group {
+  margin: 0;
+}
+
+/* Filter */
 .filter-op-container {
   display: grid;
   grid-template-columns: 1fr 1fr 3fr;
 }
 
+/* Select */
 .select-op-container {
   display: grid;
+  grid-template-columns: 1fr 3fr;
 }
 
+/* Plot */
 .plot-op-container {
   display: grid;
-}
-
-.table-container > .selectize-control {
-  margin: 0;
-  top: 2px;
 }
 
 /*Custom close button (cross)*/
@@ -87,7 +114,7 @@ div .collapsible-tab-box {
   padding: 0;
 }
 
-.box-body>div {
+.box-body > div {
   padding: 0;
 }
 
