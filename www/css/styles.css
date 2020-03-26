@@ -1,0 +1,40 @@
+.table-container {
+  display: grid;
+  grid-template-columns: auto;
+  grid-auto-rows: 40px;
+}
+
+.row-container {
+  display: grid;
+  grid-template-columns: 120px 1fr 20px;
+  grid-template-rows: auto;
+  grid-column-gap: 10px;
+  grid-template-areas:
+    "predicate operation remove";
+}
+
+.area-predicate {
+  grid-area: predicate;
+}
+
+.area-operation {
+  grid-area: operation;
+}
+
+.table-title {
+  font-weight: bold;
+}
+
+.filter-op-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr;
+}
+
+.select-op-container {
+  display: grid;
+}
+
+.table-container > .selectize-control {
+  margin: 0;
+  top: 2px;
+}
