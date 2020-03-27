@@ -42,12 +42,12 @@
   grid-template-columns: 10px 125px 1fr 50px 50px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step    predicate operation result  remove "
-    "subrows subrows   subrows   subrows subrows";
+    "step         predicate    operation    result       remove      "
+    "sr-container sr-container sr-container sr-container sr-container";
   margin: 3px 0;
   padding: 0 5px 3px 5px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 5px;
 }
 
@@ -71,8 +71,24 @@
   grid-area: remove;
 }
 
+.subrows-container {
+  grid-area: sr-container;
+  display: grid;
+  grid-template-areas:
+    "subrows"
+    "add-subrow";
+  grid-template-rows: 1fr auto;
+  margin-left: 20px;
+}
+
 .subrows {
   grid-area: subrows;
+}
+
+.add-subrow {
+  grid-area: add-subrow;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 7.45px 0 7.4px 0;
 }
 
 .subrow-container {
@@ -82,6 +98,7 @@
   grid-template-areas:
     "subrow-index subrow-content subrow-remove";
   padding: 5px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .subrow-container label {
@@ -134,14 +151,6 @@
 .plot-op-container {
   display: grid;
   grid-template-columns: 100px 1fr;
-}
-
-.plot-op-add-subrow {
-  position: relative;
-}
-
-.ggplot2-subrow {
-  margin-left: 155px;
 }
 
 .ggplot2-content {

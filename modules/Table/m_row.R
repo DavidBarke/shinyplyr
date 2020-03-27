@@ -10,7 +10,7 @@ m_row_ui <- function(id, row_html_id, index) {
         index
       ),
       htmltools::div(
-        class = "area-predicates",
+        class = "area-predicate",
         shiny::selectInput(
           inputId = ns("predicate"),
           label = NULL,
@@ -42,7 +42,7 @@ m_row_ui <- function(id, row_html_id, index) {
       ),
       shiny::uiOutput(
         outputId = ns("subrows"),
-        class = "subrows"
+        class = "subrows-container"
       )
     )
   )
@@ -214,7 +214,8 @@ m_row <- function(
   )
   
   return_list <- list(
-    data_r = operated_data_r
+    data_r = operated_data_r,
+    predicate_r = shiny::reactive(shiny::req(input$predicate))
   )
   
   return(return_list)

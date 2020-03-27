@@ -8,13 +8,6 @@ plot_operation_ui <- function(id) {
         shiny::uiOutput(
           outputId = ns("plot_pkg")
         )
-      ),
-      htmltools::div(
-        class = "plot-op-add-subrow",
-        shiny::uiOutput(
-          outputId = ns("add_subrow"),
-          class = "vertical-center"
-        )
       )
     )
   )
@@ -24,11 +17,21 @@ plot_subrows_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
-    m_subrows_ui(
-      id = ns("id_ggplot2_subrows")
+    htmltools::div(
+      class = "subrows",
+      m_subrows_ui(
+        id = ns("id_ggplot2_subrows")
+      )
     ),
-    m_subrows_ui(
-      id = ns("id_plotly_subrows")
+    htmltools::div(
+      class = "subrows",
+      m_subrows_ui(
+        id = ns("id_plotly_subrows")
+      )
+    ),
+    shiny::uiOutput(
+      outputId = ns("add_subrow"),
+      class = "add-subrow grid-vertical-center"
     )
   )
 }
@@ -98,7 +101,7 @@ plot_operation <- function(
     if (shiny::req(input$plot_pkg) == "ggplot2") {
       m_action_button(
         inputId = ns("add_ggplot2_subrow"),
-        label = "Add subrow",
+        label = "Add layer",
         icon = shiny::icon("plus")
       )
     } else {

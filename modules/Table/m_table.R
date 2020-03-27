@@ -187,16 +187,19 @@ m_table <- function(
       # All but the last row get disabled
       purrr::walk(seq_len(rvs$n_row - 1), function(row_index) {
         shinyjs::hide(
-          selector = paste0("#", ns("row_"), row_index, " > .area-remove")
+          selector = paste0("#", ns("row_"), row_index, " .area-remove")
         )
         
         shinyjs::disable(
-          selector = paste0("#", ns("row_"), row_index, " > .area-predicate")
+          selector = paste0("#", ns("row_"), row_index, " .area-predicate")
         )
         
-        shinyjs::disable(
-          selector = paste0("#", ns("row_"), row_index, " > .area-operation")
-        )
+        row_predicate <- m_row_env[["m_row" %_% row_index]]$predicate_r()
+        if (row_predicate != "plot") {
+          shinyjs::disable(
+            selector = paste0("#", ns("row_"), row_index, " .area-operation")
+          )
+        }
       })
     }
   })
@@ -208,7 +211,7 @@ m_table <- function(
     )
     
     shinyjs::show(
-      selector = paste0("#", ns("row_"), rvs$n_row, " > .area-remove")
+      selector = paste0("#", ns("row_"), rvs$n_row, " .area-remove")
     )
   })
   
