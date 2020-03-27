@@ -17,8 +17,7 @@ m_subrows_ui <- function(id) {
 
 m_subrows <- function(
   input, output, session, .values, content_ui, content_server, row_index, add_r,
-  subrow_class = NULL, show_r = function() NULL, hide_r = function() NULL,
-  toggle_r = function() NULL
+  subrow_class = NULL, toggle_rv = function() NULL
 ) {
   
   ns <- session$ns
@@ -87,26 +86,18 @@ m_subrows <- function(
         selector = paste0("#", ns("id_m_subrow") %_% prev_index)
       )
     }
+    
+    # Expand subrows if collapsed
+    if (toggle_rv() %% 2 == 1) {
+      toggle_rv(toggle_rv() + 1)
+    }
   })
   
   subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
   
-  shiny::observeEvent(hide_r(), {
-    shinyjs::hide(
-      anim = TRUE,
-      selector = subrow_selector
-    )
-  })
-  
-  shiny::observeEvent(show_r(), {
-    shinyjs::show(
-      anim = TRUE,
-      selector = subrow_selector
-    )
-  })
-  
-  shiny::observeEvent(toggle_r(), {
-    if (toggle_r() %% 2 == 0) {
+  # Toggle expand or collapse of subrows
+  shiny::observeEvent(toggle_rv(), {
+    if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
         anim = TRUE,
         selector = subrow_selector
@@ -120,10 +111,7 @@ m_subrows <- function(
   })
   
   return_list <- list(
-    n_active_subrows_r = shiny::reactive({
-      print(rvs$active_subrows)
-      length(rvs$active_subrows)
-    })
+    n_active_subrows_r = shiny::reactive(length(rvs$active_subrows))
   )
   
   return(return_list)

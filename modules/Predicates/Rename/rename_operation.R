@@ -28,7 +28,7 @@ rename_subrows_ui <- function(id) {
 }
 
 rename_operation <- function(
-  input, output, session, .values, data_r, row_index, sr_toggle_r, row_html_id
+  input, output, session, .values, data_r, row_index, sr_toggle_rv, row_html_id
 ) {
   
   ns <- session$ns
@@ -44,6 +44,7 @@ rename_operation <- function(
         htmltools::div(
           class = "subrow-content",
           htmltools::div(
+            class = "grid-vertical-center",
             old_name
           ),
           htmltools::div(
@@ -77,13 +78,17 @@ rename_operation <- function(
   })
   
   renamed_data_r <- shiny::reactive({
-    setNames(data_r(), new_names_r())
+    df <- data_r()
+    keep_indices <- new_names_r() != ""
+    new_names <- new_names_r()[keep_indices]
+    df <- df[, keep_indices]
+    setNames(df, new_names)
   })
   
   subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
   
-  shiny::observeEvent(sr_toggle_r(), {
-    if (sr_toggle_r() %% 2 == 0) {
+  shiny::observeEvent(sr_toggle_rv(), {
+    if (sr_toggle_rv() %% 2 == 0) {
       shinyjs::show(
         anim = TRUE,
         selector = subrow_selector

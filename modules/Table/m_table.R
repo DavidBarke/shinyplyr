@@ -197,6 +197,10 @@ m_table <- function(
           shinyjs::disable(
             selector = paste0("#", ns("row_"), row_index, " .area-operation")
           )
+          
+          shinyjs::disable(
+            selector = paste0("#", ns("row_"), row_index, " .subrows-container")
+          )
         }
       })
     }
