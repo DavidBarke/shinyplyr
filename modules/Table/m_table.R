@@ -2,12 +2,6 @@ m_table_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
-    # plus button in uiOutput, so that it appears just when the module is ready.
-    # Otherwise inconsistencies are possible, if the button is clicked early
-    shiny::uiOutput(
-      outputId = ns("plus_button")
-    ),
-    htmltools::tags$hr(),
     htmltools::div(
       id = ns("table_container"),
       class = "table-container",
@@ -65,6 +59,11 @@ m_table_ui <- function(id) {
           class = "area-remove vertical-center"
         )
       )
+    ),
+    # plus button in uiOutput, so that it appears just when the module is ready.
+    # Otherwise inconsistencies are possible, if the button is clicked early
+    shiny::uiOutput(
+      outputId = ns("plus_button")
     )
   )
 }

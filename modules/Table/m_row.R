@@ -48,6 +48,10 @@ m_row <- function(
   
   ns <- session$ns
   
+  # Force evaluation of row_index, otherwise tab_name_r takes always the maximum
+  # row index
+  force(row_index)
+  
   output$operation <- shiny::renderUI({
     switch(
       shiny::req(input$predicate),
