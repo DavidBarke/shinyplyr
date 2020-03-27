@@ -9,6 +9,10 @@ m_row_ui <- function(id, row_html_id, index) {
         class = "area-step grid-center",
         index
       ),
+      shiny::uiOutput(
+        outputId = ns("sr_toggle"),
+        class = "area-sr-toggle grid-center"
+      ),
       htmltools::div(
         class = "area-predicate",
         shiny::selectInput(
@@ -80,6 +84,33 @@ m_row <- function(
         id = ns("id_plot_operation")
       )
     )
+  })
+  
+  output$sr_toggle <- shiny::renderUI({
+    if (shiny::req(input$predicate) == "plot") {
+      htmltools::div(
+        class = "sr-toggle-btn",
+        m_action_button(
+          inputId = ns("sr_toggle"),
+          label = NULL,
+          icon = toggled_icon_r()
+        )
+      )
+    }
+  })
+  
+  toggle_rv <- shiny::reactiveVal(0)
+  
+  toggled_icon_r <- shiny::reactive({
+    if (toggle_rv() %% 2 == 0) {
+      shiny::icon("caret-down")
+    } else {
+      shiny::icon("caret-right")
+    }
+  })
+  
+  shiny::observeEvent(input$sr_toggle, {
+    toggle_rv(toggle_rv() + 1)
   })
   
   output$subrows <- shiny::renderUI({
@@ -210,7 +241,8 @@ m_row <- function(
     id = "id_plot_operation",
     .values = .values,
     data_r = data_r,
-    row_index = row_index
+    row_index = row_index,
+    sr_toggle_r = toggle_rv
   )
   
   return_list <- list(

@@ -39,11 +39,11 @@
 
 .row-container {
   display: grid;
-  grid-template-columns: 10px 125px 1fr 50px 50px;
+  grid-template-columns: 10px 25px 125px 1fr 30px 30px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step         predicate    operation    result       remove      "
-    "sr-container sr-container sr-container sr-container sr-container";
+    "step         sr-toggle    predicate    operation    result       remove      "
+    "sr-container sr-container sr-container sr-container sr-container sr-container";
   margin: 3px 0;
   padding: 0 5px 3px 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
@@ -53,6 +53,10 @@
 
 .area-step {
   grid-area: step;
+}
+
+.area-sr-toggle {
+  grid-area: sr-toggle;
 }
 
 .area-predicate {
@@ -93,7 +97,7 @@
 
 .subrow-container {
   display: grid;
-  grid-template-columns: 25px auto 50px;
+  grid-template-columns: 25px auto 30px;
   grid-column-gap: 10px;
   grid-template-areas:
     "subrow-index subrow-content subrow-remove";
@@ -150,7 +154,7 @@
 /* Plot */
 .plot-op-container {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 1fr 1fr 1fr
 }
 
 .ggplot2-content {

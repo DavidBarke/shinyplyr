@@ -9,9 +9,6 @@ m_table_ui <- function(id) {
       htmltools::div(
         class = "row-container",
         htmltools::div(
-          class = "area-step table-title"
-        ),
-        htmltools::div(
           class = "area-predicate table-title",
           "Predicate"
         ),
