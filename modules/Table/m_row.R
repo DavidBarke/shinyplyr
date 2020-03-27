@@ -1,15 +1,15 @@
-m_row_ui <- function(id, container_id, index) {
+m_row_ui <- function(id, row_html_id, index) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    id = container_id,
+    id = row_html_id,
     class = "row-container",
     htmltools::div(
-      class = "area-step vertical-center",
+      class = "area-step grid-center",
       index
     ),
     htmltools::div(
-      class = "area-predicate",
+      class = "area-predicates",
       shiny::selectInput(
         inputId = ns("predicate"),
         label = NULL,
@@ -29,29 +29,22 @@ m_row_ui <- function(id, container_id, index) {
     ),
     shiny::uiOutput(
       outputId = ns("result"),
-      class = "area-result vertical-center"
+      class = "area-result grid-center"
     ),
     htmltools::div(
-      class = "area-remove vertical-center",
+      class = "area-remove grid-center",
       m_action_button(
         inputId = ns("remove"),
         label = NULL,
         icon = shiny::icon("times")
       )
-    ),
-    shiny::uiOutput(
-      outputId = ns("add_subrow"),
-      class = "area-add-subrow"
-    ),
-    shiny::uiOutput(
-      outputId = ns("subrows"),
-      class = "subrow-container"
     )
   )
 }
 
 m_row <- function(
-  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun
+  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun,
+  row_html_id
 ) {
   
   ns <- session$ns
@@ -82,32 +75,6 @@ m_row <- function(
         id = ns("id_plot_operation")
       )
     )
-  })
-  
-  output$add_subrow <- shiny::renderUI({
-    if (
-      shiny::req(input$predicate) %in% 
-      c("select", "filter", "mutate", "group_by", "summarise")
-    ) {
-      return(NULL)
-    } else {
-      plot_operation_add_subrow_ui(
-        id = ns("id_plot_operation")
-      )
-    }
-  })
-  
-  output$subrows <- shiny::renderUI({
-    if (
-      shiny::req(input$predicate) %in% 
-      c("select", "filter", "mutate", "group_by", "summarise")
-    ) {
-      return(NULL)
-    } else {
-      plot_operation_subrows_ui(
-        id = ns("id_plot_operation")
-      )
-    }
   })
   
   output$result <- shiny::renderUI({
@@ -227,7 +194,9 @@ m_row <- function(
     module = plot_operation,
     id = "id_plot_operation",
     .values = .values,
-    data_r = data_r
+    data_r = data_r,
+    row_html_id = row_html_id,
+    row_index = row_index
   )
   
   return_list <- list(

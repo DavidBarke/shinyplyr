@@ -1,4 +1,7 @@
 /* General */
+
+/* Use grid-center inside of grid instead */
+/* Needs relative positioning of parent */
 .vertical-center {
   position: absolute;
   top: 50%;
@@ -8,6 +11,10 @@
 .fifty-fifty-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.grid-center {
+  margin: auto;
 }
 
 .form-control {
@@ -23,22 +30,11 @@
 
 .row-container {
   display: grid;
-  grid-template-columns: 10px 50px 75px 1fr 50px 50px;
+  grid-template-columns: 10px 125px 1fr 50px 50px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step predicate  predicate operation result remove"
-    ".    add-subrow subrow    subrow    subrow subrow";
+    "step predicate operation result remove";
   padding: 5px 0;
-  position: relative;
-}
-
-.area-add-subrow {
-  grid-area: add-subrow;
-}
-
-.subrow-container {
-  grid-area: subrow;
-  display: grid;
 }
 
 .area-step {
@@ -89,6 +85,18 @@
 /* Plot */
 .plot-op-container {
   display: grid;
+  grid-template-columns: 100px 1fr;
+}
+
+.plot-op-add-subrow {
+  position: relative;
+}
+
+.ggplot2-subrow {
+  display: grid;
+  position: relative;
+  margin-left: 135px;
+  grid-template-columns: 20px 125px 125px auto;
 }
 
 /*Custom close button (cross)*/

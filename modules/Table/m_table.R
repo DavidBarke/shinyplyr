@@ -34,11 +34,11 @@ m_table_ui <- function(id) {
         id = ns("row_0"),
         class = "row-container",
         htmltools::div(
-          class = "area-step vertical-center",
+          class = "area-step grid-center",
           "0"
         ),
         htmltools::div(
-          class = "area-predicate vertical-center",
+          class = "area-predicate grid-center",
           "data"
         ),
         htmltools::div(
@@ -48,7 +48,7 @@ m_table_ui <- function(id) {
           )
         ),
         htmltools::div(
-          class = "area-result vertical-center",
+          class = "area-result grid-center",
           m_action_button(
             inputId = ns("open_data"),
             label = NULL,
@@ -56,7 +56,7 @@ m_table_ui <- function(id) {
           )
         ),
         htmltools::div(
-          class = "area-remove vertical-center"
+          class = "area-remove grid-center"
         )
       )
     ),
@@ -137,9 +137,11 @@ m_table <- function(
   shiny::observeEvent(input$add_row, {
     rvs$n_row <- rvs$n_row + 1
     
+    row_html_id <- ns("row" %_% rvs$n_row)
+    
     ui <- m_row_ui(
       id = ns("id_m_row" %_% rvs$n_row),
-      container_id = ns("row" %_% rvs$n_row),
+      row_html_id = row_html_id,
       index = rvs$n_row
     )
     
@@ -166,7 +168,8 @@ m_table <- function(
         name_r = name_r,
         id_r = id_r,
         row_index = rvs$n_row,
-        remove_row_fun = remove_row_fun
+        remove_row_fun = remove_row_fun,
+        row_html_id = row_html_id
       ) 
     }
   })
