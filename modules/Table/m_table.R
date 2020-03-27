@@ -218,8 +218,8 @@ m_table <- function(
   shiny::observeEvent(input$open_data, {
     new <- .values$home$viewer$append_tab(
       tab = shiny::tabPanel(
-        title = paste("0", dataset_object_r()$get_name(), sep = ": "),
-        value = ns("0" %_% input$selected_dataset),
+        title = paste(dataset_object_r()$get_name(), "0", sep = ": "),
+        value = ns(input$selected_dataset %_% "0"),
         DT::dataTableOutput(
           outputId = ns("dataset")
         )

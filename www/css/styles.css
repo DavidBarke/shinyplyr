@@ -23,11 +23,11 @@
 
 .row-container {
   display: grid;
-  grid-template-columns: 10px 120px 1fr 50px 50px;
-  grid-template-rows: auto;
+  grid-template-columns: 10px 125px 1fr 50px 50px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step predicate operation result remove";
+    "step predicate operation result remove"
+    ".    subrow    subrow    subrow subrow";
   padding: 5px 0;
   position: relative;
 }

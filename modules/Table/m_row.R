@@ -16,6 +16,9 @@ m_row_ui <- function(id, container_id, index) {
         choices = c(
           "select",
           "filter",
+          "mutate",
+          "group_by",
+          "summarise",
           "plot"
         )
       )
@@ -60,6 +63,15 @@ m_row <- function(
       ),
       "filter" = filter_operation_ui(
         id = ns("id_filter_operation")
+      ),
+      "mutate" = mutate_operation_ui(
+        id = ns("id_mutate_operation")
+      ),
+      "group_by" = group_by_operation_ui(
+        id = ns("id_group_by_operation")
+      ),
+      "summarise" = summarise_operation_ui(
+        id = ns("id_summarise_operation")
       ),
       "plot" = plot_operation_ui(
         id = ns("id_plot_operation")
@@ -134,6 +146,9 @@ m_row <- function(
       shiny::req(input$predicate),
       "select" = select_operation_return$data_r(),
       "filter" = filter_operation_return$data_r(),
+      "mutate" = mutate_operation_return$data_r(),
+      "group_by" = group_by_operation_return$data_r(),
+      "summarise" = summarise_operation_return$data_r(),
       "plot" = plot_operation_return$data_r()
     )
   })
@@ -152,6 +167,27 @@ m_row <- function(
   filter_operation_return <- shiny::callModule(
     module = filter_operation,
     id = "id_filter_operation",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  mutate_operation_return <- shiny::callModule(
+    module = mutate_operation,
+    id = "id_mutate_operation",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  group_by_operation_return <- shiny::callModule(
+    module = group_by_operation,
+    id = "id_group_by_operation",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  summarise_operation_return <- shiny::callModule(
+    module = summarise_operation,
+    id = "id_summarise_operation",
     .values = .values,
     data_r = data_r
   )

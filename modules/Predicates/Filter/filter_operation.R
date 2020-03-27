@@ -21,6 +21,7 @@ filter_operation <- function(
   
   ns <- session$ns
   
+  # Currently unused
   rvs <- shiny::reactiveValues(
     column = NULL,
     operator = NULL,
