@@ -174,7 +174,8 @@ m_table <- function(
         name_r = name_r,
         id_r = id_r,
         row_index = rvs$n_row,
-        remove_row_fun = remove_row_fun
+        remove_row_fun = remove_row_fun,
+        row_html_id = row_html_id
       ) 
     }
   })

@@ -20,6 +20,7 @@ m_row_ui <- function(id, row_html_id, index) {
           label = NULL,
           choices = c(
             "select",
+            "rename",
             "filter",
             "mutate",
             "group_by",
@@ -53,7 +54,8 @@ m_row_ui <- function(id, row_html_id, index) {
 }
 
 m_row <- function(
-  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun
+  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun,
+  row_html_id
 ) {
   
   ns <- session$ns
@@ -67,6 +69,9 @@ m_row <- function(
       shiny::req(input$predicate),
       "select" = select_operation_ui(
         id = ns("id_select_operation")
+      ),
+      "rename" = rename_operation_ui(
+        id = ns("id_rename_operation")
       ),
       "filter" = filter_operation_ui(
         id = ns("id_filter_operation")
@@ -87,7 +92,9 @@ m_row <- function(
   })
   
   output$sr_toggle <- shiny::renderUI({
-    if (shiny::req(input$predicate) == "plot") {
+    if (shiny::req(input$predicate) %in%
+        c("rename", "plot")
+    ) {
       htmltools::div(
         class = "sr-toggle-btn",
         m_action_button(
@@ -114,13 +121,15 @@ m_row <- function(
   })
   
   output$subrows <- shiny::renderUI({
-    if (shiny::req(input$predicate) == "plot") {
-      plot_subrows_ui(
+    switch(
+      shiny::req(input$predicate),
+      "rename" = rename_subrows_ui(
+        id = ns("id_rename_operation")
+      ),
+      "plot" = plot_subrows_ui(
         id = ns("id_plot_operation")
       )
-    } else {
-      NULL
-    }
+    )
   })
   
   output$result <- shiny::renderUI({
@@ -189,6 +198,7 @@ m_row <- function(
     switch (
       shiny::req(input$predicate),
       "select" = select_operation_return$data_r(),
+      "rename" = rename_operation_return$data_r(),
       "filter" = filter_operation_return$data_r(),
       "mutate" = mutate_operation_return$data_r(),
       "group_by" = group_by_operation_return$data_r(),
@@ -206,6 +216,16 @@ m_row <- function(
     id = "id_select_operation",
     .values = .values,
     data_r = data_r
+  )
+  
+  rename_operation_return <- shiny::callModule(
+    module = rename_operation,
+    id = "id_rename_operation",
+    .values = .values,
+    data_r = data_r,
+    row_index = row_index,
+    sr_toggle_r = toggle_rv,
+    row_html_id = row_html_id
   )
   
   filter_operation_return <- shiny::callModule(
