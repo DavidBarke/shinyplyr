@@ -5,10 +5,8 @@ plot_operation_ui <- function(id) {
     htmltools::div(
       class = "plot-op-container",
       htmltools::div(
-        shiny::selectInput(
-          inputId = ns("plot_pkg"),
-          label = NULL,
-          choices = c("ggplot2", "plotly")
+        shiny::uiOutput(
+          outputId = ns("plot_pkg")
         )
       ),
       htmltools::div(
@@ -22,8 +20,21 @@ plot_operation_ui <- function(id) {
   )
 }
 
+plot_subrows_ui <- function(id) {
+  ns <- shiny::NS(id)
+  
+  htmltools::tagList(
+    m_subrows_ui(
+      id = ns("id_ggplot2_subrows")
+    ),
+    m_subrows_ui(
+      id = ns("id_plotly_subrows")
+    )
+  )
+}
+
 plot_operation <- function(
-  input, output, session, .values, data_r, row_html_id, row_index
+  input, output, session, .values, data_r, row_index
 ) {
   
   ns <- session$ns
@@ -46,6 +57,21 @@ plot_operation <- function(
   })
   
   # Plot Logic -----------------------------------------------------------------
+  output$plot_pkg <- shiny::renderUI({
+    ui <- shiny::selectInput(
+      inputId = ns("plot_pkg"),
+      label = NULL,
+      choices = c("ggplot2", "plotly"),
+      selected = fallback(input$plot_pkg, NULL)
+    )
+    
+    if (n_active_subrows_r() > 0) {
+      ui <- disabled(ui)
+    }
+    
+    ui
+  })
+  
   plot_r <- shiny::reactive({
     switch(
       shiny::req(input$plot_pkg),
@@ -84,85 +110,33 @@ plot_operation <- function(
     }
   })
   
-  ggplot2_rvs <- shiny::reactiveValues(
-    n_subrow = 0,
-    max_subrow = 0
-  )
-  
-  plotly_rvs <- shiny::reactiveValues(
-    n_subrow = 0,
-    max_subrow = 0
-  )
-  
-  prev_subrow_selector <- function(n, pkg) {
-    if (n == 1) {
-      paste0("#", row_html_id)
-    } else {
-      paste0("#", ns(pkg %_% "subrow" %_% (n - 1)))
-    }
-  }
-  
-  hide_prev_label <- function(n, pkg) {
-    if (n > 1) {
-      shinyjs::hide(
-        selector = paste(prev_subrow_selector(n, pkg), "label")
-      )
-    }
-  }
-  
-  shiny::observeEvent(input$add_ggplot2_subrow, {
-    ggplot2_rvs$n_subrow <- ggplot2_rvs$n_subrow + 1
-    
-    hide_prev_label(ggplot2_rvs$n_subrow, "ggplot2")
-    
-    ui <- ggplot2_subrow_ui(
-      id = ns("ggplot2_subrow" %_% ggplot2_rvs$n_subrow),
-      index = paste(row_index, ggplot2_rvs$n_subrow, sep = ".")
+  n_active_subrows_r <- shiny::reactive({
+    max(
+      ggplot2_subrows_return$n_active_subrows_r(),
+      plotly_subrows_return$n_active_subrows_r()
     )
-    
-    shiny::insertUI(
-      selector = prev_subrow_selector(ggplot2_rvs$n_subrow, "ggplot2"),
-      where = "afterEnd",
-      ui = ui
-    )
-    
-    if (ggplot2_rvs$n_subrow > ggplot2_rvs$max_subrow) {
-      ggplot2_rvs$max_subrow <- ggplot2_rvs$n_subrow
-      
-      shiny::callModule(
-        module = ggplot2_subrow,
-        id = "ggplot2_subrow" %_% ggplot2_rvs$n_subrow,
-        .values = .values
-      )
-    }
   })
   
-  shiny::observeEvent(input$add_plotly_subrow, {
-    plotly_rvs$n_subrow <- plotly_rvs$n_subrow + 1
-    
-    hide_prev_label(plotly_rvs$n_subrow, "plotly")
-    
-    ui <- plotly_subrow_ui(
-      id = ns("plotly_subrow" %_% plotly_rvs$n_subrow),
-      index = paste(row_index, plotly_rvs$n_subrow, sep = ".")
-    )
-    
-    shiny::insertUI(
-      selector = prev_subrow_selector(plotly_rvs$n_subrow, "plotly"),
-      where = "afterEnd",
-      ui = ui
-    )
-    
-    if (plotly_rvs$n_subrow > plotly_rvs$max_subrow) {
-      plotly_rvs$max_subrow <- plotly_rvs$n_subrow
-      
-      shiny::callModule(
-        module = plotly_subrow,
-        id = "plotly_subrow" %_% plotly_rvs$n_subrow,
-        .values = .values
-      )
-    }
-  })
+  ggplot2_subrows_return <- shiny::callModule(
+    module = m_subrows,
+    id = "id_ggplot2_subrows",
+    .values = .values,
+    content_ui = ggplot2_content_ui,
+    content_server = ggplot2_content,
+    row_index = row_index,
+    add_r = shiny::reactive(input$add_ggplot2_subrow),
+    subrow_class = "ggplot2-subrow"
+  )
+  
+  plotly_subrows_return <- shiny::callModule(
+    module = m_subrows,
+    id = "id_plotly_subrows",
+    .values = .values,
+    content_ui = plotly_content_ui,
+    content_server = plotly_content,
+    row_index = row_index,
+    add_r = shiny::reactive(input$add_plotly_subrow)
+  )
   
   return_list <- list(
     data_r = data_r,

@@ -1,50 +1,54 @@
 m_row_ui <- function(id, row_html_id, index) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
-    id = row_html_id,
-    class = "row-container",
+  htmltools::tagList(
     htmltools::div(
-      class = "area-step grid-center",
-      index
-    ),
-    htmltools::div(
-      class = "area-predicates",
-      shiny::selectInput(
-        inputId = ns("predicate"),
-        label = NULL,
-        choices = c(
-          "select",
-          "filter",
-          "mutate",
-          "group_by",
-          "summarise",
-          "plot"
+      id = row_html_id,
+      class = "row-container",
+      htmltools::div(
+        class = "area-step grid-center",
+        index
+      ),
+      htmltools::div(
+        class = "area-predicates",
+        shiny::selectInput(
+          inputId = ns("predicate"),
+          label = NULL,
+          choices = c(
+            "select",
+            "filter",
+            "mutate",
+            "group_by",
+            "summarise",
+            "plot"
+          )
+        )
+      ),
+      shiny::uiOutput(
+        outputId = ns("operation"),
+        class = "area-operation"
+      ),
+      shiny::uiOutput(
+        outputId = ns("result"),
+        class = "area-result grid-center"
+      ),
+      htmltools::div(
+        class = "area-remove grid-center",
+        m_action_button(
+          inputId = ns("remove"),
+          label = NULL,
+          icon = shiny::icon("times")
         )
       )
     ),
     shiny::uiOutput(
-      outputId = ns("operation"),
-      class = "area-operation"
-    ),
-    shiny::uiOutput(
-      outputId = ns("result"),
-      class = "area-result grid-center"
-    ),
-    htmltools::div(
-      class = "area-remove grid-center",
-      m_action_button(
-        inputId = ns("remove"),
-        label = NULL,
-        icon = shiny::icon("times")
-      )
+      outputId = ns("subrows")
     )
   )
 }
 
 m_row <- function(
-  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun,
-  row_html_id
+  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun
 ) {
   
   ns <- session$ns
@@ -75,6 +79,16 @@ m_row <- function(
         id = ns("id_plot_operation")
       )
     )
+  })
+  
+  output$subrows <- shiny::renderUI({
+    if (shiny::req(input$predicate) == "plot") {
+      plot_subrows_ui(
+        id = ns("id_plot_operation")
+      )
+    } else {
+      NULL
+    }
   })
   
   output$result <- shiny::renderUI({
@@ -195,7 +209,6 @@ m_row <- function(
     id = "id_plot_operation",
     .values = .values,
     data_r = data_r,
-    row_html_id = row_html_id,
     row_index = row_index
   )
   

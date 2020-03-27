@@ -57,6 +57,36 @@
   grid-area: remove;
 }
 
+.subrow-container {
+  display: grid;
+  grid-template-columns: 25px auto 50px;
+  grid-column-gap: 10px;
+  grid-template-areas:
+    "subrow-index subrow-content subrow-remove";
+  padding: 5px 0;
+}
+
+.subrow-container label {
+  display: none;
+}
+
+.subrow-container.active-subrow label {
+  display: block;
+}
+
+
+.subrow-index {
+  grid-area: subrow-index;
+}
+
+.subrow-content {
+  grid-area: subrow-content;
+}
+
+.subrow-remove {
+  grid-area: subrow-remove;
+}
+
 .table-title {
   font-weight: bold;
 }
@@ -86,6 +116,7 @@
 .plot-op-container {
   display: grid;
   grid-template-columns: 100px 1fr;
+  grid-column-gap: 10px;
 }
 
 .plot-op-add-subrow {
@@ -93,10 +124,14 @@
 }
 
 .ggplot2-subrow {
+  margin-left: 155px;
+}
+
+.ggplot2-content {
   display: grid;
   position: relative;
-  margin-left: 135px;
-  grid-template-columns: 20px 125px 125px auto;
+  grid-template-columns: 125px 125px auto;
+  grid-column-gap: 10px
 }
 
 /*Custom close button (cross)*/

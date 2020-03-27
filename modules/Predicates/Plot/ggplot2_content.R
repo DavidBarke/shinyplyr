@@ -1,14 +1,8 @@
-ggplot2_subrow_ui <- function(id, index, html_row_id) {
+ggplot2_content_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    id = id,
-    class = "ggplot2-subrow",
-    # Index
-    htmltools::div(
-      class = "grid-center",
-      index
-    ),
+    class = "ggplot2-content",
     # Select layer
     htmltools::div(
       shiny::selectInput(
@@ -39,14 +33,14 @@ ggplot2_subrow_ui <- function(id, index, html_row_id) {
   )
 }
 
-ggplot2_subrow <- function(
+ggplot2_content <- function(
   input, output, session, .values
 ) {
   
   ns <- session$ns
   
   output$property <- shiny::renderUI({
-    "Propery"
+    "Property"
   })
   
   output$value <- shiny::renderUI({
