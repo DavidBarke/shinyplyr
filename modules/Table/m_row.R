@@ -39,10 +39,11 @@ m_row_ui <- function(id, row_html_id, index) {
           label = NULL,
           icon = shiny::icon("times")
         )
+      ),
+      shiny::uiOutput(
+        outputId = ns("subrows"),
+        class = "subrows"
       )
-    ),
-    shiny::uiOutput(
-      outputId = ns("subrows")
     )
   )
 }

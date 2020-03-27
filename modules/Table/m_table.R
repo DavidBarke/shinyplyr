@@ -2,6 +2,7 @@ m_table_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
+    # Header
     htmltools::div(
       id = ns("table_container"),
       class = "table-container",
@@ -30,6 +31,7 @@ m_table_ui <- function(id) {
           class = "area-remove"
         )
       ),
+      # First row always contains selection of dataset
       htmltools::div(
         id = ns("row_0"),
         class = "row-container",
@@ -38,7 +40,7 @@ m_table_ui <- function(id) {
           "0"
         ),
         htmltools::div(
-          class = "area-predicate grid-center",
+          class = "area-predicate grid-vertical-center",
           "data"
         ),
         htmltools::div(
@@ -132,9 +134,16 @@ m_table <- function(
     )
   })
   
+  # add_row has to be throttled, otherwise spaming the button would lead to
+  # multiple rows added, which is not a problem, but if you are too fast not
+  # all of them get disabled properly.
+  throttled_add_row_r <- shiny::reactive({
+    input$add_row
+  }) %>% throttle(500)
+  
   # Rows are added with insertUI. If a row with that index is added for the
   # first time, the server function is called exactly once
-  shiny::observeEvent(input$add_row, {
+  shiny::observeEvent(throttled_add_row_r(), {
     rvs$n_row <- rvs$n_row + 1
     
     row_html_id <- ns("row" %_% rvs$n_row)
@@ -173,13 +182,7 @@ m_table <- function(
     }
   })
   
-  # Debounce rvs$n_row, so that disabling is done with delay. If you click
-  # very fast, you may get more than the last row enabled. 
-  debounced_n_row_r <- shiny::reactive({
-    rvs$n_row
-  }) %>% debounce(500)
-  
-  shiny::observeEvent(debounced_n_row_r(), {
+  shiny::observeEvent(rvs$n_row, {
     if (rvs$n_row > 0) {
       # All but the last row get disabled
       purrr::walk(seq_len(rvs$n_row - 1), function(row_index) {

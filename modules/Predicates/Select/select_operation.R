@@ -2,7 +2,7 @@ select_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "select-op-container",
+    class = "select-op-container grid-gap",
     # Grid layout
     htmltools::div(
       shiny::selectInput(

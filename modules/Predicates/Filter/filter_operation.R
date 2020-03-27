@@ -2,7 +2,7 @@ filter_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "filter-op-container",
+    class = "filter-op-container grid-gap",
     shiny::uiOutput(
       outputId = ns("column")
     ),

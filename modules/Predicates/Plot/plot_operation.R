@@ -3,7 +3,7 @@ plot_operation_ui <- function(id) {
   
   htmltools::tagList(
     htmltools::div(
-      class = "plot-op-container",
+      class = "plot-op-container grid-gap",
       htmltools::div(
         shiny::uiOutput(
           outputId = ns("plot_pkg")

@@ -2,7 +2,7 @@ ggplot2_content_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "ggplot2-content",
+    class = "ggplot2-content grid-gap",
     # Select layer
     htmltools::div(
       shiny::selectInput(
