@@ -8,9 +8,12 @@ library(R.utils)
 
 library(purrr)
 library(dplyr)
+library(stringr)
 
 library(ggplot2)
 library(plotly)
+
+library(readr)
 
 # Source files inside of function, so that globalenv doesn't get polluted
 init <- function() {
@@ -37,9 +40,15 @@ init <- function() {
     shiny::navbarPage(
       title = "shinyplyr",
       shiny::tabPanel(
-        title = "Home",
-        tab_home_ui(
-          id = "id_tab_home"
+        title = "Transformation",
+        tab_transformation_ui(
+          id = "id_tab_transformation"
+        )
+      ),
+      shiny::tabPanel(
+        title = "Import",
+        tab_import_ui(
+          id = "id_tab_import"
         )
       ),
       shiny::tabPanel(
@@ -63,8 +72,14 @@ init <- function() {
     )
     
     shiny::callModule(
-      module = tab_home,
-      id = "id_tab_home",
+      module = tab_transformation,
+      id = "id_tab_transformation",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_import,
+      id = "id_tab_import",
       .values = .values
     )
     

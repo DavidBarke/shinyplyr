@@ -157,7 +157,7 @@ m_row <- function(
     
     plot_pkg <- plot_operation_return$plot_pkg_r()
     
-    new <- .values$home$viewer$append_tab(
+    new <- .values$transformation$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
         value = ns(id_r() %_% plot_pkg),
@@ -177,7 +177,7 @@ m_row <- function(
   })
   
   shiny::observeEvent(input$open_data, {
-    new <- .values$home$viewer$append_tab(
+    new <- .values$transformation$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
         value = ns(id_r() %_% "data"),

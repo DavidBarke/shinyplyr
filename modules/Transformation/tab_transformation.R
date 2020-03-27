@@ -1,4 +1,4 @@
-tab_home_ui <- function(id) {
+tab_transformation_ui <- function(id) {
   ns <- shiny::NS(id)
   
   shiny::fluidRow(
@@ -16,22 +16,23 @@ tab_home_ui <- function(id) {
   )
 }
 
-tab_home <- function(
+tab_transformation <- function(
   input, output, session, .values
 ) {
   
   ns <- session$ns
   
-  .values$home$viewer <- TabBox$new(
+  .values$transformation$viewer <- TabBox$new(
     id = "viewer",
     title = "Results",
-    width = 12
+    width = 12,
+    side = "right"
   )
   
-  .values$home$viewer$set_session(session)
+  .values$transformation$viewer$set_session(session)
   
   output$data_out <- shiny::renderUI({
-    .values$home$viewer$tabBox()
+    .values$transformation$viewer$tabBox()
   })
   
   shiny::callModule(

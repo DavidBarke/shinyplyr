@@ -31,6 +31,10 @@
   top: 2px;
 }
 
+.rds-import .form-control {
+  top: 0;
+}
+
 /* Table */
 .table-container {
   display: grid;

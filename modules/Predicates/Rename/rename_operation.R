@@ -72,17 +72,17 @@ rename_operation <- function(
   })
   
   new_names_r <- shiny::reactive({
-    purrr::map_chr(seq_along(old_names_r()), function(index) {
+    new_names <- purrr::map_chr(seq_along(old_names_r()), function(index) {
+      shiny::req(!purrr::is_null(input[["new_name" %_% index]]))
       input[["new_name" %_% index]]
     })
+    
+    setNames(old_names_r(), new_names)
   })
   
   renamed_data_r <- shiny::reactive({
-    df <- data_r()
-    keep_indices <- new_names_r() != ""
-    new_names <- new_names_r()[keep_indices]
-    df <- df[, keep_indices]
-    setNames(df, new_names)
+    data_r() %>%
+      dplyr::rename(new_names_r())
   })
   
   subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
