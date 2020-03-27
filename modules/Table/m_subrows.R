@@ -111,7 +111,8 @@ m_subrows <- function(
   })
   
   return_list <- list(
-    n_active_subrows_r = shiny::reactive(length(rvs$active_subrows))
+    n_active_subrows_r = shiny::reactive(length(rvs$active_subrows)),
+    subrows_open_r = shiny::reactive(toggle_rv() %% 2 == 0)
   )
   
   return(return_list)

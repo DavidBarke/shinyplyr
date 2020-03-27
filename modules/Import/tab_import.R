@@ -25,7 +25,8 @@ tab_import <- function(
   .values$import$viewer <- TabBox$new(
     id = "viewer",
     title = "Preview",
-    width = 12
+    width = 12,
+    side = "right"
   )
   
   .values$import$viewer$set_session(session)

@@ -1,20 +1,9 @@
 rename_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
-    class = "rename-op-container grid-gap",
-    htmltools::div(
-      class = "grid-vertical-center",
-      htmltools::tags$label(
-        "Old name"
-      )
-    ),
-    htmltools::div(
-      class = "grid-vertical-center",
-      htmltools::tags$label(
-        "New name"
-      )
-    )
+  shiny::uiOutput(
+    outputId = ns("op_container"),
+    class = "rename-op-container grid-gap"
   )
 }
 
@@ -33,8 +22,84 @@ rename_operation <- function(
   
   ns <- session$ns
   
+  subrows_open_r <- shiny::reactive({
+    sr_toggle_rv() %% 2 == 0
+  })
+  
+  shiny::observeEvent(subrows_open_r(), {
+    selector <- paste0("#", ns("op_container"))
+    
+    if (subrows_open_r()) {
+      shinyjs::removeClass(
+        class = "subrows-closed",
+        selector = selector
+      )
+    } else {
+      shinyjs::addClass(
+        class = "subrows-closed",
+        selector = selector
+      )
+    }
+  })
+  
+  output$op_container <- shiny::renderUI({
+    if (subrows_open_r()) {
+      htmltools::tagList(
+        htmltools::div(
+          class = "grid-vertical-center",
+          htmltools::tags$label(
+            "Old name"
+          )
+        ),
+        htmltools::div(
+          class = "grid-vertical-center",
+          htmltools::tags$label(
+            "New name"
+          )
+        )
+      )
+    } else {
+      htmltools::div(
+        class = "grid-vertical-center",
+        shiny::uiOutput(
+          outputId = ns("rename_overview")
+        )
+      )
+    }
+  })
+  
+  output$rename_overview <- shiny::renderUI({
+    repl <- purrr::map2_chr(old_names_r(), new_names_r(), function(old_name, new_name) {
+      if (new_name == "") {
+        new_name <- "-"
+      }
+      paste(old_name, "=", new_name)
+    })
+    paste(repl, collapse = ", ")
+  })
+  
   old_names_r <- shiny::reactive({
     names(data_r())
+  })
+  
+  output$old_name <- shiny::renderUI({
+    if (subrows_open_r()) {
+      htmltools::tags$label(
+        "Old name"
+      )
+    } else {
+      paste("Old names:", paste(old_names_r(), collapse = ", "))
+    }
+  })
+  
+  output$new_name <- shiny::renderUI({
+    if (subrows_open_r()) {
+      htmltools::tags$label(
+        "New name"
+      )
+    } else {
+      paste("New names:", paste(new_names_r(), collapse = ", "))
+    }
   })
   
   output$subrows <- shiny::renderUI({
@@ -73,16 +138,32 @@ rename_operation <- function(
   
   new_names_r <- shiny::reactive({
     new_names <- purrr::map_chr(seq_along(old_names_r()), function(index) {
+      # Extra line is necessary, because req would stop when detecting ""
       shiny::req(!purrr::is_null(input[["new_name" %_% index]]))
-      input[["new_name" %_% index]]
+      stringr::str_trim(input[["new_name" %_% index]])
     })
-    
-    setNames(old_names_r(), new_names)
+  })
+  
+  is_empty_name_r <- shiny::reactive({
+    new_names_r() == ""
+  })
+  
+  non_empty_names_r <- shiny::reactive({
+    new_names_r()[!is_empty_name_r()]
+  })
+  
+  old_matched_names_r <- shiny::reactive({
+    old_names_r()[!is_empty_name_r()]
+  })
+  
+  rename_names_r <- shiny::reactive({
+    setNames(old_matched_names_r(), non_empty_names_r())
   })
   
   renamed_data_r <- shiny::reactive({
     data_r() %>%
-      dplyr::rename(new_names_r())
+      dplyr::select(old_matched_names_r()) %>%
+      dplyr::rename(rename_names_r())
   })
   
   subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
