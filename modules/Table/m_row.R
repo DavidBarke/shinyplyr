@@ -40,7 +40,12 @@ m_row_ui <- function(id, container_id, index) {
       )
     ),
     shiny::uiOutput(
-      outputId = ns("operation_label")
+      outputId = ns("add_subrow"),
+      class = "area-add-subrow"
+    ),
+    shiny::uiOutput(
+      outputId = ns("subrows"),
+      class = "subrow-container"
     )
   )
 }
@@ -77,6 +82,32 @@ m_row <- function(
         id = ns("id_plot_operation")
       )
     )
+  })
+  
+  output$add_subrow <- shiny::renderUI({
+    if (
+      shiny::req(input$predicate) %in% 
+      c("select", "filter", "mutate", "group_by", "summarise")
+    ) {
+      return(NULL)
+    } else {
+      plot_operation_add_subrow_ui(
+        id = ns("id_plot_operation")
+      )
+    }
+  })
+  
+  output$subrows <- shiny::renderUI({
+    if (
+      shiny::req(input$predicate) %in% 
+      c("select", "filter", "mutate", "group_by", "summarise")
+    ) {
+      return(NULL)
+    } else {
+      plot_operation_subrows_ui(
+        id = ns("id_plot_operation")
+      )
+    }
   })
   
   output$result <- shiny::renderUI({

@@ -23,13 +23,22 @@
 
 .row-container {
   display: grid;
-  grid-template-columns: 10px 125px 1fr 50px 50px;
+  grid-template-columns: 10px 50px 75px 1fr 50px 50px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step predicate operation result remove"
-    ".    subrow    subrow    subrow subrow";
+    "step predicate  predicate operation result remove"
+    ".    add-subrow subrow    subrow    subrow subrow";
   padding: 5px 0;
   position: relative;
+}
+
+.area-add-subrow {
+  grid-area: add-subrow;
+}
+
+.subrow-container {
+  grid-area: subrow;
+  display: grid;
 }
 
 .area-step {

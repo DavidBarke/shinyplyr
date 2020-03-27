@@ -1,15 +1,35 @@
 plot_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
-    class = "plot-op-container",
+  htmltools::tagList(
     htmltools::div(
-      shiny::selectInput(
-        inputId = ns("plot_pkg"),
-        label = NULL,
-        choices = c("ggplot2", "plotly")
+      class = "plot-op-container",
+      htmltools::div(
+        shiny::selectInput(
+          inputId = ns("plot_pkg"),
+          label = NULL,
+          choices = c("ggplot2", "plotly")
+        )
       )
     )
+  )
+}
+
+plot_operation_add_subrow_ui <- function(id) {
+  ns <- shiny::NS(id)
+  
+  m_action_button(
+    inputId = ns("add_subrow"),
+    label = NULL,
+    icon = shiny::icon("plus")
+  )
+}
+
+plot_operation_subrows_ui <- function(id) {
+  ns <- shiny::NS(id)
+  
+  htmltools::div(
+    "SUBROW CONTENT"
   )
 }
 
