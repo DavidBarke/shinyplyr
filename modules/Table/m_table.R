@@ -143,11 +143,11 @@ m_table <- function(
   shiny::observeEvent(throttled_add_row_r(), {
     rvs$n_row <- rvs$n_row + 1
     
-    row_html_id <- ns("row" %_% rvs$n_row)
+    row_container_id <- ns("row" %_% rvs$n_row)
     
     ui <- m_row_ui(
       id = ns("id_m_row" %_% rvs$n_row),
-      row_html_id = row_html_id,
+      row_container_id = row_container_id,
       index = rvs$n_row
     )
     
@@ -175,7 +175,7 @@ m_table <- function(
         id_r = id_r,
         row_index = rvs$n_row,
         remove_row_fun = remove_row_fun,
-        row_html_id = row_html_id
+        row_container_id = paste0("#", row_container_id)
       ) 
     }
   })

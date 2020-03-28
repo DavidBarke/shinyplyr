@@ -99,9 +99,12 @@
   grid-area: sr-container;
   display: grid;
   grid-template-areas:
-    "subrows"
-    "add-subrow";
+    "subrows subrows   "
+    ".       add-subrow";
+  grid-template-columns: 10px auto;
   grid-template-rows: 1fr auto;
+  margin-left: 20px;
+  margin-right: 80px;
 }
 
 .subrows {
@@ -130,7 +133,7 @@
   grid-column-gap: 10px;
   grid-template-areas:
     "subrow-index subrow-content subrow-remove";
-  margin: 3px 80px 3px 20px;
+  margin: 3px 0;
   padding-top: 3px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -185,7 +188,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-left: 135px;
-  margin-right: 40px;
+  margin-right: -40px;
 }
 
 /* Filter */

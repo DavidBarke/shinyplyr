@@ -1,9 +1,9 @@
-m_row_ui <- function(id, row_html_id, index) {
+m_row_ui <- function(id, row_container_id, index) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
     htmltools::div(
-      id = row_html_id,
+      id = row_container_id,
       class = "row-container",
       htmltools::div(
         class = "area-step grid-center",
@@ -47,7 +47,7 @@ m_row_ui <- function(id, row_html_id, index) {
       ),
       shiny::uiOutput(
         outputId = ns("subrows"),
-        class = "subrows-container"
+        class = "subrows-container grid-gap"
       )
     )
   )
@@ -55,7 +55,7 @@ m_row_ui <- function(id, row_html_id, index) {
 
 m_row <- function(
   input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun,
-  row_html_id
+  row_container_id
 ) {
   
   ns <- session$ns
@@ -225,7 +225,7 @@ m_row <- function(
     data_r = data_r,
     row_index = row_index,
     sr_toggle_r = toggle_rv,
-    row_html_id = row_html_id
+    row_container_id = row_container_id
   )
   
   filter_operation_return <- shiny::callModule(
@@ -262,6 +262,7 @@ m_row <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
+    row_container_id = row_container_id,
     sr_toggle_r = toggle_rv
   )
   

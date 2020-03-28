@@ -37,7 +37,7 @@ plot_subrows_ui <- function(id) {
 }
 
 plot_operation <- function(
-  input, output, session, .values, data_r, row_index, sr_toggle_rv
+  input, output, session, .values, data_r, row_index, row_container_id, sr_toggle_rv
 ) {
   
   ns <- session$ns
@@ -127,6 +127,7 @@ plot_operation <- function(
     content_ui = ggplot2_content_ui,
     content_server = ggplot2_content,
     row_index = row_index,
+    row_container_id = row_container_id,
     add_r = shiny::reactive(input$add_ggplot2_subrow),
     subrow_class = "ggplot2-subrow",
     toggle_rv = sr_toggle_rv
@@ -138,6 +139,7 @@ plot_operation <- function(
     .values = .values,
     content_ui = plotly_content_ui,
     content_server = plotly_content,
+    row_container_id = row_container_id,
     row_index = row_index,
     add_r = shiny::reactive(input$add_plotly_subrow)
   )

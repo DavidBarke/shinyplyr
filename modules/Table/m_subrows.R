@@ -16,8 +16,8 @@ m_subrows_ui <- function(id) {
 }
 
 m_subrows <- function(
-  input, output, session, .values, content_ui, content_server, row_index, add_r,
-  subrow_class = NULL, toggle_rv = function() NULL
+  input, output, session, .values, content_ui, content_server, row_index, 
+  row_container_id, add_r, subrow_class = NULL, toggle_rv = function() NULL
 ) {
   
   ns <- session$ns
@@ -93,7 +93,7 @@ m_subrows <- function(
     }
   })
   
-  subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
+  subrow_selector <- paste(row_container_id, "> .subrows-container")
   
   # Toggle expand or collapse of subrows
   shiny::observeEvent(toggle_rv(), {

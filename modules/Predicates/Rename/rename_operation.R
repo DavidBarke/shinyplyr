@@ -17,7 +17,7 @@ rename_subrows_ui <- function(id) {
 }
 
 rename_operation <- function(
-  input, output, session, .values, data_r, row_index, sr_toggle_rv, row_html_id
+  input, output, session, .values, data_r, row_index, row_container_id, sr_toggle_rv
 ) {
   
   ns <- session$ns
@@ -27,6 +27,7 @@ rename_operation <- function(
   })
   
   shiny::observeEvent(subrows_open_r(), {
+    # Op container's class is dependent on visible state of subrows
     selector <- paste0("#", ns("op_container"))
     
     if (subrows_open_r()) {
@@ -123,7 +124,7 @@ rename_operation <- function(
       )
     })
     
-    htmltools::tagList(
+    ui <- htmltools::tagList(
       htmltools::div(
         class = "subrow-start",
         id = ns("subrow_start")
@@ -134,6 +135,13 @@ rename_operation <- function(
         id = ns("subrow-end")
       )
     )
+    
+    if (shiny::isolate(!subrows_open_r())) {
+      print("hidden")
+      return(shinyjs::hidden(ui))
+    }
+    
+    ui
   })
   
   new_names_r <- shiny::reactive({
@@ -166,7 +174,7 @@ rename_operation <- function(
       dplyr::rename(rename_names_r())
   })
   
-  subrow_selector <- paste0("#", ns("subrow_start"), " ~ .subrow-container")
+  subrow_selector <- paste(row_container_id, " > .subrows-container")
   
   shiny::observeEvent(sr_toggle_rv(), {
     if (sr_toggle_rv() %% 2 == 0) {
