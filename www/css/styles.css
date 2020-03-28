@@ -99,9 +99,9 @@
   grid-area: sr-container;
   display: grid;
   grid-template-areas:
-    "subrows subrows   "
-    ".       add-subrow";
-  grid-template-columns: 10px auto;
+    "subrows   "
+    "add-subrow";
+  grid-template-columns: auto;
   grid-template-rows: 1fr auto;
   margin-left: 20px;
   margin-right: 80px;

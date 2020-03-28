@@ -108,6 +108,10 @@ rename_operation <- function(
       htmltools::div(
         class = "subrow-container",
         htmltools::div(
+          class = "subrow-index grid-center",
+          paste(row_index, index, sep = ".")
+        ),
+        htmltools::div(
           class = "subrow-content",
           htmltools::div(
             class = "grid-vertical-center",

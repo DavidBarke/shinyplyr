@@ -17,7 +17,7 @@ m_subrows_ui <- function(id) {
 
 m_subrows <- function(
   input, output, session, .values, content_ui, content_server, row_index, 
-  row_container_id, add_r, subrow_class = NULL, toggle_rv = function() NULL
+  row_container_id, add_r, subrow_class = NULL, toggle_rv = function() TRUE
 ) {
   
   ns <- session$ns
@@ -44,8 +44,7 @@ m_subrows <- function(
       where = "beforeBegin",
       ui = m_subrow_ui(
         id = ns("id_m_subrow") %_% n,
-        class = paste(subrow_class, "active-subrow"),
-        index = paste(row_index, n, sep = ".")
+        class = paste(subrow_class, "active-subrow")
       )
     )
     
@@ -55,7 +54,11 @@ m_subrows <- function(
       id = "id_m_subrow" %_% n,
       .values = .values,
       content_ui = content_ui,
-      content_server = content_server
+      content_server = content_server,
+      index_r = shiny::reactive({
+        i <- which(rvs$active_subrows == n)
+        paste(row_index, i, sep = ".")
+      })
     )
     
     # Listen to remove button inside of subrow
@@ -72,7 +75,7 @@ m_subrows <- function(
       if (!is.na(last_index)) {
         shinyjs::addClass(
           class = "active-subrow",
-          selector = paste0("#", ns("id_m_subrow") %_% prev_index)
+          selector = paste0("#", ns("id_m_subrow") %_% last_index)
         )
       }
     })

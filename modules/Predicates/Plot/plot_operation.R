@@ -141,7 +141,8 @@ plot_operation <- function(
     content_server = plotly_content,
     row_container_id = row_container_id,
     row_index = row_index,
-    add_r = shiny::reactive(input$add_plotly_subrow)
+    add_r = shiny::reactive(input$add_plotly_subrow),
+    toggle_rv = sr_toggle_rv
   )
   
   return_list <- list(

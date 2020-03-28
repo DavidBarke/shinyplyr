@@ -1,4 +1,4 @@
-m_subrow_ui <- function(id, class, index) {
+m_subrow_ui <- function(id, class) {
   ns <- shiny::NS(id)
   
   htmltools::div(
@@ -6,7 +6,9 @@ m_subrow_ui <- function(id, class, index) {
     class = paste("subrow-container", class),
     htmltools::div(
       class = "subrow-index grid-center",
-      index
+      shiny::textOutput(
+        outputId = ns("index")
+      )
     ),
     htmltools::div(
       class = "subrow-content",
@@ -24,10 +26,14 @@ m_subrow_ui <- function(id, class, index) {
 }
 
 m_subrow <- function(
-  input, output, session, .values, content_ui, content_server
+  input, output, session, .values, content_ui, content_server, index_r
 ) {
   
   ns <- session$ns
+  
+  output$index <- shiny::renderText({
+    index_r()
+  })
   
   output$content <- shiny::renderUI({
     content_ui(
