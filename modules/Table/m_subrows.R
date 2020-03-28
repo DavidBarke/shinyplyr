@@ -97,12 +97,12 @@ m_subrows <- function(
   shiny::observeEvent(toggle_rv(), {
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = TRUE,
+        anim = F,
         selector = subrow_selector
       )
     } else {
       shinyjs::hide(
-        anim = TRUE,
+        anim = F,
         selector = subrow_selector
       )
     }

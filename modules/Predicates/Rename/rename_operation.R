@@ -171,12 +171,12 @@ rename_operation <- function(
   shiny::observeEvent(sr_toggle_rv(), {
     if (sr_toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = TRUE,
+        anim = F,
         selector = subrow_selector
       )
     } else {
       shinyjs::hide(
-        anim = TRUE,
+        anim = F,
         selector = subrow_selector
       )
     }

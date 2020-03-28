@@ -129,13 +129,17 @@
 
 .subrow-container {
   display: grid;
-  grid-template-columns: 25px auto 30px;
+  grid-template-columns: 25px 1fr 30px;
   grid-column-gap: 10px;
   grid-template-areas:
     "subrow-index subrow-content subrow-remove";
   margin: 3px 0;
   padding-top: 3px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.subrow-container.m-index {
+  grid-template-columns: 35px 1fr 30px;
 }
 
 .subrow-container label {
@@ -146,6 +150,9 @@
   display: block;
 }
 
+.subrow-container .subrow-container {
+  margin-left: 25px;
+}
 
 .subrow-index {
   grid-area: subrow-index;
@@ -203,9 +210,37 @@
   grid-template-columns: 1fr 1fr 1fr
 }
 
-.ggplot2-content {
+.plot-content {
   display: grid;
   grid-template-columns: 125px 125px auto;
+}
+
+.subrow-container.aes-subrow-container {
+  grid-template-areas:
+    "subrow-index subrow-content subrow-remove"
+    "aes-subrows  aes-subrows    aes-subrows  "; 
+}
+
+.aes-subrow-container > .subrow-content {
+  display: grid;
+  grid-template-columns: 25px 1fr; 
+}
+
+.aes-subrow-container label {
+  display: block;
+}
+
+.aes-subrows-open > .subrow-content {
+  grid-template-columns: 25px 1fr 1fr;
+}
+
+.aes-subrows {
+  grid-area: aes-subrows;
+}
+
+.aes-subrow-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 /*Custom close button (cross)*/
