@@ -128,18 +128,6 @@ rename_operation <- function(
       )
     })
     
-    ui <- htmltools::tagList(
-      htmltools::div(
-        class = "subrow-start",
-        id = ns("subrow_start")
-      ),
-      ui,
-      htmltools::div(
-        class = "subrow-end",
-        id = ns("subrow-end")
-      )
-    )
-    
     if (shiny::isolate(!subrows_open_r())) {
       print("hidden")
       return(shinyjs::hidden(ui))

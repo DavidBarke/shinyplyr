@@ -2,22 +2,17 @@ m_subrows_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
-    # subrow-start and subrow-end are pseudo elements, that don't contain
-    # anything but provide anchors for inserting and removing subrows
-    htmltools::div(
-      class = "subrow-start",
-      id = ns("subrow_start")
-    ),
     htmltools::div(
       class = "subrow-end",
-      id = ns("subrow-end")
+      id = ns("subrow_end")
     )
   )
 }
 
 m_subrows <- function(
   input, output, session, .values, content_ui, content_server, row_index, 
-  row_container_id, add_r, subrow_class = NULL, toggle_rv = function() TRUE
+  row_container_id, add_r, subrow_class = NULL, toggle_rv = function() TRUE,
+  index_offset = 0
 ) {
   
   ns <- session$ns
@@ -40,7 +35,7 @@ m_subrows <- function(
     
     # Insert new subrow
     shiny::insertUI(
-      selector = paste0("#", ns("subrow-end")),
+      selector = paste0("#", ns("subrow_end")),
       where = "beforeBegin",
       ui = m_subrow_ui(
         id = ns("id_m_subrow") %_% n,
@@ -57,7 +52,7 @@ m_subrows <- function(
       content_server = content_server,
       index_r = shiny::reactive({
         i <- which(rvs$active_subrows == n)
-        paste(row_index, i, sep = ".")
+        paste(row_index, i + index_offset, sep = ".")
       })
     )
     

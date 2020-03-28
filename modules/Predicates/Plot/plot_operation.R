@@ -64,7 +64,7 @@ plot_operation <- function(
     ui <- shiny::selectInput(
       inputId = ns("plot_pkg"),
       label = NULL,
-      choices = c("ggplot2", "plotly"),
+      choices = c("ggplot2"),
       selected = fallback(input$plot_pkg, NULL)
     )
     
@@ -130,7 +130,8 @@ plot_operation <- function(
     row_container_id = row_container_id,
     add_r = shiny::reactive(input$add_ggplot2_subrow),
     subrow_class = "ggplot2-subrow",
-    toggle_rv = sr_toggle_rv
+    toggle_rv = sr_toggle_rv,
+    index_offset = 1
   )
   
   plotly_subrows_return <- shiny::callModule(
