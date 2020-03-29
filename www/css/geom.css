@@ -1,0 +1,13 @@
+.geom-content {
+  display: grid;
+  grid-template-columns: 25px auto 1fr 2fr;
+}
+
+.geom-subrow-content {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.property-content {
+  display: grid;
+}

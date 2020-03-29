@@ -1,4 +1,4 @@
-theme_layer <- function(id) {
+theme_layer_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(

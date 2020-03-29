@@ -1,4 +1,4 @@
-coord_layer <- function(id) {
+coord_layer_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(

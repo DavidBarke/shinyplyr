@@ -17,16 +17,8 @@ plot_subrows_ui <- function(id) {
       aes_subrow_ui(
         id = ns("id_aes_subrow")
       ),
-      m_subrows_ui(
-        id = ns("id_m_subrows")
-      )
-    ),
-    htmltools::div(
-      class = "add-subrow grid-vertical-center",
-      m_action_button(
-        inputId = ns("add_subrow"),
-        label = "Add layer",
-        icon = shiny::icon("plus")
+      geom_subrow_ui(
+        id = ns("id_geom_subrow")
       )
     )
   )
@@ -49,27 +41,22 @@ plot_operation <- function(
   
   plot_r <- ggplot2_plot_r
   
-  # Subrows --------------------------------------------------------------------
-  subrows_return <- shiny::callModule(
-    module = m_subrows,
-    id = "id_m_subrows",
-    .values = .values,
-    content_ui = plot_content_ui,
-    content_server = plot_content,
-    row_index = row_index,
-    row_container_id = row_container_id,
-    add_r = shiny::reactive(input$add_subrow),
-    toggle_rv = sr_toggle_rv,
-    index_offset = 1,
-    data_r = data_r
-  )
-  
-  shiny::callModule(
+  aes_subrow_return <- shiny::callModule(
     module = aes_subrow,
     id = "id_aes_subrow",
     .values = .values,
     data_r = data_r,
-    row_index = row_index
+    row_index = row_index,
+    geom_r = geom_subrow_return$geom_r
+  )
+  
+  geom_subrow_return <- shiny::callModule(
+    module = geom_subrow,
+    id = "id_geom_subrow",
+    .values = .values,
+    data_r = data_r,
+    row_index = row_index,
+    free_aesthetics_r = aes_subrow_return$free_aesthetics_r 
   )
   
   return_list <- list(

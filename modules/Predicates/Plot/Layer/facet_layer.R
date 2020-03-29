@@ -1,4 +1,4 @@
-facet_layer <- function(id) {
+facet_layer_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(

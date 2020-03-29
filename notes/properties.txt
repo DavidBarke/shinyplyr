@@ -1,0 +1,17 @@
+Aesthetics
+	alpha: numeric
+	colour: colour
+	fill: colour
+	group: -
+	linetype: linetype
+	shape: shape
+	size: integer
+	stroke: -
+
+Geoms:
+	point:
+		required: x, y
+		optional: alpha, colour, fill, group, shape, size
+	line:
+		required: x, y
+		optional: alpha, colour, group, linetype, size

@@ -2,7 +2,7 @@ aes_subrow_ui <- function(id, row_index) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "subrow-container aes-subrow-container aes-subrows-open",
+    class = "subrow-container aes-subrow-container with-subrows aes-subrows-open",
     id = ns("aes_subrow_container"),
     shiny::uiOutput(
       outputId = ns("index"),
@@ -17,20 +17,16 @@ aes_subrow_ui <- function(id, row_index) {
     ),
     shiny::uiOutput(
       outputId = ns("subrows"),
-      class = "subrows aes-subrows"
+      class = "subrows"
     )
   )
 }
 
 aes_subrow <- function(
-  input, output, session, .values, data_r, row_index, required_aes_r
+  input, output, session, .values, data_r, row_index, geom_r
 ) {
   
   ns <- session$ns
-  
-  choices_r <- shiny::reactive({
-    names(data_r())
-  })
   
   # Toggle aes subrows ---------------------------------------------------------
   output$subrows_toggle_btn <- shiny::renderUI({
@@ -83,6 +79,10 @@ aes_subrow <- function(
   })
   
   # Outputs --------------------------------------------------------------------
+  choices_r <- shiny::reactive({
+    names(data_r())
+  })
+  
   subrow_index <- paste(row_index, 1, sep = ".")
   
   output$index <- shiny::renderUI({
@@ -90,11 +90,32 @@ aes_subrow <- function(
   })
   
   aes_r <- shiny::reactive({
-    c("x", "y", "colour", "size")
+    unlist(properties(geom_r()))
+  })
+  
+  properties_r <- shiny::reactive({
+    properties(geom_r())
+  })
+  
+  required_aes_r <- shiny::reactive({
+    properties_r()$required
+  })
+  
+  optional_aes_r <- shiny::reactive({
+    properties_r()$optional
   })
   
   output$subrows <- shiny::renderUI({
     purrr::map2(aes_r(), seq_along(aes_r()), function(aes, index) {
+      choices <- choices_r()
+      
+      if (aes %in% required_aes_r()) {
+        selected <- choices_r()[index]
+      } else {
+        selected <- NULL
+        choices <- c("NULL", choices_r())
+      }
+      
       htmltools::div(
         class = "subrow-container grid-gap m-index",
         htmltools::div(
@@ -111,8 +132,8 @@ aes_subrow <- function(
             shiny::selectInput(
               inputId = ns(aes %_% "value"),
               label = NULL,
-              choices = choices_r(),
-              selected = choices_r()[index]
+              choices = choices,
+              selected = selected
             )
           )
         ),
@@ -144,8 +165,17 @@ aes_subrow <- function(
         paste(aes, shiny::req(input[[aes %_% "value"]]), sep = ": ")
       })
       
-      htmltools::div(
-        paste("Aesthetics", paste(aes_name_val, collapse = ", "), sep = ": ")
+      htmltools::tagList(
+        htmltools::div(
+          class = "grid-vertical-center",
+          htmltools::tags$b(
+            "Aesthetic"
+          )
+        ),
+        htmltools::div(
+          class = "grid-vertical-center",
+          paste(aes_name_val, collapse = ", ")
+        )
       )
     }
     
@@ -159,4 +189,20 @@ aes_subrow <- function(
       ui
     )
   })
+  
+  selected_aesthetics_r <- shiny::reactive({
+    purrr::map_chr(aes_r(), function(aes) {
+      shiny::req(input[[aes %_% "value"]])
+    })
+  })
+  
+  free_aesthetics_r <- shiny::reactive({
+    aes_r()[selected_aesthetics_r() == "NULL"]
+  })
+  
+  return_list <- list(
+    free_aesthetics_r = free_aesthetics_r
+  )
+  
+  return(return_list)
 }

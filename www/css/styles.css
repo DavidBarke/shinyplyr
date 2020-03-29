@@ -142,6 +142,12 @@
   grid-template-columns: 35px 1fr 30px;
 }
 
+.subrow-container.with-subrows {
+  grid-template-areas:
+    "subrow-index subrow-content subrow-remove"
+    "subrows      subrows        subrows      "; 
+}
+
 .subrow-container label {
   display: none;
 }
@@ -215,15 +221,9 @@
   grid-template-columns: 125px 125px auto;
 }
 
-.subrow-container.aes-subrow-container {
-  grid-template-areas:
-    "subrow-index subrow-content subrow-remove"
-    "aes-subrows  aes-subrows    aes-subrows  "; 
-}
-
 .aes-subrow-container > .subrow-content {
   display: grid;
-  grid-template-columns: 25px 1fr; 
+  grid-template-columns: 25px auto 1fr; 
 }
 
 .aes-subrow-container label {
@@ -232,10 +232,6 @@
 
 .aes-subrows-open > .subrow-content {
   grid-template-columns: 25px 1fr 1fr;
-}
-
-.aes-subrows {
-  grid-area: aes-subrows;
 }
 
 .aes-subrow-content {

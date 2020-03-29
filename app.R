@@ -35,7 +35,8 @@ init <- function() {
     shinyWidgets::setBackgroundColor(),
     shinyWidgets::useShinydashboard(),
     htmltools::tags$head(
-      shiny::includeCSS("www/css/styles.css")
+      shiny::includeCSS("www/css/styles.css"),
+      shiny::includeCSS("www/css/geom.css")
     ),
     shiny::navbarPage(
       title = "shinyplyr",
