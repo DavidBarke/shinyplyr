@@ -129,6 +129,8 @@
 .plot-subrow-content {
   display: grid;
   grid-template-columns: 25px auto 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 3px 0;
 }
 
 .plot-subrow-content + .subrows-container {
@@ -157,6 +159,11 @@
 .geom-subrow-content {
   display: grid;
   grid-template-columns: 130px 1fr;
+}
+
+.theme-content {
+  display: grid;
+  grid-template-columns: 25px auto 1fr;
 }
 
 /*Custom close button (cross)*/
