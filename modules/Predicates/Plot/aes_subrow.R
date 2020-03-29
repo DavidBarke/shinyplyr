@@ -145,7 +145,7 @@ aes_subrow <- function(
       })
       
       htmltools::div(
-        paste(aes_name_val, collapse = ", ")
+        paste("Aesthetics", paste(aes_name_val, collapse = ", "), sep = ": ")
       )
     }
     

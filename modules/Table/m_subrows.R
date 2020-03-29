@@ -12,7 +12,7 @@ m_subrows_ui <- function(id) {
 m_subrows <- function(
   input, output, session, .values, content_ui, content_server, row_index, 
   row_container_id, add_r, subrow_class = NULL, toggle_rv = function() TRUE,
-  index_offset = 0
+  index_offset = 0, ...
 ) {
   
   ns <- session$ns
@@ -53,7 +53,8 @@ m_subrows <- function(
       index_r = shiny::reactive({
         i <- which(rvs$active_subrows == n)
         paste(row_index, i + index_offset, sep = ".")
-      })
+      }),
+      ...
     )
     
     # Listen to remove button inside of subrow

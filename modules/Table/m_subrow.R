@@ -26,7 +26,7 @@ m_subrow_ui <- function(id, class) {
 }
 
 m_subrow <- function(
-  input, output, session, .values, content_ui, content_server, index_r
+  input, output, session, .values, content_ui, content_server, index_r, ...
 ) {
   
   ns <- session$ns
@@ -60,7 +60,8 @@ m_subrow <- function(
   shiny::callModule(
     module = content_server,
     id = "id_content",
-    .values = .values
+    .values = .values,
+    ...
   )
   
   return_list <- list(

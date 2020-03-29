@@ -60,7 +60,8 @@ plot_operation <- function(
     row_container_id = row_container_id,
     add_r = shiny::reactive(input$add_subrow),
     toggle_rv = sr_toggle_rv,
-    index_offset = 1
+    index_offset = 1,
+    data_r = data_r
   )
   
   shiny::callModule(

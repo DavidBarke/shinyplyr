@@ -10,40 +10,71 @@ plot_content_ui <- function(id) {
         label = "Layer",
         choices = c(
           None = "none",
-          Aesthetic = "aes",
           Geometry = "geom",
-          Label = "label",
           Facet = "facet",
-          Coordinates = "coord"
+          Coordinates = "coord",
+          Theme = "theme"
         )
       )
     ),
     # Property
-    htmltools::div(
-      shiny::uiOutput(
-        outputId = ns("property")
-      )
-    ),
-    # Value
-    htmltools::div(
-      shiny::uiOutput(
-        outputId = ns("value")
-      )
+    shiny::uiOutput(
+      outputId = ns("layer"),
+      class = "plot-layer"
     )
   )
 }
 
 plot_content <- function(
-  input, output, session, .values
+  input, output, session, .values, data_r
 ) {
   
   ns <- session$ns
   
-  output$property <- shiny::renderUI({
-    "Property"
+  output$layer <- shiny::renderUI({
+    layer_ui_list[[shiny::req(input$layer)]]
   })
   
-  output$value <- shiny::renderUI({
-    "Value"
-  })
+  layer_ui_list <- list(
+    "geom" = geom_layer_ui(
+      id = ns("id_geom_layer")
+    ),
+    "facet" = facet_layer_ui(
+      id = ns("id_facet_layer")
+    ),
+    "coord" = coord_layer_ui(
+      id = ns("id_coord_layer"),
+    ),
+    "theme" = theme_layer_ui(
+      id = ns("id_theme_layer")
+    )
+  )
+  
+  shiny::callModule(
+    module = geom_layer,
+    id = "id_geom_layer",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  shiny::callModule(
+    module = facet_layer,
+    id = "id_facet_layer",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  shiny::callModule(
+    module = coord_layer,
+    id = "id_coord_layer",
+    .values = .values,
+    data_r = data_r
+  )
+  
+  shiny::callModule(
+    module = theme_layer,
+    id = "id_theme_layer",
+    .values = .values,
+    data_r = data_r
+  )
 }
