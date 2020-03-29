@@ -11,15 +11,13 @@ plot_operation_ui <- function(id) {
 plot_subrows_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  htmltools::tagList(
-    htmltools::div(
-      class = "subrows plot-subrows",
-      aes_subrow_ui(
-        id = ns("id_aes_subrow")
-      ),
-      geom_subrow_ui(
-        id = ns("id_geom_subrow")
-      )
+  htmltools::div(
+    class = "subrows plot-subrows",
+    aes_subrow_ui(
+      id = ns("id_aes_subrow")
+    ),
+    geom_subrow_ui(
+      id = ns("id_geom_subrow")
     )
   )
 }

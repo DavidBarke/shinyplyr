@@ -37,9 +37,6 @@
 
 /* Table */
 .table-container {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: auto;
 }
 
 .table-title {
@@ -61,8 +58,7 @@
   grid-template-columns: 10px 25px 125px 1fr 30px 30px;
   grid-column-gap: 10px;
   grid-template-areas:
-    "step         sr-toggle    predicate    operation    result       remove      "
-    "sr-container sr-container sr-container sr-container sr-container sr-container";
+    "step sr-toggle predicate operation result remove";
   margin: 3px 0;
   padding: 0 5px 3px 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
@@ -96,35 +92,8 @@
 
 /* Subrows */
 .subrows-container {
-  grid-area: sr-container;
-  display: grid;
-  grid-template-areas:
-    "subrows   "
-    "add-subrow";
-  grid-template-columns: auto;
-  grid-template-rows: 1fr auto;
   margin-left: 20px;
   margin-right: 80px;
-}
-
-.subrows {
-  grid-area: subrows;
-  display: grid;
-  grid-template-rows: auto;
-}
-
-.add-subrow {
-  grid-area: add-subrow;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 7.45px 0 7.4px 0;
-}
-
-.subrow-start {
-  display: none;
-}
-
-.subrow-end {
-  display: none;
 }
 
 .subrow-container {
@@ -144,8 +113,7 @@
 
 .subrow-container.with-subrows {
   grid-template-areas:
-    "subrow-index subrow-content subrow-remove"
-    "subrows      subrows        subrows      "; 
+    "subrow-index subrow-content subrow-remove";
 }
 
 .subrow-container label {

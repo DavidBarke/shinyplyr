@@ -44,11 +44,11 @@ m_row_ui <- function(id, row_container_id, index) {
           label = NULL,
           icon = shiny::icon("times")
         )
-      ),
-      shiny::uiOutput(
-        outputId = ns("subrows"),
-        class = "subrows-container grid-gap"
       )
+    ),
+    shiny::uiOutput(
+      outputId = ns("subrows"),
+      class = "subrows-container grid-gap"
     )
   )
 }
