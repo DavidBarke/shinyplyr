@@ -13,3 +13,16 @@ properties <- function(geom) {
   
   return(list(required = required, optional = optional))
 }
+
+aes_classes <- c(
+  alpha = "numeric",
+  colour = "colour",
+  fill = "colour",
+  linetype = "linetype",
+  shape = "shape",
+  size = "integer"
+)
+
+aes_class <- function(aes) {
+  aes_classes[aes]  
+}
