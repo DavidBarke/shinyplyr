@@ -89,7 +89,7 @@ aes_subrow <- function(
     subrow_index
   })
   
-  aes_r <- shiny::reactive({
+  aes_names_r <- shiny::reactive({
     unlist(properties(geom_r()))
   })
   
@@ -97,19 +97,19 @@ aes_subrow <- function(
     properties(geom_r())
   })
   
-  required_aes_r <- shiny::reactive({
+  required_aes_names_r <- shiny::reactive({
     properties_r()$required
   })
   
-  optional_aes_r <- shiny::reactive({
+  optional_aes_names_r <- shiny::reactive({
     properties_r()$optional
   })
   
   output$subrows <- shiny::renderUI({
-    purrr::map2(aes_r(), seq_along(aes_r()), function(aes, index) {
+    purrr::map2(aes_names_r(), seq_along(aes_names_r()), function(aes, index) {
       choices <- choices_r()
       
-      if (aes %in% required_aes_r()) {
+      if (aes %in% required_aes_names_r()) {
         selected <- choices_r()[index]
       } else {
         selected <- NULL
@@ -161,7 +161,7 @@ aes_subrow <- function(
         )
       )
     } else {
-      aes_name_val <- purrr::map_chr(aes_r(), function(aes) {
+      aes_name_val <- purrr::map_chr(aes_names_r(), function(aes) {
         paste(aes, shiny::req(input[[aes %_% "value"]]), sep = ": ")
       })
       
@@ -190,21 +190,40 @@ aes_subrow <- function(
     )
   })
   
-  selected_aesthetics_r <- shiny::reactive({
-    purrr::map_chr(aes_r(), function(aes) {
+  selected_aes_vals_r <- shiny::reactive({
+    purrr::map_chr(aes_names_r(), function(aes) {
       shiny::req(input[[aes %_% "value"]])
     })
   })
   
-  free_aesthetics_r <- shiny::reactive({
+  non_null_aes_names_r <- shiny::reactive({
+    x <- aes_names_r()[selected_aes_vals_r() != "NULL"]
+    setNames(x, x)
+  })
+  
+  free_aes_names_r <- shiny::reactive({
     setdiff(
-      aes_r()[selected_aesthetics_r() == "NULL"],
+      aes_names_r()[selected_aes_vals_r() == "NULL"],
       "group"
     )
   })
   
+  aes_r <- shiny::reactive({
+    aes_list <- purrr::map(non_null_aes_names_r(), function(aes) {
+      sym(shiny::req(input[[aes %_% "value"]]))
+    })
+    
+    x <- aes_list$x
+    y <- aes_list$y
+    
+    aes_list <- aes_list[!names(aes_list) %in% c("x", "y")]
+    
+    print(ggplot2::aes(!!x, !!y, !!!aes_list))
+  })
+  
   return_list <- list(
-    free_aesthetics_r = free_aesthetics_r
+    aes_r = aes_r,
+    free_aesthetics_r = free_aes_names_r
   )
   
   return(return_list)

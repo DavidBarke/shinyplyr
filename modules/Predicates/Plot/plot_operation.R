@@ -30,16 +30,10 @@ plot_operation <- function(
   
   ns <- session$ns
   
-  ggplot2_plot_r <- shiny::reactive({
-    ggplot(mtcars, aes(x = mpg, y = cyl)) +
-      geom_point()
+  plot_r <- shiny::reactive({
+    ggplot(data_r(), aes_subrow_return$aes_r()) +
+      geom_subrow_return$geom_layer_r()
   })
-  
-  plotly_plot_r <- shiny::reactive({
-    plot_ly(mtcars, x = ~mpg, y = ~cyl, type = "scatter", mode = "markers")
-  })
-  
-  plot_r <- ggplot2_plot_r
   
   aes_subrow_return <- shiny::callModule(
     module = aes_subrow,

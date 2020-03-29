@@ -70,8 +70,13 @@ geom_subrow <- function(
     free_aesthetics_r = free_aesthetics_r
   )
   
+  geom_layer_r <- shiny::reactive({
+    geom_point()
+  })
+  
   return_list <- list(
-    geom_r = geom_content_return$geom_r
+    geom_r = geom_content_return$geom_r,
+    geom_layer_r = geom_layer_r
   )
   
   return(return_list)

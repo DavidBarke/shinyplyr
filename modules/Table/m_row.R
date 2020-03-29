@@ -153,26 +153,20 @@ m_row <- function(
   })
   
   shiny::observeEvent(input$open_plot, {
-    plot_output <- plot_operation_return$plot_output_r()
-    
-    plot_pkg <- plot_operation_return$plot_pkg_r()
-    
     new <- .values$transformation$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
-        value = ns(id_r() %_% plot_pkg),
-        plot_output(
-          outputId = ns(id_r() %_% plot_pkg)
+        value = ns(id_r() %_% "plot"),
+        plotOutput(
+          outputId = ns(id_r() %_% "plot_output")
         )
       )
     )
     
     if (new) {
-      plot_render <- plot_operation_return$plot_render_r()
-      
-      plot <- plot_operation_return$plot_r()
-      
-      output[[id_r() %_% plot_pkg]] <- plot_render(plot)
+      output[[id_r() %_% "plot_output"]] <- shiny::renderPlot({
+        plot_operation_return$plot_r()
+      })
     }
   })
   
