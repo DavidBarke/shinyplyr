@@ -19,17 +19,17 @@ geom_subrows <- function(
   
   geom_aes_ui <- list(
     colour = colour_aes_ui,
-    integer = integer_aes_ui,
     linetype = linetype_aes_ui,
-    numeric = numeric_aes_ui,
+    percentage = percentage_aes_ui,
+    positive = positive_aes_ui,
     shape = shape_aes_ui
   )
   
   geom_aes_server <- list(
     colour = colour_aes,
-    integer = integer_aes,
     linetype = linetype_aes,
-    numeric = numeric_aes,
+    percentage = percentage_aes,
+    positive = positive_aes,
     shape = shape_aes
   )
   
@@ -39,9 +39,8 @@ geom_subrows <- function(
     purrr::walk(new_aesthetics, function(aes) {
       shiny::callModule(
         module = geom_aes_server[[aes_class(aes)]],
-        id = ns(aes %_% value),
-        .values = .values,
-        aes = aes
+        id = aes %_% "value",
+        .values = .values
       )
     })
     
@@ -63,7 +62,8 @@ geom_subrows <- function(
             aes
           ),
           geom_aes_ui[[aes_class(aes)]](
-            id = ns(aes %_% "value")
+            id = ns(aes %_% "value"),
+            aes = aes
           )
         ),
         htmltools::div(

@@ -197,7 +197,10 @@ aes_subrow <- function(
   })
   
   free_aesthetics_r <- shiny::reactive({
-    aes_r()[selected_aesthetics_r() == "NULL"]
+    setdiff(
+      aes_r()[selected_aesthetics_r() == "NULL"],
+      "group"
+    )
   })
   
   return_list <- list(

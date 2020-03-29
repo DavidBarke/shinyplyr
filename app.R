@@ -3,6 +3,7 @@ library(shinydashboard)
 library(shinyjs)
 library(shinyWidgets)
 library(DT)
+library(colourpicker)
 
 library(R.utils)
 

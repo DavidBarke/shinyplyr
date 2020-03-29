@@ -15,12 +15,12 @@ properties <- function(geom) {
 }
 
 aes_classes <- c(
-  alpha = "numeric",
+  alpha = "percentage",
   colour = "colour",
   fill = "colour",
   linetype = "linetype",
   shape = "shape",
-  size = "integer"
+  size = "positive"
 )
 
 aes_class <- function(aes) {
