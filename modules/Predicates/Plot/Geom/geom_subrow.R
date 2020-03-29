@@ -1,27 +1,24 @@
 geom_subrow_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
-    class = "subrow-container with-subrows geom-subrows-open",
-    id = ns("geom_subrow_container"),
-    shiny::uiOutput(
-      outputId = ns("index"),
-      class = "subrow-index grid-center"
-    ),
+  htmltools::tagList(
     htmltools::div(
-      class = "subrow-content grid-gap geom-content",
-      geom_content_ui(
-        id = ns("id_geom_content")
+      class = "plot-subrow-content",
+      shiny::uiOutput(
+        outputId = ns("index"),
+        class = "grid-center"
+      ),
+      htmltools::div(
+        class = "grid-gap geom-content",
+        geom_content_ui(
+          id = ns("id_geom_content")
+        )
       )
-    ),
-    htmltools::div(
-      class = "subrow-remove grid-center"
     ),
     geom_subrows_ui(
       id = ns("id_geom_subrows")
     )
   )
-  
 }
 
 geom_subrow <- function(
@@ -31,17 +28,17 @@ geom_subrow <- function(
   ns <- session$ns
   
   # Toggle geom subrows ---------------------------------------------------------
-  geom_subrows_selector <- paste0("#", ns("geom_subrow_container"), " .geom-subrows")
+  geom_subrows_selector <- paste0("#", ns("id_geom_subrows"), "-subrows")
   
   shiny::observeEvent(geom_content_return$toggle_rv(), {
     if (geom_content_return$toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = F,
+        anim = .values$anim,
         selector = geom_subrows_selector
       )
     } else {
       shinyjs::hide(
-        anim = F,
+        anim = .values$anim,
         selector = geom_subrows_selector
       )
     }

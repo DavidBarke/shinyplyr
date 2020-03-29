@@ -166,22 +166,6 @@ rename_operation <- function(
       dplyr::rename(rename_names_r())
   })
   
-  subrow_selector <- paste(row_container_id, " > .subrows-container")
-  
-  shiny::observeEvent(sr_toggle_rv(), {
-    if (sr_toggle_rv() %% 2 == 0) {
-      shinyjs::show(
-        anim = F,
-        selector = subrow_selector
-      )
-    } else {
-      shinyjs::hide(
-        anim = F,
-        selector = subrow_selector
-      )
-    }
-  })
-  
   return_list <- list(
     data_r = renamed_data_r
   )

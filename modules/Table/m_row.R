@@ -6,49 +6,55 @@ m_row_ui <- function(id, row_container_id, index) {
       id = row_container_id,
       class = "row-container",
       htmltools::div(
-        class = "area-step grid-center",
-        index
-      ),
-      shiny::uiOutput(
-        outputId = ns("sr_toggle"),
-        class = "area-sr-toggle grid-center"
-      ),
-      htmltools::div(
-        class = "area-predicate",
-        shiny::selectInput(
-          inputId = ns("predicate"),
-          label = NULL,
-          choices = c(
-            "select",
-            "rename",
-            "filter",
-            "mutate",
-            "group_by",
-            "summarise",
-            "plot"
+        class = "row-content",
+        htmltools::div(
+          class = "grid-center",
+          index
+        ),
+        shiny::uiOutput(
+          outputId = ns("sr_toggle"),
+          class = "grid-center"
+        ),
+        htmltools::div(
+          # Class needed for disabling
+          class = "predicate",
+          shiny::selectInput(
+            inputId = ns("predicate"),
+            label = NULL,
+            choices = c(
+              "select",
+              "rename",
+              "filter",
+              "mutate",
+              "group_by",
+              "summarise",
+              "plot"
+            )
+          )
+        ),
+        shiny::uiOutput(
+          outputId = ns("operation"),
+          # Class needed for disabling
+          class = "operation"
+        ),
+        shiny::uiOutput(
+          outputId = ns("result"),
+          class = "grid-center"
+        ),
+        htmltools::div(
+          # Class needed for disabling
+          class = "grid-center remove",
+          m_action_button(
+            inputId = ns("remove"),
+            label = NULL,
+            icon = shiny::icon("times")
           )
         )
       ),
       shiny::uiOutput(
-        outputId = ns("operation"),
-        class = "area-operation"
-      ),
-      shiny::uiOutput(
-        outputId = ns("result"),
-        class = "area-result grid-center"
-      ),
-      htmltools::div(
-        class = "area-remove grid-center",
-        m_action_button(
-          inputId = ns("remove"),
-          label = NULL,
-          icon = shiny::icon("times")
-        )
+        outputId = ns("subrows"),
+        class = "subrows-container grid-gap"
       )
-    ),
-    shiny::uiOutput(
-      outputId = ns("subrows"),
-      class = "subrows-container grid-gap"
     )
   )
 }
@@ -102,6 +108,22 @@ m_row <- function(
           label = NULL,
           icon = toggled_icon_r()
         )
+      )
+    }
+  })
+  
+  subrow_selector <- paste(row_container_id, " > .subrows-container")
+  
+  shiny::observeEvent(toggle_rv(), {
+    if (toggle_rv() %% 2 == 0) {
+      shinyjs::show(
+        anim = .values$anim,
+        selector = subrow_selector
+      )
+    } else {
+      shinyjs::hide(
+        anim = .values$anim,
+        selector = subrow_selector
       )
     }
   })

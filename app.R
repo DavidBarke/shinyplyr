@@ -36,8 +36,7 @@ init <- function() {
     shinyWidgets::setBackgroundColor(),
     shinyWidgets::useShinydashboard(),
     htmltools::tags$head(
-      shiny::includeCSS("www/css/styles.css"),
-      shiny::includeCSS("www/css/geom.css")
+      shiny::includeCSS("www/css/styles.css")
     ),
     shiny::navbarPage(
       title = "shinyplyr",
@@ -68,6 +67,7 @@ init <- function() {
     .values <- new.env()
     
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
+    .values$anim <- TRUE
     
     shiny::isolate(
       fill_dataset_storage(.values$dataset_storage)

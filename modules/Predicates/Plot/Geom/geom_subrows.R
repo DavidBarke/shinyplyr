@@ -3,7 +3,7 @@ geom_subrows_ui <- function(id) {
   
   shiny::uiOutput(
     outputId = ns("subrows"),
-    class = "subrows geom-subrows"
+    class = "subrows-container geom-subrows-container"
   )
 }
 
@@ -56,7 +56,7 @@ geom_subrows <- function(
           paste(subrow_index, index, sep = ".")
         ),
         htmltools::div(
-          class = "subrow-content geom-subrow-content grid-gap",
+          class = "geom-subrow-content grid-gap",
           htmltools::div(
             class = "grid-vertical-center",
             aes

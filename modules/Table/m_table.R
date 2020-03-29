@@ -9,23 +9,27 @@ m_table_ui <- function(id) {
       htmltools::div(
         class = "row-container",
         htmltools::div(
-          class = "area-predicate table-title",
-          "Predicate"
-        ),
-        htmltools::div(
-          class = "area-operation table-title",
+          class = "row-content",
+          # Index
+          htmltools::div(),
+          # sr-toggle
+          htmltools::div(),
           htmltools::div(
-            "Operation"
-          )
-        ),
-        htmltools::div(
-          class = "area-result table-title",
+            class = "table-title",
+            "Predicate"
+          ),
           htmltools::div(
-            "Result"
+            class = "table-title",
+            htmltools::div(
+              "Operation"
+            )
+          ),
+          htmltools::div(
+            class = "table-title",
+            htmltools::div(
+              "Result"
+            )
           )
-        ),
-        htmltools::div(
-          class = "area-remove"
         )
       ),
       # First row always contains selection of dataset
@@ -33,29 +37,31 @@ m_table_ui <- function(id) {
         id = ns("row_0"),
         class = "row-container",
         htmltools::div(
-          class = "area-step grid-center",
-          "0"
-        ),
-        htmltools::div(
-          class = "area-predicate grid-vertical-center",
-          "data"
-        ),
-        htmltools::div(
-          class = "area-operation",
-          shiny::uiOutput(
-            outputId = ns("select_dataset")
+          class = "row-content",
+          htmltools::div(
+            class = "grid-center",
+            "0"
+          ),
+          htmltools::div(),
+          htmltools::div(
+            class = "grid-vertical-center",
+            "data"
+          ),
+          htmltools::div(
+            # Class needed for disabling
+            class = "operation",
+            shiny::uiOutput(
+              outputId = ns("select_dataset")
+            )
+          ),
+          htmltools::div(
+            class = "grid-center",
+            m_action_button(
+              inputId = ns("open_data"),
+              label = NULL,
+              icon = shiny::icon("table")
+            )
           )
-        ),
-        htmltools::div(
-          class = "area-result grid-center",
-          m_action_button(
-            inputId = ns("open_data"),
-            label = NULL,
-            icon = shiny::icon("table")
-          )
-        ),
-        htmltools::div(
-          class = "area-remove grid-center"
         )
       )
     ),
@@ -185,17 +191,17 @@ m_table <- function(
       # All but the last row get disabled
       purrr::walk(seq_len(rvs$n_row - 1), function(row_index) {
         shinyjs::hide(
-          selector = paste0("#", ns("row_"), row_index, " .area-remove")
+          selector = paste0("#", ns("row_"), row_index, " .remove")
         )
         
         shinyjs::disable(
-          selector = paste0("#", ns("row_"), row_index, " .area-predicate")
+          selector = paste0("#", ns("row_"), row_index, " .predicate")
         )
         
         row_predicate <- m_row_env[["m_row" %_% row_index]]$predicate_r()
         if (row_predicate != "plot") {
           shinyjs::disable(
-            selector = paste0("#", ns("row_"), row_index, " .area-operation")
+            selector = paste0("#", ns("row_"), row_index, " .operation")
           )
           
           shinyjs::disable(
@@ -213,7 +219,7 @@ m_table <- function(
     )
     
     shinyjs::show(
-      selector = paste0("#", ns("row_"), rvs$n_row, " .area-remove")
+      selector = paste0("#", ns("row_"), rvs$n_row, " .remove")
     )
   })
   

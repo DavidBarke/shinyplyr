@@ -1,23 +1,22 @@
 aes_subrow_ui <- function(id, row_index) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
-    class = "subrow-container aes-subrow-container with-subrows aes-subrows-open",
-    id = ns("aes_subrow_container"),
-    shiny::uiOutput(
-      outputId = ns("index"),
-      class = "subrow-index grid-center"
-    ),
-    shiny::uiOutput(
-      outputId = ns("content"),
-      class = "subrow-content grid-gap"
-    ),
+  htmltools::tagList(
     htmltools::div(
-      class = "subrow-remove grid-center"
+      id = ns("aes_subrow"),
+      class = "plot-subrow-content aes-subrows-open",
+      shiny::uiOutput(
+        outputId = ns("index"),
+        class = "grid-center"
+      ),
+      shiny::uiOutput(
+        outputId = ns("content"),
+        class = "grid-gap aes-content"
+      )
     ),
     shiny::uiOutput(
       outputId = ns("subrows"),
-      class = "subrows"
+      class = "subrows-container"
     )
   )
 }
@@ -52,12 +51,12 @@ aes_subrow <- function(
   })
   
   aes_subrows_selector <- paste0("#", ns("subrows"))
-  aes_subrow_container_selector <- paste0("#", ns("aes_subrow_container"))
+  aes_subrow_container_selector <-  paste0("#", ns("aes_subrow"))
   
   shiny::observeEvent(toggle_rv(), {
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = F,
+        anim = .values$anim,
         selector = aes_subrows_selector
       )
       
@@ -67,7 +66,7 @@ aes_subrow <- function(
       )
     } else {
       shinyjs::hide(
-        anim = F,
+        anim = .values$anim,
         selector = aes_subrows_selector
       )
       

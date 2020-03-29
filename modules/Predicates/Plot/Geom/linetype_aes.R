@@ -2,7 +2,6 @@ linetype_aes_ui <- function(id, aes) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "aes-content linetype-aes-content",
     shiny::selectInput(
       inputId = ns("linetype"),
       label = NULL,

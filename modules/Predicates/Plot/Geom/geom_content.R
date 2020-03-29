@@ -61,8 +61,10 @@ geom_content <- function(
     
     shiny::selectInput(
       inputId = ns("n_var"),
-      label = "Number of Variables",
-      choices = choices
+      label = NULL,
+      choices = list(
+        "Number of Variables" = list(choices)
+      )
     )
   })
   

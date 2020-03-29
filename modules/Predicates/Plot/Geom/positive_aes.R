@@ -4,7 +4,6 @@ positive_aes_ui <- function(id, aes) {
   value <- 0.5
   
   htmltools::div(
-    class = "aes-content positive-aes-content",
     shiny::numericInput(
       inputId = ns("value"),
       label = NULL,

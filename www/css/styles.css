@@ -55,10 +55,6 @@
 /* Row container */
 .row-container {
   display: grid;
-  grid-template-columns: 10px 25px 125px 1fr 30px 30px;
-  grid-column-gap: 10px;
-  grid-template-areas:
-    "step sr-toggle predicate operation result remove";
   margin: 3px 0;
   padding: 0 5px 3px 5px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
@@ -66,28 +62,10 @@
   border-radius: 5px;
 }
 
-.area-step {
-  grid-area: step;
-}
-
-.area-sr-toggle {
-  grid-area: sr-toggle;
-}
-
-.area-predicate {
-  grid-area: predicate;
-}
-
-.area-operation {
-  grid-area: operation;
-}
-
-.area-result {
-  grid-area: result;
-}
-
-.area-remove {
-  grid-area: remove;
+.row-content {
+  display: grid;
+  grid-template-columns: 10px 25px 125px 1fr 30px 30px;
+  grid-column-gap: 10px;
 }
 
 /* Subrows */
@@ -100,8 +78,6 @@
   display: grid;
   grid-template-columns: 25px 1fr 30px;
   grid-column-gap: 10px;
-  grid-template-areas:
-    "subrow-index subrow-content subrow-remove";
   margin: 3px 0;
   padding-top: 3px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -109,35 +85,6 @@
 
 .subrow-container.m-index {
   grid-template-columns: 35px 1fr 30px;
-}
-
-.subrow-container.with-subrows {
-  grid-template-areas:
-    "subrow-index subrow-content subrow-remove";
-}
-
-.subrow-container label {
-  display: none;
-}
-
-.subrow-container.active-subrow label {
-  display: block;
-}
-
-.subrow-container .subrow-container {
-  margin-left: 25px;
-}
-
-.subrow-index {
-  grid-area: subrow-index;
-}
-
-.subrow-content {
-  grid-area: subrow-content;
-}
-
-.subrow-remove {
-  grid-area: subrow-remove;
 }
 
 .sr-toggle-btn button {
@@ -179,32 +126,37 @@
 }
 
 /* Plot */
-.plot-op-container {
+.plot-subrow-content {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr
+  grid-template-columns: 25px auto 30px;
 }
 
-.plot-content {
+.plot-subrow-content + .subrows-container {
+  margin-right: 0;
+}
+
+.aes-content {
   display: grid;
-  grid-template-columns: 125px 125px auto;
+  grid-template-columns: 25px auto 1fr;
 }
 
-.aes-subrow-container > .subrow-content {
-  display: grid;
-  grid-template-columns: 25px auto 1fr; 
-}
-
-.aes-subrow-container label {
-  display: block;
-}
-
-.aes-subrows-open > .subrow-content {
+.aes-subrows-open .aes-content {
   grid-template-columns: 25px 1fr 1fr;
 }
 
 .aes-subrow-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.geom-content {
+  display: grid;
+  grid-template-columns: 25px auto 1fr 2fr;
+}
+
+.geom-subrow-content {
+  display: grid;
+  grid-template-columns: 130px 1fr;
 }
 
 /*Custom close button (cross)*/

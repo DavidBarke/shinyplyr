@@ -8,7 +8,6 @@ colour_aes_ui <- function(id, aes) {
   }
   
   htmltools::div(
-    class = "aes-content colour-aes-content",
     colourpicker::colourInput(
       inputId = ns("colour"),
       label = NULL,
