@@ -76,7 +76,7 @@ init <- function() {
     shiny::callModule(
       module = tab_transformation,
       id = "id_tab_transformation",
-      .values = .values
+      .values = .values 
     )
     
     shiny::callModule(

@@ -139,7 +139,7 @@
 
 .aes-content {
   display: grid;
-  grid-template-columns: 25px auto 1fr;
+  grid-template-columns: 25px 70px 1fr;
 }
 
 .aes-subrows-open .aes-content {
@@ -153,7 +153,7 @@
 
 .geom-content {
   display: grid;
-  grid-template-columns: 25px auto 1fr 2fr;
+  grid-template-columns: 25px 70px 1fr 2fr;
 }
 
 .geom-subrow-content {
@@ -163,7 +163,7 @@
 
 .theme-content {
   display: grid;
-  grid-template-columns: 25px auto 1fr;
+  grid-template-columns: 25px 70px 1fr;
 }
 
 /*Custom close button (cross)*/

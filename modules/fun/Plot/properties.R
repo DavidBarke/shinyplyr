@@ -7,7 +7,7 @@ properties <- function(geom) {
   
   optional <- switch(
     geom,
-    "point" = c("alpha", "colour", "fill", "group", "linetype", "shape", "size"),
+    "point" = c("alpha", "colour", "fill", "group", "shape", "size"),
     "line" = c("alpha", "colour", "group", "linetype", "size")
   )
   

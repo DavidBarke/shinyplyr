@@ -67,13 +67,14 @@ geom_subrow <- function(
     free_aesthetics_r = free_aesthetics_r
   )
   
-  geom_layer_r <- shiny::reactive({
-    geom_point()
+  geom_fun_r <- shiny::reactive({
+    geom_point
   })
   
   return_list <- list(
     geom_r = geom_content_return$geom_r,
-    geom_layer_r = geom_layer_r
+    geom_args_r = geom_subrows_return$geom_args_r,
+    geom_fun_r = geom_fun_r
   )
   
   return(return_list)

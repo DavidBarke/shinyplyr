@@ -31,7 +31,7 @@ shape_aes <- function(
   ns <- session$ns
   
   return_list <- list(
-    value_r = shiny::reactive(shiny::req(input$shape))
+    value_r = shiny::reactive(as.integer(shiny::req(input$shape)))
   )
   
   return(return_list)

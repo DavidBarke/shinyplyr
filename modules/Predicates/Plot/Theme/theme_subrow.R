@@ -35,7 +35,7 @@ theme_subrow <- function(
       # Toggle sr
       htmltools::div(),
       htmltools::tags$b(
-        class = "grid-center",
+        class = "grid-vertical-center",
         "Theme"
       ),
       shiny::selectInput(

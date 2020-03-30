@@ -35,7 +35,7 @@ positive_aes <- function(
   })
   
   return_list <- list(
-    value_r <- shiny::reactive(shiny::req(input$value))
+    value_r = shiny::reactive(shiny::req(input$value))
   )
   
   return(return_list)

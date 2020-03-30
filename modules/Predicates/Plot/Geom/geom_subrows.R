@@ -33,11 +33,13 @@ geom_subrows <- function(
     shape = shape_aes
   )
   
+  aes_return_env <- new.env()
+  
   shiny::observeEvent(free_aesthetics_r(), {
     new_aesthetics <- free_aesthetics_r()[!free_aesthetics_r() %in% rvs$called_aesthetics]
     
     purrr::walk(new_aesthetics, function(aes) {
-      shiny::callModule(
+      aes_return_env[[aes]] <- shiny::callModule(
         module = geom_aes_server[[aes_class(aes)]],
         id = aes %_% "value",
         .values = .values
@@ -73,9 +75,18 @@ geom_subrows <- function(
     })
   })
   
-  aes_values_r <- shiny::reactive({
-    purrr::map_chr(free_aesthetics_r(), function(aes) {
-      shiny::req(input[[aes %_% "value"]])
+  geom_args_r <- shiny::reactive({
+    free_aes <- free_aesthetics_r()
+    names(free_aes) <- free_aes
+    x <- purrr::map(free_aes, function(aes) {
+      aes_return_env[[aes]]$value_r()
     })
+    print(x)
   })
+  
+  return_list <- list(
+    geom_args_r = geom_args_r
+  )
+  
+  return(return_list)
 }
