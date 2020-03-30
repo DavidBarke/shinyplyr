@@ -121,7 +121,7 @@ data_output <- function(
       paste0(base_name_r(), ".xlsx")
     },
     content = function(file) {
-      xlsx::write.xlsx(data_r(), file, row.names = FALSE)
+      writexl::write_xlsx(data_r(), file)
     }
   )
   

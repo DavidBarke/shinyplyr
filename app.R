@@ -15,7 +15,7 @@ library(ggplot2)
 library(plotly)
 
 library(readr)
-library(xlsx)
+library(writexl)
 
 # Source files inside of function, so that globalenv doesn't get polluted
 init <- function() {
