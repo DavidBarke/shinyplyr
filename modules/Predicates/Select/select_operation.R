@@ -105,8 +105,13 @@ select_operation <- function(
   })
   
   selected_data_r <- shiny::reactive({
-    data_r() %>%
-      select(select_fun_r()(select_val_r()))
+    tryCatch(
+      {
+        data_r() %>%
+          select(select_fun_r()(select_val_r()))
+      },
+      error = function(e) data_r()
+    )
   })
   
   selected_names_r <- shiny::reactive({

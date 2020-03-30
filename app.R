@@ -69,6 +69,8 @@ init <- function() {
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
     .values$anim <- TRUE
     
+    .values$dataset_id_rv <- shiny::reactiveVal(NULL)
+    
     shiny::isolate(
       fill_dataset_storage(.values$dataset_storage)
     )

@@ -60,15 +60,26 @@ m_row_ui <- function(id, row_container_id, index) {
 }
 
 m_row <- function(
-  input, output, session, .values, data_r, name_r, id_r, row_index, remove_row_fun,
+  input, output, session, .values, data_r, dataset_object, row_index, remove_row_fun,
   row_container_id
 ) {
+  
+  # Important: don't use dataset_object$get_dataset(), because it represents
+  # the non-transformed dataset. Use data_r() instead.
   
   ns <- session$ns
   
   # Force evaluation of row_index, otherwise tab_name_r takes always the maximum
   # row index
   force(row_index)
+  
+  name_r <- shiny::reactive({
+    dataset_object$get_name()
+  })
+  
+  id_r <- shiny::reactive({
+    dataset_object$get_id()
+  })
   
   output$operation <- shiny::renderUI({
     switch(
@@ -208,7 +219,8 @@ m_row <- function(
         module = data_output,
         id = id_r() %_% "data_output",
         .values = .values,
-        data_r = operated_data_r
+        data_r = operated_data_r,
+        dataset_object
       )
     }
   })

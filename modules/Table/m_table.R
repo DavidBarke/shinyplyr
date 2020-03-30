@@ -117,6 +117,10 @@ m_table <- function(
     dataset_object_r()$get_id()
   })
   
+  shiny::observe({
+    .values$dataset_id_rv(id_r())
+  })
+  
   shiny::observeEvent(data_r(), {
     purrr::walk(seq_len(rvs$n_row), function(row_index) {
       shiny::removeUI(
@@ -177,8 +181,7 @@ m_table <- function(
         id = "id_m_row" %_% rvs$n_row,
         .values = .values,
         data_r = prev_data_r,
-        name_r = name_r,
-        id_r = id_r,
+        dataset_object = dataset_object_r(),
         row_index = rvs$n_row,
         remove_row_fun = remove_row_fun,
         row_container_id = paste0("#", row_container_id)
@@ -234,16 +237,16 @@ m_table <- function(
   shiny::observeEvent(input$open_data, {
     new <- .values$transformation$viewer$append_tab(
       tab = shiny::tabPanel(
-        title = paste(dataset_object_r()$get_name(), "0", sep = ": "),
-        value = ns(input$selected_dataset %_% "0"),
+        title = paste(name_r(), "0", sep = ": "),
+        value = ns(id_r()),
         DT::dataTableOutput(
-          outputId = ns("dataset")
+          outputId = ns(id_r() %_% "dataset")
         )
       )
     )
     
     if (new) {
-      output$dataset <- DT::renderDataTable({
+      output[[id_r() %_% "dataset"]] <- DT::renderDataTable({
         DT::datatable(
           shiny::isolate(data_r())
         )
