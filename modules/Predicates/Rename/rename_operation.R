@@ -129,7 +129,6 @@ rename_operation <- function(
     })
     
     if (shiny::isolate(!subrows_open_r())) {
-      print("hidden")
       return(shinyjs::hidden(ui))
     }
     

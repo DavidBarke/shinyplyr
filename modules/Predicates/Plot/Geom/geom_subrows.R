@@ -77,10 +77,9 @@ geom_subrows <- function(
   geom_args_r <- shiny::reactive({
     free_aes <- free_aesthetics_r()
     names(free_aes) <- free_aes
-    x <- purrr::map(free_aes, function(aes) {
+    purrr::map(free_aes, function(aes) {
       aes_return_env[[aes]]$value_r()
     })
-    print(x)
   })
   
   return_list <- list(

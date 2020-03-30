@@ -89,7 +89,7 @@ aes_subrow <- function(
   })
   
   properties_r <- shiny::reactive({
-    print(properties(geom_r(), n_var_r()))
+    properties(geom_r(), n_var_r())
   })
   
   aes_names_r <- shiny::reactive({
@@ -221,7 +221,7 @@ aes_subrow <- function(
     
     aes_list <- aes_list[!names(aes_list) %in% c("x", "y")]
     
-    print(ggplot2::aes(!!x, !!y, !!!aes_list))
+    ggplot2::aes(!!x, !!y, !!!aes_list)
   })
   
   return_list <- list(

@@ -115,7 +115,6 @@ m_row <- function(
   subrow_selector <- paste(row_container_id, " > .subrows-container")
   
   shiny::observeEvent(toggle_rv(), {
-    print(subrow_selector)
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
         anim = .values$anim,
@@ -198,16 +197,19 @@ m_row <- function(
       tab = shiny::tabPanel(
         title = tab_name_r(),
         value = ns(id_r() %_% "data"),
-        DT::dataTableOutput(
-          outputId = ns(id_r() %_% "data_output")
+        data_output_ui(
+          id = ns(id_r() %_% "data_output")
         )
       )
     )
     
     if (new) {
-      output[[id_r() %_% "data_output"]] <- DT::renderDataTable({
-        DT::datatable(operated_data_r())
-      })
+      shiny::callModule(
+        module = data_output,
+        id = id_r() %_% "data_output",
+        .values = .values,
+        data_r = operated_data_r
+      )
     }
   })
   
