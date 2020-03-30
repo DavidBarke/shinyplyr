@@ -35,10 +35,10 @@ aes_subrow <- function(
   
   purrr::walk2(.values$plot$AES_NAMES, seq_along(.values$plot$AES_NAMES), function(aes, index) {
     if (aes %in% .values$plot$REQUIRED_AES_NAMES) {
-      selected <- choices_r()[index]
+      selected_r <- shiny::reactive(choices_r()[index])
       .choices_r <- shiny::reactive(list("Select a column" = as.list(choices_r())))
     } else {
-      selected <- "NULL"
+      selected_r <- shiny::reactive("NULL")
       .choices_r <- shiny::reactive({
         list("Select a column or NULL" = as.list(c("NULL", choices_r())))
       })
@@ -49,7 +49,7 @@ aes_subrow <- function(
       id = aes %_% "subsubrow",
       .values = .values,
       choices_r = .choices_r,
-      selected = selected
+      selected_r = selected_r
     )
   })
   
@@ -132,15 +132,6 @@ aes_subrow <- function(
   
   output$subrows <- shiny::renderUI({
     purrr::map2(req_opt_names_r(), seq_along(req_opt_names_r()), function(aes, index) {
-      choices <- choices_r()
-      
-      if (aes %in% required_aes_names_r()) {
-        selected <- choices_r()[index]
-      } else {
-        selected <- NULL
-        choices <- c("NULL", choices_r())
-      }
-      
       htmltools::div(
         class = "subrow-container grid-gap m-index",
         htmltools::div(
@@ -181,8 +172,8 @@ aes_subrow <- function(
         )
       )
     } else {
-      aes_name_val <- purrr::map_chr(req_opt_names_r(), function(aes) {
-        paste(aes, shiny::req(input[[aes %_% "value"]]), sep = ": ")
+      aes_name_val <- purrr::map2_chr(req_opt_names_r(), selected_aes_vals_r(), function(aes, val) {
+        paste(aes, val, sep = ": ")
       })
       
       htmltools::tagList(

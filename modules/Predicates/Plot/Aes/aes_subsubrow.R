@@ -7,7 +7,7 @@ aes_subsubrow_ui <- function(id) {
 }
 
 aes_subsubrow <- function(
-  input, output, session, .values, choices_r, selected
+  input, output, session, .values, choices_r, selected_r
 ) {
   
   ns <- session$ns
@@ -17,12 +17,12 @@ aes_subsubrow <- function(
       inputId = ns("column"),
       label = NULL,
       choices = choices_r(),
-      selected = selected
+      selected = selected_r()
     )
   })
   
   return_list <- list(
-    value_r = shiny::reactive(fallback(input$column, selected))
+    value_r = shiny::reactive(fallback(input$column, selected_r()))
   )
   
   return(return_list)

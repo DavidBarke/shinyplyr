@@ -102,13 +102,14 @@ facet_subrow <- function(
         if (length(safe_facet_vars_r()) == 1) {
           rows <- safe_facet_vars_r()
           rows <- sym(rows)
-          ggplot2::facet_grid(rows = !!rows)
+          print(rows)
+          ggplot2::facet_grid(rows = vars(!!rows))
         } else {
           rows <- safe_facet_vars_r()[1]
           cols <- safe_facet_vars_r()[2]
           rows <- sym(rows)
           cols <- sym(cols)
-          ggplot2::facet_grid(rows = !!rows, cols = !!cols)
+          ggplot2::facet_grid(rows = vars(!!rows), cols = vars(!!cols))
         }
       },
       wrap = ggplot2::facet_wrap(safe_facet_vars_r())
