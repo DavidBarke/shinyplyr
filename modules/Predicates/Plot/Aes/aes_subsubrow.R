@@ -17,7 +17,7 @@ aes_subsubrow <- function(
       inputId = ns("column"),
       label = NULL,
       choices = choices_r(),
-      selected = QWUtils::fallback(input$column, selected_r())
+      selected = fallback(input$column, selected_r())
     )
   })
   
