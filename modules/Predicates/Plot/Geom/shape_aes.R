@@ -30,8 +30,12 @@ shape_aes <- function(
   
   ns <- session$ns
   
+  value_r <- shiny::reactive({
+    as.integer(fallback(input$shape, 16))
+  })
+  
   return_list <- list(
-    value_r = shiny::reactive(as.integer(shiny::req(input$shape)))
+    value_r = value_r
   )
   
   return(return_list)

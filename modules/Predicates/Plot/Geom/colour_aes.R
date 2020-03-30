@@ -23,7 +23,7 @@ colour_aes <- function(
   ns <- session$ns
   
   return_list <- list(
-    value_r = shiny::reactive(shiny::req(input$colour))
+    value_r = shiny::reactive(fallback(input$colour, "black"))
   )
   
   return(return_list)

@@ -161,6 +161,11 @@
   grid-template-columns: 130px 1fr;
 }
 
+.facet-content {
+  display: grid;
+  grid-template-columns: 25px 70px 120px 1fr
+}
+
 .theme-content {
   display: grid;
   grid-template-columns: 25px 70px 1fr;

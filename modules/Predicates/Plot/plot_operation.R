@@ -18,6 +18,9 @@ plot_subrows_ui <- function(id) {
     geom_subrow_ui(
       id = ns("id_geom_subrow")
     ),
+    facet_subrow_ui(
+      id = ns("id_facet_subrow")
+    ),
     theme_subrow_ui(
       id = ns("id_theme_subrow")
     )
@@ -33,6 +36,7 @@ plot_operation <- function(
   plot_r <- shiny::reactive({
     ggplot(data_r(), aes_subrow_return$aes_r()) +
       do.call(geom_subrow_return$geom_fun_r(), geom_subrow_return$geom_args_r()) +
+      facet_subrow_return$facet_r() +
       theme_subrow_return$theme_fun_r()()
   })
   
@@ -53,6 +57,14 @@ plot_operation <- function(
     data_r = data_r,
     row_index = row_index,
     free_aesthetics_r = aes_subrow_return$free_aesthetics_r 
+  )
+  
+  facet_subrow_return <- shiny::callModule(
+    module = facet_subrow,
+    id = "id_facet_subrow",
+    .values = .values,
+    data_r = data_r,
+    row_index = row_index
   )
   
   theme_subrow_return <- shiny::callModule(

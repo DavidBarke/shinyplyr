@@ -40,7 +40,7 @@ percentage_aes <- function(
   })
   
   return_list <- list(
-    value_r = shiny::reactive(max(min(shiny::req(input$percentage), 1), 0))
+    value_r = shiny::reactive(max(min(fallback(input$percentage, 1), 1), 0))
   )
   
   return(return_list)

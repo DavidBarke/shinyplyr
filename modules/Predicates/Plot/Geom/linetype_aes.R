@@ -18,7 +18,7 @@ linetype_aes <- function(
   ns <- session$ns
   
   return_list <- list(
-    value_r = shiny::reactive(shiny::req(input$linetype))
+    value_r = shiny::reactive(fallback(input$linetype, "solid"))
   )
   
   return(return_list)

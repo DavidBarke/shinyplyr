@@ -27,6 +27,32 @@ aes_subrow <- function(
   
   ns <- session$ns
   
+  aes_return_env <- new.env()
+  
+  choices_r <- shiny::reactive({
+    names(data_r())
+  })
+  
+  purrr::walk2(.values$plot$AES_NAMES, seq_along(.values$plot$AES_NAMES), function(aes, index) {
+    if (aes %in% .values$plot$REQUIRED_AES_NAMES) {
+      selected <- choices_r()[index]
+      .choices_r <- shiny::reactive(list("Select a column" = as.list(choices_r())))
+    } else {
+      selected <- "NULL"
+      .choices_r <- shiny::reactive({
+        list("Select a column or NULL" = as.list(c("NULL", choices_r())))
+      })
+    }
+    
+    aes_return_env[[aes]] <- shiny::callModule(
+      module = aes_subsubrow,
+      id = aes %_% "subsubrow",
+      .values = .values,
+      choices_r = .choices_r,
+      selected = selected
+    )
+  })
+  
   # Toggle aes subrows ---------------------------------------------------------
   output$subrows_toggle_btn <- shiny::renderUI({
     m_action_button(
@@ -78,10 +104,6 @@ aes_subrow <- function(
   })
   
   # Outputs --------------------------------------------------------------------
-  choices_r <- shiny::reactive({
-    names(data_r())
-  })
-  
   subrow_index <- paste(row_index, 1, sep = ".")
   
   output$index <- shiny::renderUI({
@@ -131,13 +153,8 @@ aes_subrow <- function(
             class = "grid-vertical-center",
             aes
           ),
-          htmltools::div(
-            shiny::selectInput(
-              inputId = ns(aes %_% "value"),
-              label = NULL,
-              choices = choices,
-              selected = selected
-            )
+          aes_subsubrow_ui(
+            id = ns(aes %_% "subsubrow")
           )
         ),
         htmltools::div(
@@ -195,7 +212,7 @@ aes_subrow <- function(
   
   selected_aes_vals_r <- shiny::reactive({
     purrr::map_chr(req_opt_names_r(), function(aes) {
-      shiny::req(input[[aes %_% "value"]])
+      aes_return_env[[aes]]$value_r()
     })
   })
   
@@ -213,7 +230,7 @@ aes_subrow <- function(
   
   aes_r <- shiny::reactive({
     aes_list <- purrr::map(non_null_aes_names_r(), function(aes) {
-      sym(shiny::req(input[[aes %_% "value"]]))
+      sym(aes_return_env[[aes]]$value_r())
     })
     
     x <- aes_list$x

@@ -1,4 +1,4 @@
-geom_classes <- list(
+GEOM_CLASSES <- list(
   area = "filled",
   bin2d = "bin2d",
   density2d = "filled",
@@ -10,13 +10,13 @@ geom_classes <- list(
   step = "path"
 )
 
-required_properties <- list(
+REQUIRED_PROPERTIES <- list(
   "x",
   c("x", "y"),
   c("x", "y", "z")
 )
 
-optional_properties <- list(
+OPTIONAL_PROPERTIES <- list(
   bin2d = c("alpha", "colour", "group", "linetype", "size"),
   filled = c("alpha", "colour", "fill", "group", "linetype", "size"),
   path = c("alpha", "colour", "group", "linetype", "size"),
@@ -30,18 +30,18 @@ additional_properties <- list(
 )
 
 geom_class <- function(geom) {
-  geom_classes[[geom]]
+  GEOM_CLASSES[[geom]]
 }
 
 properties <- function(geom, n) {
   list(
-    required = required_properties[[n]], 
-    optional = optional_properties[[geom_class(geom)]],
+    required = REQUIRED_PROPERTIES[[n]], 
+    optional = OPTIONAL_PROPERTIES[[geom_class(geom)]],
     additional = c(all_additional, additional_properties[[geom]])
   )
 }
 
-aes_classes <- c(
+AES_CLASSES <- c(
   alpha = "percentage",
   colour = "colour",
   fill = "colour",
@@ -51,5 +51,5 @@ aes_classes <- c(
 )
 
 aes_class <- function(aes) {
-  aes_classes[aes]  
+  AES_CLASSES[aes]  
 }

@@ -72,6 +72,23 @@ init <- function() {
     
     .values$dataset_id_rv <- shiny::reactiveVal(NULL)
     
+    .values$plot$GEOM_NAMES <- c(
+      "area", "bin2d", "density2d", "hex", "line", "path", "point",
+      "smooth", "step"
+    )
+    
+    .values$plot$OPTIONAL_AES_NAMES <- c(
+      "alpha", "colour", "fill", "group", "linetype", "shape", "size"
+    )
+    
+    .values$plot$REQUIRED_AES_NAMES <- c(
+      "x", "y", "z"
+    )
+    
+    .values$plot$AES_NAMES <- c(
+      .values$plot$REQUIRED_AES_NAMES, .values$plot$OPTIONAL_AES_NAMES
+    )
+    
     shiny::isolate(
       fill_dataset_storage(.values$dataset_storage)
     )

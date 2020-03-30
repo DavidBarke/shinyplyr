@@ -13,10 +13,6 @@ geom_subrows <- function(
   
   ns <- session$ns
   
-  rvs <- shiny::reactiveValues(
-    called_aesthetics = character()
-  )
-  
   geom_aes_ui <- list(
     colour = colour_aes_ui,
     linetype = linetype_aes_ui,
@@ -35,17 +31,14 @@ geom_subrows <- function(
   
   aes_return_env <- new.env()
   
-  shiny::observeEvent(free_aesthetics_r(), {
-    new_aesthetics <- free_aesthetics_r()[!free_aesthetics_r() %in% rvs$called_aesthetics]
-    purrr::walk(new_aesthetics, function(aes) {
-      aes_return_env[[aes]] <- shiny::callModule(
-        module = geom_aes_server[[aes_class(aes)]],
-        id = aes %_% "value",
-        .values = .values
-      )
-    })
+  purrr::walk(.values$plot$OPTIONAL_AES_NAMES, function(aes) {
+    if (aes == "group") return()
     
-    rvs$called_aesthetics <- c(rvs$called_aesthetics, new_aesthetics)
+    aes_return_env[[aes]] <- shiny::callModule(
+      module = geom_aes_server[[aes_class(aes)]],
+      id = aes %_% "value",
+      .values = .values
+    )
   })
   
   output$subrows <- shiny::renderUI({
