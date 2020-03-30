@@ -22,7 +22,7 @@ aes_subrow_ui <- function(id, row_index) {
 }
 
 aes_subrow <- function(
-  input, output, session, .values, data_r, row_index, geom_r
+  input, output, session, .values, data_r, row_index, geom_r, n_var_r
 ) {
   
   ns <- session$ns
@@ -88,12 +88,12 @@ aes_subrow <- function(
     subrow_index
   })
   
-  aes_names_r <- shiny::reactive({
-    unlist(properties(geom_r()))
+  properties_r <- shiny::reactive({
+    print(properties(geom_r(), n_var_r()))
   })
   
-  properties_r <- shiny::reactive({
-    properties(geom_r())
+  aes_names_r <- shiny::reactive({
+    unlist(properties_r())
   })
   
   required_aes_names_r <- shiny::reactive({
@@ -104,8 +104,12 @@ aes_subrow <- function(
     properties_r()$optional
   })
   
+  req_opt_names_r <- shiny::reactive({
+    c(required_aes_names_r(), optional_aes_names_r())
+  })
+  
   output$subrows <- shiny::renderUI({
-    purrr::map2(aes_names_r(), seq_along(aes_names_r()), function(aes, index) {
+    purrr::map2(req_opt_names_r(), seq_along(req_opt_names_r()), function(aes, index) {
       choices <- choices_r()
       
       if (aes %in% required_aes_names_r()) {
@@ -160,7 +164,7 @@ aes_subrow <- function(
         )
       )
     } else {
-      aes_name_val <- purrr::map_chr(aes_names_r(), function(aes) {
+      aes_name_val <- purrr::map_chr(req_opt_names_r(), function(aes) {
         paste(aes, shiny::req(input[[aes %_% "value"]]), sep = ": ")
       })
       
@@ -190,20 +194,20 @@ aes_subrow <- function(
   })
   
   selected_aes_vals_r <- shiny::reactive({
-    purrr::map_chr(aes_names_r(), function(aes) {
+    purrr::map_chr(req_opt_names_r(), function(aes) {
       shiny::req(input[[aes %_% "value"]])
     })
   })
   
   non_null_aes_names_r <- shiny::reactive({
-    x <- aes_names_r()[selected_aes_vals_r() != "NULL"]
+    x <- req_opt_names_r()[selected_aes_vals_r() != "NULL"]
     setNames(x, x)
   })
   
   free_aes_names_r <- shiny::reactive({
     setdiff(
-      aes_names_r()[selected_aes_vals_r() == "NULL"],
-      "group"
+      req_opt_names_r()[selected_aes_vals_r() == "NULL"],
+      c("group", "na.rm", "show.legend")
     )
   })
   

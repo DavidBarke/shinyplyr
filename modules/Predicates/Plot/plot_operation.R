@@ -42,7 +42,8 @@ plot_operation <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    geom_r = geom_subrow_return$geom_r
+    geom_r = geom_subrow_return$geom_r,
+    n_var_r = geom_subrow_return$n_var_r
   )
   
   geom_subrow_return <- shiny::callModule(

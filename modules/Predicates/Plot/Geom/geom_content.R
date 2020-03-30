@@ -79,22 +79,23 @@ geom_content <- function(
       )
     ), 
     "2" = list(
-      "point",
-      "line"
-      # "Continuous X, Continuous Y" = list(
-      #   "point",
-      #   "smooth"
-      # ),
-      # "Continous Bivariate Distribution" = list(
-      #   "bin2d",
-      #   "density2d",
-      #   "hex"
-      # ),
-      # "Continuous Function" = list(
-      #   "area",
-      #   "line",
-      #   "step"
-      # )
+      "Graphical Primitives" = list(
+        "path"
+      ),
+      "Continuous X, Continuous Y" = list(
+        "point",
+        "smooth"
+      ),
+      "Continous Bivariate Distribution" = list(
+        "bin2d",
+        "density2d",
+        "hex"
+      ),
+      "Continuous Function" = list(
+        "area",
+        "line",
+        "step"
+      )
     ),
     "3" = list(
       "contour",
@@ -115,9 +116,27 @@ geom_content <- function(
     )
   })
   
+  geom_fun_r <- shiny::reactive({
+    switch(
+      shiny::req(input$geom),
+      "area" = ggplot2::geom_area,
+      "bin2d" = ggplot2::geom_bin2d,
+      "density2d" = ggplot2::geom_density2d,
+      "hex" = ggplot2::geom_hex,
+      "histogram" = ggplot2::geom_histogram,
+      "line" = ggplot2::geom_line,
+      "path" = ggplot2::geom_path,
+      "point" = ggplot2::geom_point,
+      "smooth" = ggplot2::geom_smooth,
+      "step" = ggplot2::geom_step
+    )
+  })
+  
   return_list <- list(
     toggle_rv = toggle_rv,
-    geom_r = shiny::reactive(shiny::req(input$geom))
+    geom_r = shiny::reactive(shiny::req(input$geom)),
+    geom_fun_r = geom_fun_r,
+    n_var_r = shiny::reactive(as.integer(shiny::req(input$n_var)))
   )
   
   return(return_list)

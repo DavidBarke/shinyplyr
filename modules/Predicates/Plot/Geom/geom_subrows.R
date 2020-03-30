@@ -37,7 +37,6 @@ geom_subrows <- function(
   
   shiny::observeEvent(free_aesthetics_r(), {
     new_aesthetics <- free_aesthetics_r()[!free_aesthetics_r() %in% rvs$called_aesthetics]
-    
     purrr::walk(new_aesthetics, function(aes) {
       aes_return_env[[aes]] <- shiny::callModule(
         module = geom_aes_server[[aes_class(aes)]],

@@ -9,9 +9,12 @@ Aesthetics
 	stroke: -
 
 Geoms:
-	point:
-		required: x, y
-		optional: alpha, colour, fill, group, shape, size
 	line:
 		required: x, y
 		optional: alpha, colour, group, linetype, size
+	point:
+		required: x, y
+		optional: alpha, colour, fill, group, shape, size
+	smooth:
+		required: x, y
+		optional: alpha, colour, fill, group, linetype, size

@@ -115,6 +115,7 @@ m_row <- function(
   subrow_selector <- paste(row_container_id, " > .subrows-container")
   
   shiny::observeEvent(toggle_rv(), {
+    print(subrow_selector)
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
         anim = .values$anim,
