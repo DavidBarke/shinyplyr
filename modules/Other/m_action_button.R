@@ -43,3 +43,18 @@ m_action_button <- function(
   
   ui
 }
+
+m_download_button <- function(
+  outputId, label = "Download", style = "material-flat", color = "default",
+  size = "xs", block = FALSE, no_outline = TRUE
+) {
+  shinyWidgets::downloadBttn(
+    outputId,
+    label,
+    style,
+    color,
+    size,
+    block,
+    no_outline
+  )
+}

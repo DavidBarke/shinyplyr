@@ -220,7 +220,8 @@ m_row <- function(
         id = id_r() %_% "data_output",
         .values = .values,
         data_r = operated_data_r,
-        dataset_object
+        dataset_object,
+        row_index = row_index
       )
     }
   })
