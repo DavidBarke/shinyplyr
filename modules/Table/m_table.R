@@ -181,7 +181,7 @@ m_table <- function(
         id = "id_m_row" %_% rvs$n_row,
         .values = .values,
         data_r = prev_data_r,
-        dataset_object = dataset_object_r(),
+        dataset_object_r = dataset_object_r,
         row_index = rvs$n_row,
         remove_row_fun = remove_row_fun,
         row_container_id = paste0("#", row_container_id)

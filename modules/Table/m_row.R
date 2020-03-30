@@ -60,11 +60,11 @@ m_row_ui <- function(id, row_container_id, index) {
 }
 
 m_row <- function(
-  input, output, session, .values, data_r, dataset_object, row_index, remove_row_fun,
+  input, output, session, .values, data_r, dataset_object_r, row_index, remove_row_fun,
   row_container_id
 ) {
   
-  # Important: don't use dataset_object$get_dataset(), because it represents
+  # Important: don't use dataset_object_r()$get_dataset(), because it represents
   # the non-transformed dataset. Use data_r() instead.
   
   ns <- session$ns
@@ -74,11 +74,11 @@ m_row <- function(
   force(row_index)
   
   name_r <- shiny::reactive({
-    dataset_object$get_name()
+    dataset_object_r()$get_name()
   })
   
   id_r <- shiny::reactive({
-    dataset_object$get_id()
+    dataset_object_r()$get_id()
   })
   
   output$operation <- shiny::renderUI({
@@ -186,20 +186,30 @@ m_row <- function(
   })
   
   shiny::observeEvent(input$open_plot, {
+    print("OPEN PLOT")
+    
+    value <- print(ns(id_r() %_% "plot"))
+    
     new <- .values$transformation$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
-        value = ns(id_r() %_% "plot"),
-        plotOutput(
-          outputId = ns(id_r() %_% "plot_output")
+        value = value,
+        plot_output_ui(
+          id = ns(id_r() %_% "plot_output")
         )
       )
     )
     
+    print(new)
+    
     if (new) {
-      output[[id_r() %_% "plot_output"]] <- shiny::renderPlot({
-        plot_operation_return$plot_r()
-      })
+      shiny::callModule(
+        module = plot_output,
+        id = id_r() %_% "plot_output",
+        .values = .values,
+        plot_r = plot_operation_return$plot_r,
+        dataset_object = dataset_object_r()
+      )
     }
   })
   
@@ -220,7 +230,7 @@ m_row <- function(
         id = id_r() %_% "data_output",
         .values = .values,
         data_r = operated_data_r,
-        dataset_object,
+        dataset_object = dataset_object_r(),
         row_index = row_index
       )
     }
