@@ -256,7 +256,11 @@ m_table <- function(
   
   # Help -----------------------------------------------------------------------
   shiny::observeEvent(input$help_operation, {
-    .values$help$operation_rv(.values$help$operation_rv() + 1)
+    .values$help$open("operation")
+  })
+  
+  shiny::observeEvent(input$help_predicate, {
+    .values$help$open("predicate")
   })
   
   # Return ---------------------------------------------------------------------

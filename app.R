@@ -71,6 +71,10 @@ init <- function() {
     
     .values$dataset_id_rv <- shiny::reactiveVal(NULL)
     
+    .values$transformation$PREDICATES <- c(
+      "select", "rename", "filter", "mutate", "group_by", "summarise", "plot"
+    )
+    
     .values$plot$GEOM_NAMES <- c(
       "area", "bin2d", "density2d", "hex", "line", "path", "point",
       "smooth", "step"
@@ -87,6 +91,8 @@ init <- function() {
     .values$plot$AES_NAMES <- c(
       .values$plot$REQUIRED_AES_NAMES, .values$plot$OPTIONAL_AES_NAMES
     )
+    
+    .values$help_rvs <- shiny::reactiveValues()
     
     shiny::isolate(
       fill_dataset_storage(.values$dataset_storage)

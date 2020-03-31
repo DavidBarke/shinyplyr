@@ -211,6 +211,18 @@ div .collapsible-tab-box {
   margin-bottom: 10px;
 }
 
+/* Help */
 .help-btn button, .help-btn button:hover, .help-btn button:focus {
   box-shadow: none;
+}
+
+.help-page {
+  text-align: justify;
+  max-width: 700px;
+  margin: auto;
+}
+
+.help-page table {
+  border-collapse: separate;
+  border-spacing: 15px 0;
 }

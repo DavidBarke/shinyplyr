@@ -38,6 +38,10 @@ tab_transformation <- function(
     .values$transformation$viewer$tabBox()
   })
   
+  shiny::observeEvent(input$help_transformation, {
+    .values$help$open("transformation")
+  })
+  
   shiny::callModule(
     module = m_table,
     id = "id_m_table",
