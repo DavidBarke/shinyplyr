@@ -2,12 +2,15 @@ csv_import_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "csv-import",
+    class = "import",
     shiny::uiOutput(
       outputId = ns("file_input")
     ),
     shiny::uiOutput(
       outputId = ns("file_type_not_supported")
+    ),
+    shiny::uiOutput(
+      outputId = ns("delim")
     ),
     shiny::uiOutput(
       outputId = ns("name")
@@ -64,6 +67,19 @@ csv_import <- function(
     }
   })
   
+  output$delim <- shiny::renderUI({
+    shiny::req(
+      !file_input_outdated_rv(),
+      file_type_supported_r()
+    )
+    
+    shiny::selectInput(
+      inputId = ns("delim"),
+      label = "Field delimiter",
+      choices = c(",", ";")
+    )
+  })
+  
   output$name <- shiny::renderUI({
     shiny::req(
       !file_input_outdated_rv(),
@@ -80,10 +96,15 @@ csv_import <- function(
   data_r <- shiny::reactive({
     shiny::req(
       !file_input_outdated_rv(),
-      file_type_supported_r()
+      file_type_supported_r(),
+      input$delim
     )
     
-    readr::read_csv(input$file$datapath)
+    switch(
+      input$delim,
+      "," = readr::read_csv(input$file$datapath),
+      ";" = readr::read_csv2(input$file$datapath)
+    )
   })
   
   output$finish <- shiny::renderUI({
@@ -112,7 +133,7 @@ csv_import <- function(
   })
   
   shiny::observeEvent(input$preview, {
-    new <- .values$import$viewer$append_tab(
+    new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = paste("Preview", input$name, sep = ": "),
         value = "preview" %_% input$file$name %_% input$name,

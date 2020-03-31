@@ -2,7 +2,7 @@ rds_import_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "rds-import",
+    class = "import",
     shiny::uiOutput(
       outputId = ns("file_input")
     ),
