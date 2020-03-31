@@ -4,7 +4,7 @@ help_plot_ui <- function(id) {
   htmltools::tagList(
     htmltools::p(
       "The plot operation allows you to create a plot based on the grammar of
-      graphics used by the ggplot2 package. with the grammar of graphics each
+      graphics implemented by the ggplot2 package. with the grammar of graphics each
       plot consists of several layers. The plot operation is in fact divided in
       five suboperations. Each suboperation represents one layer. For details see
       the help page of the respective layer:"

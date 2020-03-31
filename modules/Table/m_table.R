@@ -19,6 +19,7 @@ m_table_ui <- function(id) {
             "Operation",
             help_button(ns("help_operation"))
           ),
+          htmltools::div(),
           htmltools::div(
             class = "table-title",
             "Details"
@@ -46,6 +47,7 @@ m_table_ui <- function(id) {
             class = "grid-vertical-center",
             "data"
           ),
+          htmltools::div(),
           htmltools::div(
             # Class needed for disabling
             class = "operation",

@@ -64,7 +64,7 @@
 
 .row-content {
   display: grid;
-  grid-template-columns: 10px 25px 125px 1fr 30px 30px;
+  grid-template-columns: 10px 25px 125px 30px 1fr 30px 30px;
   grid-column-gap: 10px;
 }
 
@@ -104,19 +104,15 @@
   height: 100%;
 }
 
-.rename-op-container.subrows-closed {
-  grid-template-columns: auto;
-}
-
-.rename-op-container label {
-  margin: 0;
-}
-
 .rename-subrows .subrow-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-left: 135px;
+  margin-left: 175px;
   margin-right: -40px;
+}
+
+.rename-op-container.subrows-closed {
+  grid-template-columns: 1fr;
 }
 
 /* Filter */

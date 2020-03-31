@@ -48,13 +48,13 @@ rename_operation <- function(
       htmltools::tagList(
         htmltools::div(
           class = "grid-vertical-center",
-          htmltools::tags$label(
+          htmltools::tags$b(
             "Old name"
           )
         ),
         htmltools::div(
           class = "grid-vertical-center",
-          htmltools::tags$label(
+          htmltools::tags$b(
             "New name"
           )
         )
@@ -81,26 +81,6 @@ rename_operation <- function(
   
   old_names_r <- shiny::reactive({
     names(data_r())
-  })
-  
-  output$old_name <- shiny::renderUI({
-    if (subrows_open_r()) {
-      htmltools::tags$label(
-        "Old name"
-      )
-    } else {
-      paste("Old names:", paste(old_names_r(), collapse = ", "))
-    }
-  })
-  
-  output$new_name <- shiny::renderUI({
-    if (subrows_open_r()) {
-      htmltools::tags$label(
-        "New name"
-      )
-    } else {
-      paste("New names:", paste(new_names_r(), collapse = ", "))
-    }
   })
   
   output$subrows <- shiny::renderUI({

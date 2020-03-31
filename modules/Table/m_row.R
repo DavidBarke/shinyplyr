@@ -19,7 +19,7 @@ m_row_ui <- function(id, row_container_id, index) {
           # Class needed for disabling
           class = "predicate",
           shiny::selectInput(
-            inputId = ns("predicate"),
+            inputId = ns("operation"),
             label = NULL,
             choices = c(
               "select",
@@ -30,6 +30,12 @@ m_row_ui <- function(id, row_container_id, index) {
               "summarise",
               "plot"
             )
+          )
+        ),
+        htmltools::div(
+          class = "grid-center",
+          help_button(
+            inputId = ns("help_operation")
           )
         ),
         shiny::uiOutput(
@@ -81,9 +87,13 @@ m_row <- function(
     dataset_object_r()$get_id()
   })
   
+  shiny::observeEvent(input$help_operation, {
+    .values$help$open(shiny::req(input$operation))
+  })
+  
   output$operation <- shiny::renderUI({
     switch(
-      shiny::req(input$predicate),
+      shiny::req(input$operation),
       "select" = select_operation_ui(
         id = ns("id_select_operation")
       ),
@@ -109,7 +119,7 @@ m_row <- function(
   })
   
   output$sr_toggle <- shiny::renderUI({
-    if (shiny::req(input$predicate) %in%
+    if (shiny::req(input$operation) %in%
         c("rename", "plot")
     ) {
       htmltools::div(
@@ -155,7 +165,7 @@ m_row <- function(
   
   output$subrows <- shiny::renderUI({
     switch(
-      shiny::req(input$predicate),
+      shiny::req(input$operation),
       "rename" = rename_subrows_ui(
         id = ns("id_rename_operation")
       ),
@@ -166,7 +176,7 @@ m_row <- function(
   })
   
   output$result <- shiny::renderUI({
-    if (shiny::req(input$predicate) == "plot") {
+    if (shiny::req(input$operation) == "plot") {
       m_action_button(
         inputId = ns("open_plot"),
         label = NULL,
@@ -238,7 +248,7 @@ m_row <- function(
   
   operated_data_r <- shiny::reactive({
     switch (
-      shiny::req(input$predicate),
+      shiny::req(input$operation),
       "select" = select_operation_return$data_r(),
       "rename" = rename_operation_return$data_r(),
       "filter" = filter_operation_return$data_r(),
@@ -310,7 +320,7 @@ m_row <- function(
   
   return_list <- list(
     data_r = operated_data_r,
-    predicate_r = shiny::reactive(shiny::req(input$predicate))
+    predicate_r = shiny::reactive(shiny::req(input$operation))
   )
   
   return(return_list)
