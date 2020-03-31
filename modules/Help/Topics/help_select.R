@@ -58,4 +58,8 @@ help_select <- function(
 ) {
   
   ns <- session$ns
+  
+  shiny::observeEvent(input$help_rename, {
+    .values$help$open("rename")
+  })
 }

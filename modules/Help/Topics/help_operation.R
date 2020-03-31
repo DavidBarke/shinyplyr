@@ -3,13 +3,8 @@ help_operation_ui <- function(id) {
   
   htmltools::tagList(
     htmltools::p(
-      "The operation column of the transformation table is dependent on the
-      selected",
-      shiny::actionLink(
-        inputId = ns("help_predicate"),
-        label = "predicate"
-      ),
-      "For details see:"
+      "A transformation step takes the dataset from the previous transformation and applies its operation
+      according to the specific operation details. The following operations are supported:"
     ),
     shiny::uiOutput(
       outputId = ns("operation_links"),
@@ -39,9 +34,5 @@ help_operation <- function(
     shiny::observeEvent(input[["help" %_% predicate]], {
       .values$help$open(predicate)
     })
-  })
-  
-  shiny::observeEvent(input$help_predicate, {
-    .values$help$open("predicate")
   })
 }

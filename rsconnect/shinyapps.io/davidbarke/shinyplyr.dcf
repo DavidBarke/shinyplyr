@@ -1,0 +1,12 @@
+name: shinyplyr
+title: shinyplyr
+username:
+account: davidbarke
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2030039
+bundleId: 2950209
+url: https://davidbarke.shinyapps.io/shinyplyr/
+when: 1585678036.39978
+asMultiple: FALSE
+asStatic: FALSE
