@@ -92,6 +92,15 @@ init <- function() {
       .values$plot$REQUIRED_AES_NAMES, .values$plot$OPTIONAL_AES_NAMES
     )
     
+    .values$plot$LAYER <- tibble::tribble(
+      ~layer, ~name,
+      "aes", "Aesthetic",
+      "geom", "Geometry",
+      "facet", "Facets",
+      "coord", "Coordinates",
+      "theme", "Theme"
+    )
+    
     .values$help_rvs <- shiny::reactiveValues()
     
     shiny::isolate(

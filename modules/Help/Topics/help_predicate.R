@@ -1,19 +1,16 @@
 help_predicate_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  help_page_ui(
-    id = ns("id_help_page"),
-    content = htmltools::tagList(
-      htmltools::p(
-        "The predicate determines the operation, that is applied to the dataset
+  htmltools::tagList(
+    htmltools::p(
+      "The predicate determines the operation, that is applied to the dataset
       in a transformation step. All predicates except plot are names of
       dplyr functions. You can find details about the specific operations here:
       "
-      ),
-      shiny::uiOutput(
-        outputId = ns("operation_links"),
-        container = htmltools::tags$ul
-      )
+    ),
+    shiny::uiOutput(
+      outputId = ns("operation_links"),
+      container = htmltools::tags$ul
     )
   )
 }
@@ -40,10 +37,4 @@ help_predicate <- function(
       .values$help$open(predicate)
     })
   })
-  
-  shiny::callModule(
-    module = help_page,
-    id = "id_help_page",
-    .values = .values
-  )
 }

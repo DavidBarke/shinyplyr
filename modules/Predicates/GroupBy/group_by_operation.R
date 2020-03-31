@@ -30,8 +30,10 @@ group_by_operation <- function(
   })
   
   group_by_data_r <- shiny::reactive({
+    # Don't wrap input in shiny::req, because NULL will group by no variables
+    # and therefore ungroup a dataset
     data_r() %>%
-      dplyr::group_by_at(shiny::req(input$group_by_columns))
+      dplyr::group_by_at(input$group_by_columns)
   })
   
   return_list <- list(

@@ -1,22 +1,19 @@
 help_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  help_page_ui(
-    id = ns("id_help_page"),
-    content = htmltools::tagList(
-      htmltools::p(
-        "The operation column of the transformation table is dependent on the
+  htmltools::tagList(
+    htmltools::p(
+      "The operation column of the transformation table is dependent on the
       selected",
-        shiny::actionLink(
-          inputId = ns("help_predicate"),
-          label = "predicate"
-        ),
-        "For details see:"
+      shiny::actionLink(
+        inputId = ns("help_predicate"),
+        label = "predicate"
       ),
-      shiny::uiOutput(
-        outputId = ns("operation_links"),
-        container = htmltools::tags$ul
-      )
+      "For details see:"
+    ),
+    shiny::uiOutput(
+      outputId = ns("operation_links"),
+      container = htmltools::tags$ul
     )
   )
 }
@@ -47,10 +44,4 @@ help_operation <- function(
   shiny::observeEvent(input$help_predicate, {
     .values$help$open("predicate")
   })
-  
-  shiny::callModule(
-    module = help_page,
-    id = "id_help_page",
-    .values = .values
-  )
 }

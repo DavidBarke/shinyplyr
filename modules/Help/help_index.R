@@ -1,13 +1,10 @@
 help_index_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  help_page_ui(
-    id = ns("id_help_page"),
-    content = htmltools::tagList(
-      shiny::uiOutput(
-        outputId = ns("links"),
-        container = htmltools::tags$table
-      )
+  htmltools::tagList(
+    shiny::uiOutput(
+      outputId = ns("links"),
+      container = htmltools::tags$table
     )
   )
 }
@@ -19,7 +16,9 @@ help_index <- function(
   ns <- session$ns
   
   output$links <- shiny::renderUI({
-    purrr::pmap(.values$help$DATA, function(...) {
+    sorted_data <- .values$help$DATA %>% arrange(title)
+    
+    purrr::pmap(sorted_data, function(...) {
       row <- list(...)
       htmltools::tags$tr(
         htmltools::tags$td(
@@ -40,10 +39,4 @@ help_index <- function(
       .values$help$open(topic)
     })
   })
-  
-  shiny::callModule(
-    module = help_page,
-    id = "id_help_page",
-    .values = .values
-  )
 }

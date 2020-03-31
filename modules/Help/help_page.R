@@ -1,8 +1,14 @@
-help_page_ui <- function(id, content) {
+help_page_ui <- function(id, content, desc) {
   ns <- shiny::NS(id)
   
   htmltools::div(
     class = "help-page",
+    shiny::uiOutput(
+      outputId = ns("navigation")
+    ),
+    htmltools::h3(
+      desc
+    ),
     content,
     shiny::actionLink(
       inputId = ns("index"),
@@ -19,5 +25,23 @@ help_page <- function(
   
   shiny::observeEvent(input$index, {
     .values$help$open("index")
+  })
+  
+  output$navigation <- shiny::renderUI({
+    print(.values$help$history_rv())
+    shiny::req(length(.values$help$history_rv()) >= 2)
+    m_action_button(
+      inputId = ns("back"),
+      label = NULL,
+      icon = shiny::icon("arrow-left")
+    )
+  })
+  
+  shiny::observeEvent(input$back, {
+    hist <- .values$help$history_rv()
+    last_topic <- hist[2]
+    hist <- hist[-1]
+    .values$help$history_rv(hist)
+    .values$help$open(last_topic)
   })
 }

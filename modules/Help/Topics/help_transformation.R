@@ -1,16 +1,14 @@
 help_transformation_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  help_page_ui(
-    id = ns("id_help_page"),
-    content = htmltools::tagList(
-      htmltools::p(
-        "The transformation table represents the transformation of a raw dataset
+  htmltools::tagList(
+    htmltools::p(
+      "The transformation table represents the transformation of a raw dataset
       using operations you are familiar with from the package dplyr. In addition
       you may plot your data using an interface comparable to the ggplot2 package."
-      ),
-      htmltools::p(
-        "The transformation table consists of an arbitrary number of rows. Each row
+    ),
+    htmltools::p(
+      "The transformation table consists of an arbitrary number of rows. Each row
       is called a transformation step. When you start your transformation the 
       table has onyl one step. In the first step you always select the
       underlying dataset of the transformation. You can add further steps by
@@ -22,7 +20,6 @@ help_transformation_ui <- function(id) {
       if you selected the plot predicate) in the viewer below the transformation
       table.
       "
-      )
     )
   )
 }
@@ -32,10 +29,4 @@ help_transformation <- function(
 ) {
   
   ns <- session$ns
-  
-  shiny::callModule(
-    module = help_page,
-    id = "id_help_page",
-    .values = .values
-  )
 }

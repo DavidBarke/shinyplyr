@@ -1,4 +1,4 @@
-help_select_ui <- function(id) {
+help_dataset_output_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
@@ -6,7 +6,7 @@ help_select_ui <- function(id) {
   )
 }
 
-help_select <- function(
+help_dataset_output <- function(
   input, output, session, .values
 ) {
   

@@ -50,7 +50,9 @@ filter_operation <- function(
     ui <- shiny::selectInput(
       inputId = ns("column"),
       label = NULL,
-      choices = choices_r(),
+      choices = list(
+        "Select a column" = as.list(choices_r())
+      ),
       selected = fallback(shiny::isolate(input$column), NULL)
     )
     
@@ -79,7 +81,9 @@ filter_operation <- function(
     ui <- shiny::selectInput(
       inputId = ns("operator"),
       label = NULL,
-      choices = choices,
+      choices = list(
+        "Operator" = as.list(choices)
+      ),
       selected = fallback(shiny::isolate(input$operator), NULL)
     )
     
