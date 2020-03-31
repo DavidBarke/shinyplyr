@@ -2,7 +2,9 @@ help_summarise_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
-    
+    htmltools::p(
+      "The summarise operation is currently missing."
+    )
   )
 }
 

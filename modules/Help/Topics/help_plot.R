@@ -20,7 +20,7 @@ help_plot_ui <- function(id) {
       "The data layer of ggplot2 is omitted for obvious reasons, because the 
       dataset from the previous",
       shiny::actionLink(
-        inputId = ns("help_transformation_step"),
+        inputId = ns("help_transformation"),
         label = "transformation step"
       ),
       "is taken. Furthermore the statistics layer is currently not implemented."
@@ -49,5 +49,9 @@ help_plot <- function(
     shiny::observeEvent(input[["link" %_% layer]], {
       .values$help$open("plot" %_% layer)
     })
+  })
+  
+  shiny::observeEvent(input$help_transformation, {
+    .values$help$open("transformation")
   })
 }

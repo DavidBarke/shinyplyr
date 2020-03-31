@@ -8,12 +8,14 @@ select_operation_ui <- function(id) {
       shiny::selectInput(
         inputId = ns("select_type"),
         label = NULL,
-        choices = c(
-          "=" = "eq",
-          starts_with = "s_w",
-          ends_with = "e_w",
-          contains = "contains",
-          matches = "matches"
+        choices = list(
+          "Selection Helper" = list(
+            "=" = "eq",
+            starts_with = "s_w",
+            ends_with = "e_w",
+            contains = "contains",
+            matches = "matches"
+          )
         )
       )
     ),

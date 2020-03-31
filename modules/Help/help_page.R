@@ -3,11 +3,12 @@ help_page_ui <- function(id, content, desc) {
   
   htmltools::div(
     class = "help-page",
-    shiny::uiOutput(
-      outputId = ns("navigation")
-    ),
     htmltools::h3(
-      desc
+      desc,
+      shiny::uiOutput(
+        outputId = ns("navigation"),
+        inline = TRUE
+      )
     ),
     content,
     shiny::actionLink(
@@ -28,7 +29,6 @@ help_page <- function(
   })
   
   output$navigation <- shiny::renderUI({
-    print(.values$help$history_rv())
     shiny::req(length(.values$help$history_rv()) >= 2)
     m_action_button(
       inputId = ns("back"),

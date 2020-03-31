@@ -5,7 +5,7 @@ tab_transformation_ui <- function(id) {
     shinydashboard::box(
       width = 12,
       title = htmltools::tagList(
-        "Data Transformation",
+        "Transformation Table",
         help_button(ns("help_transformation"))
       ),
       m_table_ui(
