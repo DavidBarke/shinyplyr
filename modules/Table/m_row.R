@@ -24,6 +24,7 @@ m_row_ui <- function(id, row_container_id, index) {
             choices = c(
               "select",
               "rename",
+              "type",
               "filter",
               "mutate",
               "group_by",
@@ -100,6 +101,9 @@ m_row <- function(
       "rename" = rename_operation_ui(
         id = ns("id_rename_operation")
       ),
+      "type" = type_operation_ui(
+        id = ns("id_type_operation")
+      ),
       "filter" = filter_operation_ui(
         id = ns("id_filter_operation")
       ),
@@ -120,7 +124,7 @@ m_row <- function(
   
   output$sr_toggle <- shiny::renderUI({
     if (shiny::req(input$operation) %in%
-        c("rename", "plot")
+        c("rename", "type", "plot")
     ) {
       htmltools::div(
         class = "sr-toggle-btn",
@@ -169,6 +173,9 @@ m_row <- function(
       "rename" = rename_subrows_ui(
         id = ns("id_rename_operation")
       ),
+      "type" = type_subrows_ui(
+        id = ns("id_type_operation")
+      ),
       "plot" = plot_subrows_ui(
         id = ns("id_plot_operation")
       )
@@ -196,10 +203,6 @@ m_row <- function(
   })
   
   shiny::observeEvent(input$open_plot, {
-    print("OPEN PLOT")
-    
-    value <- print(ns(id_r() %_% "plot"))
-    
     new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
@@ -209,8 +212,6 @@ m_row <- function(
         )
       )
     )
-    
-    print(new)
     
     if (new) {
       shiny::callModule(
@@ -251,6 +252,7 @@ m_row <- function(
       shiny::req(input$operation),
       "select" = select_operation_return$data_r(),
       "rename" = rename_operation_return$data_r(),
+      "type" = type_operation_return$data_r(),
       "filter" = filter_operation_return$data_r(),
       "mutate" = mutate_operation_return$data_r(),
       "group_by" = group_by_operation_return$data_r(),
@@ -276,8 +278,16 @@ m_row <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    sr_toggle_r = toggle_rv,
-    row_container_id = row_container_id
+    sr_toggle_r = toggle_rv
+  )
+  
+  type_operation_return <- shiny::callModule(
+    module = type_operation,
+    id = "id_type_operation",
+    .values = .values,
+    data_r = data_r,
+    row_index = row_index,
+    sr_toggle_r = toggle_rv
   )
   
   filter_operation_return <- shiny::callModule(

@@ -1,22 +1,22 @@
-rename_operation_ui <- function(id) {
+type_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
   shiny::uiOutput(
     outputId = ns("op_container"),
-    class = "rename-op-container grid-gap"
+    class = "type-op-container grid-gap"
   )
 }
 
-rename_subrows_ui <- function(id) {
+type_subrows_ui <- function(id) {
   ns <- shiny::NS(id)
   
   shiny::uiOutput(
     outputId = ns("subrows"),
-    class = "subrows rename-subrows"
+    class = "subrows type-subrows"
   )
 }
 
-rename_operation <- function(
+type_operation <- function(
   input, output, session, .values, data_r, row_index, sr_toggle_rv
 ) {
   
@@ -49,13 +49,19 @@ rename_operation <- function(
         htmltools::div(
           class = "grid-vertical-center",
           htmltools::tags$b(
-            "Old name"
+            "Column"
           )
         ),
         htmltools::div(
           class = "grid-vertical-center",
           htmltools::tags$b(
-            "New name"
+            "Old type"
+          )
+        ),
+        htmltools::div(
+          class = "grid-vertical-center",
+          htmltools::tags$b(
+            "New type"
           )
         )
       )
@@ -63,28 +69,31 @@ rename_operation <- function(
       htmltools::div(
         class = "grid-vertical-center",
         shiny::uiOutput(
-          outputId = ns("rename_overview")
+          outputId = ns("type_overview")
         )
       )
     }
   })
   
-  output$rename_overview <- shiny::renderUI({
-    repl <- purrr::map2_chr(old_names_r(), new_names_r(), function(old_name, new_name) {
-      if (new_name == "") {
-        new_name <- "-"
-      }
-      paste(old_name, "=", new_name)
+  choices_r <- shiny::reactive({
+    names(data_r())
+  })
+  
+  old_types_r <- shiny::reactive({
+    purrr::map_chr(data_r(), function(col) class(col))
+  })
+  
+  output$type_overview <- shiny::renderUI({
+    repl <- purrr::map2_chr(choices_r(), old_types_r(), function(choice, type) {
+      paste(choice, type, sep = ": ")
     })
     paste(repl, collapse = ", ")
   })
   
-  old_names_r <- shiny::reactive({
-    names(data_r())
-  })
-  
   output$subrows <- shiny::renderUI({
-    ui <- purrr::map2(old_names_r(), seq_along(old_names_r()), function(old_name, index) {
+    ui <- purrr::pmap(
+      list(choice = choices_r(), old_type = old_types_r(), index = seq_along(choices_r())), 
+      function(choice, old_type, index) {
       htmltools::div(
         class = "subrow-container",
         htmltools::div(
@@ -95,13 +104,17 @@ rename_operation <- function(
           class = "subrow-content grid-gap",
           htmltools::div(
             class = "grid-vertical-center",
-            old_name
+            choice
+          ),
+          htmltools::div(
+            class = "grid-vertical-center",
+            old_type
           ),
           htmltools::div(
             shiny::textInput(
-              inputId = ns("new_name" %_% index),
+              inputId = ns("new_type" %_% index),
               label = NULL,
-              value = old_name
+              value = old_type
             )
           )
         )
@@ -115,38 +128,8 @@ rename_operation <- function(
     ui
   })
   
-  new_names_r <- shiny::reactive({
-    new_names <- purrr::map_chr(seq_along(old_names_r()), function(index) {
-      # Extra line is necessary, because req would stop when detecting ""
-      shiny::req(!purrr::is_null(input[["new_name" %_% index]]))
-      stringr::str_trim(input[["new_name" %_% index]])
-    })
-  })
-  
-  is_empty_name_r <- shiny::reactive({
-    new_names_r() == ""
-  })
-  
-  non_empty_names_r <- shiny::reactive({
-    new_names_r()[!is_empty_name_r()]
-  })
-  
-  old_matched_names_r <- shiny::reactive({
-    old_names_r()[!is_empty_name_r()]
-  })
-  
-  rename_names_r <- shiny::reactive({
-    setNames(old_matched_names_r(), non_empty_names_r())
-  })
-  
-  renamed_data_r <- shiny::reactive({
-    data_r() %>%
-      dplyr::select(old_matched_names_r()) %>%
-      dplyr::rename(rename_names_r())
-  })
-  
   return_list <- list(
-    data_r = renamed_data_r
+    data_r = data_r
   )
   
   return(return_list)
