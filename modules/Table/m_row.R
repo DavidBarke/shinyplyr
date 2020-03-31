@@ -200,7 +200,7 @@ m_row <- function(
     
     value <- print(ns(id_r() %_% "plot"))
     
-    new <- .values$transformation$viewer$append_tab(
+    new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
         value = value,
@@ -224,7 +224,7 @@ m_row <- function(
   })
   
   shiny::observeEvent(input$open_data, {
-    new <- .values$transformation$viewer$append_tab(
+    new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
         value = ns(id_r() %_% "data"),

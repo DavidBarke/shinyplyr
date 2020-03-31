@@ -236,7 +236,9 @@ m_table <- function(
   } 
   
   shiny::observeEvent(input$open_data, {
-    new <- .values$transformation$viewer$append_tab(
+    print(.values$viewer)
+    
+    new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = paste(name_r(), "0", sep = ": "),
         value = ns(id_r()),

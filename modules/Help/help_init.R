@@ -98,7 +98,7 @@ help_init <- function(input, output, session, .values) {
     )
     
     shiny::observeEvent(.values$help_rvs[[topic]], ignoreInit = TRUE, {
-      .values$transformation$viewer$append_tab(
+      .values$viewer$append_tab(
         tab = shiny::tabPanel(
           title = paste("Help", title, sep = ": "),
           value = ns("help" %_% topic),

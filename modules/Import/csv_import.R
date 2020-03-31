@@ -1,8 +1,8 @@
-m_import_ui <- function(id) {
+csv_import_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "rds-import",
+    class = "csv-import",
     shiny::uiOutput(
       outputId = ns("file_input")
     ),
@@ -27,7 +27,7 @@ m_import_ui <- function(id) {
   )
 }
 
-m_import <- function(
+csv_import <- function(
   input, output, session, .values
 ) {
   
@@ -40,7 +40,7 @@ m_import <- function(
     reset_rv()
     shiny::fileInput(
       inputId = ns("file"),
-      label = "Upload an rds file"
+      label = "Upload an csv file"
     )
   })
   
@@ -53,12 +53,12 @@ m_import <- function(
   })
   
   file_type_supported_r <- shiny::reactive({
-    file_ending_r() == "rds"
+    file_ending_r() == "csv"
   })
   
   output$file_type_not_supported <- shiny::renderUI({
     if (!file_type_supported_r()) {
-      paste0("File type .", file_ending_r(), " not supported. Please upload an .rds file.")
+      paste0("File type .", file_ending_r(), " not supported. Please upload an csv file.")
     } else {
       NULL
     }
@@ -83,7 +83,7 @@ m_import <- function(
       file_type_supported_r()
     )
     
-    readr::read_rds(input$file$datapath)
+    readr::read_csv(input$file$datapath)
   })
   
   output$finish <- shiny::renderUI({
@@ -95,7 +95,7 @@ m_import <- function(
         "Name must contain at least one character."
       ),
       shiny::need(
-        is.data.frame(data_r()), "Uploaded .rds file must contain a data frame."
+        is.data.frame(data_r()), "Uploaded csv file must contain a data frame."
       )
     )
     
@@ -106,7 +106,7 @@ m_import <- function(
       ),
       m_action_button(
         inputId = ns("finish"),
-        label = "Import rds"
+        label = "Import csv"
       )
     )
   })

@@ -18,7 +18,7 @@ library(writexl)
 
 # Source files inside of function, so that globalenv doesn't get polluted
 init <- function() {
-  # Initialisation ---------------------------------------------------------------
+  # Initialisation -------------------------------------------------------------
   source("./modules/Other/source_directory.R", encoding = "UTF-8", chdir = T)
   
   source_directory(
@@ -31,7 +31,7 @@ init <- function() {
   options(DT.options = list(dom = "lfptp", scrollX = TRUE))
   
   
-  # UI ---------------------------------------------------------------------------
+  # UI -------------------------------------------------------------------------
   ui <- htmltools::div(
     shinyWidgets::setBackgroundColor(),
     shinyWidgets::useShinydashboard(),
@@ -46,27 +46,39 @@ init <- function() {
           id = "id_tab_transformation"
         )
       ),
-      shiny::tabPanel(
+      shiny::navbarMenu(
         title = "Import",
-        tab_import_ui(
-          id = "id_tab_import"
+        shiny::tabPanel(
+          title = "csv",
+          tab_csv_import_ui(
+            id = "id_tab_csv_import"
+          )
+        ),
+        shiny::tabPanel(
+          title = "rds",
+          tab_rds_import_ui(
+            id = "id_tab_rds_import"
+          )
         )
-      ),
-      shiny::tabPanel(
-        title = "About"
+      )
+    ),
+    shiny::fluidPage(
+      viewer_ui(
+        id = "id_viewer"
       )
     ),
     shinyjs::useShinyjs()
   )
   
   
-  # Server -----------------------------------------------------------------------
+  # Server ---------------------------------------------------------------------
   server <- function(input, output, session) {
     
     # Create an environment that is passed to every module. 
     .values <- new.env()
     
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
+    
     .values$anim <- TRUE
     
     .values$dataset_id_rv <- shiny::reactiveVal(NULL)
@@ -120,8 +132,20 @@ init <- function() {
     )
     
     shiny::callModule(
-      module = tab_import,
-      id = "id_tab_import",
+      module = tab_csv_import,
+      id = "id_tab_csv_import",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_rds_import,
+      id = "id_tab_rds_import",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = viewer,
+      id = "id_viewer",
       .values = .values
     )
     
