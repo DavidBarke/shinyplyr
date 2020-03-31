@@ -4,7 +4,10 @@ tab_transformation_ui <- function(id) {
   shiny::fluidRow(
     shinydashboard::box(
       width = 12,
-      title = "Data Transformation",
+      title = htmltools::tagList(
+        "Data Transformation",
+        help_button(ns("help_transformation"))
+      ),
       m_table_ui(
         id = ns("id_m_table")
       ),

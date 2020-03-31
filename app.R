@@ -12,7 +12,6 @@ library(dplyr)
 library(stringr)
 
 library(ggplot2)
-library(plotly)
 
 library(readr)
 library(writexl)
@@ -91,6 +90,12 @@ init <- function() {
     
     shiny::isolate(
       fill_dataset_storage(.values$dataset_storage)
+    )
+    
+    shiny::callModule(
+      module = help_init,
+      id = "id_help_init",
+      .values = .values
     )
     
     shiny::callModule(

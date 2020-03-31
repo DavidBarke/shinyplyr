@@ -16,13 +16,13 @@ m_table_ui <- function(id) {
           htmltools::div(),
           htmltools::div(
             class = "table-title",
-            "Predicate"
+            "Predicate",
+            help_button(ns("help_predicate"))
           ),
           htmltools::div(
             class = "table-title",
-            htmltools::div(
-              "Operation"
-            )
+            "Operation",
+            help_button(ns("help_operation"))
           ),
           htmltools::div(
             class = "table-title",
@@ -254,6 +254,12 @@ m_table <- function(
     }
   })
   
+  # Help -----------------------------------------------------------------------
+  shiny::observeEvent(input$help_operation, {
+    .values$help$operation_rv(.values$help$operation_rv() + 1)
+  })
+  
+  # Return ---------------------------------------------------------------------
   return_list <- list(
     data_r = shiny::reactive(rvs$data)
   )
