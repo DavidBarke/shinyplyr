@@ -42,7 +42,8 @@ import_finish <- function(
         DT::dataTableOutput(
           outputId = ns("preview" %_% file_name_r() %_% name_r())
         )
-      )
+      ),
+      select = TRUE
     )
     
     if (new) {

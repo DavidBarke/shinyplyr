@@ -113,7 +113,8 @@ help_init <- function(input, output, session, .values) {
             ),
             desc = desc
           )
-        )
+        ),
+        select = TRUE
       )
     })
   })

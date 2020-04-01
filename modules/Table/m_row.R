@@ -210,7 +210,8 @@ m_row <- function(
         plot_output_ui(
           id = ns(id_r() %_% "plot_output")
         )
-      )
+      ),
+      select = TRUE
     )
     
     if (new) {
@@ -233,7 +234,8 @@ m_row <- function(
         data_output_ui(
           id = ns(id_r() %_% "data_output")
         )
-      )
+      ),
+      select = TRUE
     )
     
     if (new) {

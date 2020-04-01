@@ -80,7 +80,8 @@ data_operation <- function(
         data_export_ui(
           id = ns("id_data_export")
         )
-      )
+      ),
+      select = TRUE
     )
     
     if (new) {

@@ -44,7 +44,8 @@ dataset_explorer_class_server <- function(
         data_output_ui(
           id = ns(object$get_id() %_% "data_output")
         )
-      )
+      ),
+      select = TRUE
     )
     
     if (new) {
