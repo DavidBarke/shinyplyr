@@ -79,7 +79,7 @@ init <- function() {
     # Create an environment that is passed to every module. 
     .values <- new.env()
     
-    .values$tree <- shinyExplorer::ExplorerTree$new()
+    .values$tree <- shiny::isolate(shinyExplorer::ExplorerTree$new())
     
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
     
