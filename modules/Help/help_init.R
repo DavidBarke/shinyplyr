@@ -38,7 +38,8 @@ help_init <- function(input, output, session, .values) {
     "rename", "Rename", "Operation: Rename variables by name", 
     "select", "Select", "Operation: Select variables by name",
     "summarise", "Summarise", "Operation: Reduce multiple values down to a single value",
-    "transformation", "Transformation table", "Step-wise data transformation"
+    "transformation", "Transformation table", "Transformation table",
+    "type", "Type", "Operation: Change column data types"
   )
   
   help_ui <- list(
@@ -57,7 +58,8 @@ help_init <- function(input, output, session, .values) {
     rename = help_rename_ui,
     select = help_select_ui,
     summarise = help_summarise_ui,
-    transformation = help_transformation_ui
+    transformation = help_transformation_ui,
+    type = help_type_ui
   )
   
   help_server <- list(
@@ -76,9 +78,11 @@ help_init <- function(input, output, session, .values) {
     rename = help_rename,
     select = help_select,
     summarise = help_summarise,
-    transformation = help_transformation
+    transformation = help_transformation,
+    type = help_type
   )
   
+  # Create help pages
   purrr::pmap(.values$help$DATA, function(...) {
     row <- list(...)
     topic <- row$topic; title <- row$title; desc <- row$desc
