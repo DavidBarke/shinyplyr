@@ -41,7 +41,7 @@ init_constants <- function(.values) {
     "raw", "raw", as.raw, FALSE,
     "list", "list", as.list, FALSE,
     "named list", "named list", as.list, FALSE,
-    "fct", "factor", as.factor, TRUE,
+    "fct", "factor", function(x) as.factor(unclass(x)), TRUE,
     "ord", "ordered", as.ordered, TRUE,
     "date", "Date", as.Date, FALSE,
     "dttm", "POSIXt", as.POSIXct, FALSE,

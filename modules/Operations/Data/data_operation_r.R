@@ -118,11 +118,13 @@ data_operation <- function(
     visible_r = shiny::reactive(c("__group__", "dataset")),
     ui = "minimal",
     mode = "modal",
-    action_button_fun = m_action_button
+    action_button_fun = m_action_button,
+    .label_list = label_explorer_selector(select_element = "Select dataset")
   )
   
   return_list <- list(
-    data_r = data_r
+    data_r = data_r,
+    dataset_object_r = dataset_object_r
   )
   
   return(return_list)

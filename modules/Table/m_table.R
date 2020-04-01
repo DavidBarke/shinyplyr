@@ -74,6 +74,8 @@ m_table <- function(
   })
   
   output$plus_button <- shiny::renderUI({
+    shiny::req(rvs$data)
+    
     m_action_button(
       inputId = ns("add_row"),
       label = NULL,
@@ -109,7 +111,7 @@ m_table <- function(
     
     if (rvs$n_row > rvs$max_row) {
       if (rvs$n_row == 1) {
-        prev_data_r <- data_r
+        prev_data_r <- data_operation_return$data_r
       } else {
         prev_data_r <- m_row_env[["m_row" %_% (rvs$n_row - 1)]]$data_r
       }
@@ -121,7 +123,7 @@ m_table <- function(
         id = "id_m_row" %_% rvs$n_row,
         .values = .values,
         data_r = prev_data_r,
-        dataset_object_r = dataset_object_r,
+        dataset_object_r = data_operation_return$dataset_object_r,
         row_index = rvs$n_row,
         remove_row_fun = remove_row_fun,
         row_container_id = paste0("#", row_container_id)
