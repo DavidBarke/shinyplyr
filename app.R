@@ -16,6 +16,7 @@ library(ggplot2)
 library(readr)
 library(writexl)
 
+# install with remotes::install_github("DavidBarke/shinyExplorer")
 library(shinyExplorer)
 
 # Source files inside of function, so that globalenv doesn't get polluted
