@@ -16,6 +16,8 @@ library(ggplot2)
 library(readr)
 library(writexl)
 
+library(shinyExplorer)
+
 # Source files inside of function, so that globalenv doesn't get polluted
 init <- function() {
   # Initialisation -------------------------------------------------------------
@@ -76,6 +78,8 @@ init <- function() {
     
     # Create an environment that is passed to every module. 
     .values <- new.env()
+    
+    .values$tree <- shinyExplorer::ExplorerTree$new()
     
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
     
