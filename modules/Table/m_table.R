@@ -176,6 +176,11 @@ m_table <- function(
     rvs$n_row <- rvs$n_row - 1
   }
   
+  # Help -----------------------------------------------------------------------
+  shiny::observeEvent(input$help_operation, {
+    .values$help$open("operation")
+  })
+  
   data_operation_return <- shiny::callModule(
     module = data_operation,
     id = "id_data_operation",

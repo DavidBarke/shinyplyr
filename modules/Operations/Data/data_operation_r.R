@@ -92,11 +92,6 @@ data_operation <- function(
     }
   })
   
-  # Help -----------------------------------------------------------------------
-  shiny::observeEvent(input$help_operation, {
-    .values$help$open("operation")
-  })
-  
   # Export
   shiny::callModule(
     module = data_export,

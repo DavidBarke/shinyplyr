@@ -1,11 +1,15 @@
 linetype_aes_ui <- function(id, aes) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
+  htmltools::tagList(
     shiny::selectInput(
       inputId = ns("linetype"),
       label = NULL,
-      choices = c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash"),
+      choices = list(
+        "Select linetype" = list(
+          "blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash"
+        )
+      ),
       selected = "solid"
     )
   )

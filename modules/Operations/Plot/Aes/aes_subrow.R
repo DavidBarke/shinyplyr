@@ -110,24 +110,16 @@ aes_subrow <- function(
     subrow_index
   })
   
-  properties_r <- shiny::reactive({
-    properties(geom_r(), n_var_r())
+  all_aes_r <- shiny::reactive({
+    all_aes(geom_r(), n_var_r(), .values)
   })
   
   aes_names_r <- shiny::reactive({
-    unlist(properties_r())
-  })
-  
-  required_aes_names_r <- shiny::reactive({
-    properties_r()$required
-  })
-  
-  optional_aes_names_r <- shiny::reactive({
-    properties_r()$optional
+    unlist(all_aes_r())
   })
   
   req_opt_names_r <- shiny::reactive({
-    c(required_aes_names_r(), optional_aes_names_r())
+    unlist(all_aes_r()[c("required", "optional_class")])
   })
   
   output$subrows <- shiny::renderUI({
@@ -214,8 +206,11 @@ aes_subrow <- function(
   
   free_aes_names_r <- shiny::reactive({
     setdiff(
-      req_opt_names_r()[selected_aes_vals_r() == "NULL"],
-      c("group", "na.rm", "show.legend")
+      union(
+        req_opt_names_r()[selected_aes_vals_r() == "NULL"],
+        all_aes_r()$optional_geom
+      ),
+      c("group")
     )
   })
   

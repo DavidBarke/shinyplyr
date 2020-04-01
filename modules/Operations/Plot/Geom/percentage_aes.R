@@ -1,7 +1,7 @@
 percentage_aes_ui <- function(id, aes) {
   ns <- shiny::NS(id)
   
-  htmltools::div(
+  htmltools::tagList(
     shiny::numericInput(
       inputId = ns("percentage"),
       label = NULL,

@@ -102,7 +102,6 @@ facet_subrow <- function(
         if (length(safe_facet_vars_r()) == 1) {
           rows <- safe_facet_vars_r()
           rows <- sym(rows)
-          print(rows)
           ggplot2::facet_grid(rows = vars(!!rows))
         } else {
           rows <- safe_facet_vars_r()[1]

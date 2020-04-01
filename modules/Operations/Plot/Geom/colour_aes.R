@@ -7,7 +7,7 @@ colour_aes_ui <- function(id, aes) {
     value = "lightblue"
   }
   
-  htmltools::div(
+  htmltools::tagList(
     colourpicker::colourInput(
       inputId = ns("colour"),
       label = NULL,

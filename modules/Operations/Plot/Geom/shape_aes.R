@@ -14,7 +14,7 @@ shape_aes_ui <- function(id, aes) {
   choices <- c(0:25, 33:126)
   names(choices) <- paste(choices, c(shape_names, dec_to_asc(33:126)), sep = ": ")
   
-  htmltools::div(
+  htmltools::tagList(
     shiny::selectInput(
       inputId = ns("shape"),
       label = NULL,

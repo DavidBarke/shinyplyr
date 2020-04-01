@@ -15,18 +15,22 @@ geom_subrows <- function(
   
   geom_aes_ui <- list(
     colour = colour_aes_ui,
+    direction = direction_aes_ui,
     linetype = linetype_aes_ui,
     percentage = percentage_aes_ui,
     positive = positive_aes_ui,
-    shape = shape_aes_ui
+    shape = shape_aes_ui,
+    show.legend = show_legend_aes_ui
   )
   
   geom_aes_server <- list(
     colour = colour_aes,
+    direction = direction_aes,
     linetype = linetype_aes,
     percentage = percentage_aes,
     positive = positive_aes,
-    shape = shape_aes
+    shape = shape_aes,
+    show.legend = show_legend_aes
   )
   
   aes_return_env <- new.env()
@@ -35,7 +39,7 @@ geom_subrows <- function(
     if (aes == "group") return()
     
     aes_return_env[[aes]] <- shiny::callModule(
-      module = geom_aes_server[[aes_class(aes)]],
+      module = geom_aes_server[[aes_class(aes, .values)]],
       id = aes %_% "value",
       .values = .values
     )
@@ -55,7 +59,7 @@ geom_subrows <- function(
             class = "grid-vertical-center",
             aes
           ),
-          geom_aes_ui[[aes_class(aes)]](
+          geom_aes_ui[[aes_class(aes, .values)]](
             id = ns(aes %_% "value"),
             aes = aes
           )
