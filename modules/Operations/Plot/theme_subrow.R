@@ -7,9 +7,25 @@ theme_subrow_ui <- function(id) {
       outputId = ns("index"),
       class = "grid-center"
     ),
-    shiny::uiOutput(
-      outputId = ns("content"),
-      class = "grid-gap theme-content"
+    htmltools::div(
+      class = "grid-gap theme-content",
+      # Toggle sr
+      htmltools::div(),
+      htmltools::tags$b(
+        class = "grid-vertical-center",
+        "Theme"
+      ),
+      htmltools::div(
+        class = "grid-vertical-center",
+        help_button(ns("help_plot_them"))
+      ),
+      shiny::selectInput(
+        inputId = ns("theme"),
+        label = NULL,
+        choices = list(
+          Themes = themes
+        )
+      )
     )
   )
 }
@@ -30,24 +46,6 @@ theme_subrow <- function(
     "bw", "classic", "dark", "gray", "grey", "light", "linedraw", "minimal"
   )
   
-  output$content <- shiny::renderUI({
-    htmltools::tagList(
-      # Toggle sr
-      htmltools::div(),
-      htmltools::tags$b(
-        class = "grid-vertical-center",
-        "Theme"
-      ),
-      shiny::selectInput(
-        inputId = ns("theme"),
-        label = NULL,
-        choices = list(
-          Themes = themes
-        )
-      )
-    )
-  })
-  
   theme_fun_r <- shiny::reactive({
     switch(
       shiny::req(input$theme),
@@ -60,6 +58,10 @@ theme_subrow <- function(
       "linedraw" = ggplot2::theme_linedraw,
       "minimal" = ggplot2::theme_minimal
     )
+  })
+  
+  shiny::observeEvent(input$help_plot_theme, {
+    .values$help$open("plot_theme")
   })
   
   return_list <- list(

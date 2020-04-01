@@ -21,6 +21,9 @@ plot_subrows_ui <- function(id) {
     facet_subrow_ui(
       id = ns("id_facet_subrow")
     ),
+    coord_subrow_ui(
+      id = ns("id_coord_subrow")
+    ),
     theme_subrow_ui(
       id = ns("id_theme_subrow")
     )
@@ -37,6 +40,7 @@ plot_operation <- function(
     ggplot(data_r(), aes_subrow_return$aes_r()) +
       do.call(geom_subrow_return$geom_fun_r(), geom_subrow_return$geom_args_r()) +
       facet_subrow_return$facet_r() +
+      coord_subrow_return$coord_fun_r()() + 
       theme_subrow_return$theme_fun_r()()
   })
   
@@ -62,6 +66,14 @@ plot_operation <- function(
   facet_subrow_return <- shiny::callModule(
     module = facet_subrow,
     id = "id_facet_subrow",
+    .values = .values,
+    data_r = data_r,
+    row_index = row_index
+  )
+  
+  coord_subrow_return <- shiny::callModule(
+    module = coord_subrow,
+    id = "id_coord_subrow",
     .values = .values,
     data_r = data_r,
     row_index = row_index

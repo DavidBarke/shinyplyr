@@ -7,34 +7,17 @@ facet_subrow_ui <- function(id) {
       outputId = ns("index"),
       class = "grid-center"
     ),
-    shiny::uiOutput(
-      outputId = ns("content"),
-      class = "grid-gap facet-content"
-    )
-  )
-}
-
-facet_subrow <- function(
-  input, output, session, .values, data_r, row_index
-) {
-  
-  ns <- session$ns
-  
-  subrow_index <- paste(row_index, 3, sep = ".")
-  
-  output$index <- shiny::renderUI({
-    subrow_index
-  })
-  
-  output$content <- shiny::renderUI({
-    htmltools::tagList(
+    htmltools::div(
+      class = "grid-gap facet-content",
       # Toggle sr
       htmltools::div(),
+      htmltools::tags$b(
+        class = "grid-vertical-center",
+        "Facet"
+      ),
       htmltools::div(
         class = "grid-vertical-center",
-        htmltools::tags$b(
-          "Facet"
-        )
+        help_button(ns("help_plot_facet"))
       ),
       shiny::selectInput(
         inputId = ns("facet_type"),
@@ -49,6 +32,19 @@ facet_subrow <- function(
         outputId = ns("facets")
       )
     )
+  )
+}
+
+facet_subrow <- function(
+  input, output, session, .values, data_r, row_index
+) {
+  
+  ns <- session$ns
+  
+  subrow_index <- paste(row_index, 3, sep = ".")
+  
+  output$index <- shiny::renderUI({
+    subrow_index
   })
   
   choices_r <- shiny::reactive({
@@ -113,6 +109,10 @@ facet_subrow <- function(
       },
       wrap = ggplot2::facet_wrap(safe_facet_vars_r())
     )
+  })
+  
+  shiny::observeEvent(input$help_plot_facet, {
+    .values$help$open("plot_facet")
   })
   
   return_list <- list(

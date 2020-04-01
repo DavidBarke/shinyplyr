@@ -6,11 +6,13 @@ geom_content_ui <- function(id) {
       outputId = ns("toggle_btn"),
       class = "sr-toggle-btn grid-vertical-center"
     ),
+    htmltools::tags$b(
+      class = "grid-vertical-center",
+      "Geometry"
+    ),
     htmltools::div(
       class = "grid-vertical-center",
-      htmltools::tags$b(
-        "Geometry"
-      )
+      help_button(ns("help_plot_geom"))
     ),
     shiny::uiOutput(
       outputId = ns("n_var")
@@ -130,6 +132,10 @@ geom_content <- function(
       "smooth" = ggplot2::geom_smooth,
       "step" = ggplot2::geom_step
     )
+  })
+  
+  shiny::observeEvent(input$help_plot_geom, {
+    .values$help$open("plot_geom")
   })
   
   return_list <- list(

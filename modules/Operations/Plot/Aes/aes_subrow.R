@@ -150,11 +150,13 @@ aes_subrow <- function(
   output$content <- shiny::renderUI({
     ui <- if (toggle_rv() %% 2 == 0) {
       htmltools::tagList(
+        htmltools::tags$b(
+          class = "grid-vertical-center",
+          "Aesthetic"
+        ),
         htmltools::div(
           class = "grid-vertical-center",
-          htmltools::tags$label(
-            "Aesthetic"
-          )
+          help_button(ns("help_plot_aes"))
         ),
         htmltools::div(
           class = "grid-vertical-center",
@@ -225,6 +227,10 @@ aes_subrow <- function(
     aes_list <- aes_list[!names(aes_list) %in% c("x", "y")]
     
     ggplot2::aes(!!x, !!y, !!!aes_list)
+  })
+  
+  shiny::observeEvent(input$help_plot_aes, {
+    .values$help$open("plot_aes")
   })
   
   return_list <- list(
