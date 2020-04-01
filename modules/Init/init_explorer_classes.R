@@ -1,5 +1,10 @@
 init_explorer_classes <- function() {
-  group_explorer_class <- shinyExplorer::group_explorer_class()
+  group_explorer_class <- shinyExplorer::group_explorer_class(
+    .label_list = shinyExplorer::label_group_explorer_class(
+      add = "New folder",
+      new_group_name = "New folder"
+    )
+  )
   
   dataset_explorer_class <- shinyExplorer::ExplorerClass$new(
     id = "dataset",

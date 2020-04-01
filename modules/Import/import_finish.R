@@ -90,7 +90,13 @@ import_finish <- function(
       )
     )
     
-    shinyjs::alert(paste("Dataset", name_r(), "successfully imported."))
+    shinyjs::alert(
+      paste(
+        "Dataset", name_r(), 
+        "saved in", 
+        paste0("home/", path_to_folder_r(), ".")
+      )
+    )
     
     reset_rv(reset_rv() + 1)
     file_input_outdated_rv(TRUE)
