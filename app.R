@@ -44,6 +44,18 @@ init <- function() {
     shiny::navbarPage(
       title = "shinyplyr",
       shiny::tabPanel(
+        title = "Home",
+        tab_home_ui(
+          id = "id_tab_home"
+        )
+      ),
+      shiny::tabPanel(
+        title = "Data",
+        tab_data_ui(
+          id = "id_tab_data"
+        )
+      ),
+      shiny::tabPanel(
         title = "Transformation",
         tab_transformation_ui(
           id = "id_tab_transformation"
@@ -95,6 +107,18 @@ init <- function() {
     shiny::callModule(
       module = help_init,
       id = "id_help_init",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_home,
+      id = "id_tab_home",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_data,
+      id = "id_tab_data",
       .values = .values
     )
     

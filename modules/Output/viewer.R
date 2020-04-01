@@ -2,7 +2,8 @@ viewer_ui <- function(id) {
   ns <- shiny::NS(id)
   
   shiny::uiOutput(
-    outputId = ns("viewer")
+    outputId = ns("viewer"),
+    class = "viewer"
   )
 }
 

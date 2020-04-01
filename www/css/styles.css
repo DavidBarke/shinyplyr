@@ -250,3 +250,7 @@ div .collapsible-tab-box {
   border-collapse: separate;
   border-spacing: 15px 0;
 }
+
+.viewer > .col-sm-12 {
+  padding: 0;
+}
