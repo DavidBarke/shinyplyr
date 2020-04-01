@@ -25,7 +25,7 @@ positive_aes <- function(
   }) %>% debounce(1000)
   
   shiny::observeEvent(debounced_value_r(), {
-    if (shiny::req(input$value) < 0) {
+    if (safe_numeric_input_value(shiny::req(input$value)) < 0) {
       shiny::updateNumericInput(
         session = session,
         inputId = "value",
@@ -35,7 +35,10 @@ positive_aes <- function(
   })
   
   return_list <- list(
-    value_r = shiny::reactive(fallback(input$value, 0.5))
+    value_r = shiny::reactive({
+      value <- safe_numeric_input_value(fallback(input$value, 0.5))
+      max(value, 0)
+    })
   )
   
   return(return_list)

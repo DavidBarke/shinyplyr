@@ -12,8 +12,10 @@ plot_output_ui <- function(id) {
 }
 
 plot_output <- function(
-  input, output, session, .values, plot_r, dataset_object
+  input, output, session, .values, plot_r, dataset_object, tab_value
 ) {
+  
+  force(tab_value)
   
   ns <- session$ns
   
@@ -33,22 +35,16 @@ plot_output <- function(
     .values$dataset_id_rv() == id_r()
   })
   
-  safe_plot_r <- shiny::reactive({
-    if (is_connected_r()) {
-      plot_r()
-    } else {
-      rvs$static_plot
-    }
-  })
-  
-  shiny::observeEvent(plot_r(), {
-    if (is_connected_r()) {
-      rvs$static_plot <- plot_r()
+  observe({
+    if (!is_connected_r()) {
+      .values$viewer$remove_tab(tab_value)
     }
   })
   
   output$plot <- shiny::renderPlot({
-    safe_plot_r()
+    shiny::req(is_connected_r())
+    shiny::req(plot_r())
+    plot_r()
   })
   
   output$connected_state <- shiny::renderUI({

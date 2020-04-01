@@ -58,14 +58,14 @@ geom_content <- function(
   })
   
   output$n_var <- shiny::renderUI({
-    choices <- 2
+    choices <- 1:2
     choices <- choices[choices <= length(names_r())]
     
     shiny::selectInput(
       inputId = ns("n_var"),
       label = NULL,
       choices = list(
-        "Number of Variables" = list(choices)
+        "Number of Variables" = as.list(choices)
       )
     )
   })
@@ -122,7 +122,9 @@ geom_content <- function(
     switch(
       shiny::req(input$geom),
       "area" = ggplot2::geom_area,
+      "bar" = ggplot2::geom_bar,
       "bin2d" = ggplot2::geom_bin2d,
+      "dotplot" = ggplot2::geom_dotplot,
       "density2d" = ggplot2::geom_density2d,
       "hex" = ggplot2::geom_hex,
       "histogram" = ggplot2::geom_histogram,

@@ -224,15 +224,10 @@ aes_subrow <- function(
   
   aes_r <- shiny::reactive({
     aes_list <- purrr::map(non_null_aes_names_r(), function(aes) {
-      sym(aes_return_env[[aes]]$value_r())
+      aes_return_env[[aes]]$value_r()
     })
     
-    x <- aes_list$x
-    y <- aes_list$y
-    
-    aes_list <- aes_list[!names(aes_list) %in% c("x", "y")]
-    
-    ggplot2::aes(!!x, !!y, !!!aes_list)
+    do.call(ggplot2::aes_string, aes_list)
   })
   
   shiny::observeEvent(input$help_plot_aes, {

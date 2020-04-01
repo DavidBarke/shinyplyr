@@ -67,10 +67,13 @@ geom_subrow <- function(
     free_aesthetics_r = free_aesthetics_r
   )
   
+  geom_xxx_r <- shiny::reactive({
+    do.call(geom_content_return$geom_fun_r(), geom_subrows_return$geom_args_r())
+  })
+  
   return_list <- list(
+    geom_xxx_r = geom_xxx_r,
     geom_r = geom_content_return$geom_r,
-    geom_args_r = geom_subrows_return$geom_args_r,
-    geom_fun_r = geom_content_return$geom_fun_r,
     n_var_r = geom_content_return$n_var_r
   )
   

@@ -73,14 +73,15 @@ coord_subrow <- function(
   })
   
   safe_aspect_ratio_r <- shiny::reactive({
-    max(shiny::req(input$aspect_ratio), 0.001)
+    value <- safe_numeric_input_value(shiny::req(input$aspect_ratio))
+    max(value, 0.001)
   })
   
-  throttled_aspect_ratio_r <- shiny::reactive({
+  debounced_aspect_ratio_r <- shiny::reactive({
     shiny::req(input$aspect_ratio)
-  }) %>% throttle(1000)
+  }) %>% shiny::debounce(1000)
   
-  shiny::observeEvent(throttled_aspect_ratio_r(), {
+  shiny::observeEvent(debounced_aspect_ratio_r(), {
     if (shiny::req(input$aspect_ratio) <= 0) {
       shiny::updateNumericInput(
         session = session,

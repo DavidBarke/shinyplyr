@@ -225,11 +225,11 @@ filter_operation <- function(
   numeric_value_r <- shiny::reactive({
     if (shiny::req(input$operator) == "bw") {
       c(
-        shiny::req(input$numeric_value_start),
-        shiny::req(input$numeric_value_end)
+        safe_numeric_input_value(shiny::req(input$numeric_value_start)),
+        safe_numeric_input_value(shiny::req(input$numeric_value_end))
       )
     } else {
-      shiny::req(input$numeric_value)
+      safe_numeric_input_value(shiny::req(input$numeric_value))
     }
   })
   

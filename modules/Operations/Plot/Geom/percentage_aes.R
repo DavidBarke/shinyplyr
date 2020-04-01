@@ -24,7 +24,7 @@ percentage_aes <- function(
   }) %>% debounce(1000)
   
   shiny::observeEvent(debounced_percentage_r(), {
-    if (shiny::req(input$percentage) > 1) {
+    if (safe_numeric_input_value(shiny::req(input$percentage)) > 1) {
       shiny::updateNumericInput(
         session = session,
         inputId = "percentage",
@@ -40,7 +40,7 @@ percentage_aes <- function(
   })
   
   return_list <- list(
-    value_r = shiny::reactive(max(min(fallback(input$percentage, 1), 1), 0))
+    value_r = shiny::reactive(max(min(safe_numeric_input_value(fallback(input$percentage, 1)), 1), 0))
   )
   
   return(return_list)

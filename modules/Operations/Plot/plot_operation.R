@@ -38,7 +38,7 @@ plot_operation <- function(
   
   plot_r <- shiny::reactive({
     ggplot(data_r(), aes_subrow_return$aes_r()) +
-      do.call(geom_subrow_return$geom_fun_r(), geom_subrow_return$geom_args_r()) +
+      geom_subrow_return$geom_xxx_r() +
       facet_subrow_return$facet_r() +
       coord_subrow_return$coord_r() + 
       theme_subrow_return$theme_fun_r()()

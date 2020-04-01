@@ -187,7 +187,7 @@
 
 .coord-content {
   display: grid;
-  grid-template-columns: 25px 70px 30px 120px 1fr;
+  grid-template-columns: 25px 70px 30px 160px 1fr;
 }
 
 .theme-content {

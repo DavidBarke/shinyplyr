@@ -219,7 +219,8 @@ m_row <- function(
         id = id_r() %_% "plot_output",
         .values = .values,
         plot_r = plot_operation_return$plot_r,
-        dataset_object = dataset_object_r()
+        dataset_object = dataset_object_r(),
+        tab_value = ns(id_r() %_% "plot")
       )
     }
   })

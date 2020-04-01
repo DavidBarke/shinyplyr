@@ -4,20 +4,24 @@ init_constants <- function(.values) {
   )
   
   .values$plot$GEOM <- tibble::tribble(
-    ~name, ~class, ~n, ~optional,
-    "area", "filled", 2, character(),
-    "bin2d", "bin2d", 2, character(),
-    "density2d", "filled", 2, character(),
-    "hex", "filled", 2, character(),
-    "line", "path", 2, character(),
-    "path", "path", 2, character(),
-    "point", "point", 2, character(),
-    "smooth", "filled", 2, character(),
-    "step", "path", 2, c("direction")
+    ~name, ~class, ~optional,
+    "area", "filled", character(),
+    "bar", "filled", character(),
+    "bin2d", "bin2d", character(),
+    "density2d", "filled", character(),
+    "dotplot", "dotplot", character(),
+    "hex", "filled", character(),
+    "histogram", "filled", character(),
+    "line", "path", character(),
+    "path", "path", character(),
+    "point", "point", character(),
+    "smooth", "filled", character(),
+    "step", "path", c("direction")
   )
   
   .values$plot$GEOM_CLASS_OPTIONAL_AES <- list(
     bin2d = c("alpha", "colour", "group", "linetype", "size"),
+    dotplot = c("alpha", "colour", "fill", "group", "linetype"),
     filled = c("alpha", "colour", "fill", "group", "linetype", "size"),
     path = c("alpha", "colour", "group", "linetype", "size"),
     point = c("alpha", "colour", "fill", "group", "shape", "size")
