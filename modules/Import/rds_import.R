@@ -99,47 +99,19 @@ rds_import <- function(
       )
     )
     
-    htmltools::tagList(
-      m_action_button(
-        inputId = ns("preview"),
-        label = "Preview"
-      ),
-      m_action_button(
-        inputId = ns("finish"),
-        label = "Import rds"
-      )
+    import_finish_ui(
+      id = ns("id_import_finish")
     )
   })
   
-  shiny::observeEvent(input$preview, {
-    new <- .values$viewer$append_tab(
-      tab = shiny::tabPanel(
-        title = paste("Preview", input$name, sep = ": "),
-        value = "preview" %_% input$file$name %_% input$name,
-        DT::dataTableOutput(
-          outputId = ns("preview" %_% input$file$name %_% input$name)
-        )
-      )
-    )
-    
-    if (new) {
-      output[["preview" %_% input$file$name %_% input$name]] <- DT::renderDataTable({
-        DT::datatable(data_r())
-      })
-    }
-  })
-  
-  shiny::observeEvent(input$finish, {
-    .values$dataset_storage$add_object(
-      DatasetObject$new(
-        name = input$name,
-        dataset = data_r()
-      )
-    )
-    
-    shinyjs::alert(paste("Dataset", input$name, "successfully imported."))
-    
-    reset_rv(reset_rv() + 1)
-    file_input_outdated_rv(TRUE)
-  })
+  shiny::callModule(
+    module = import_finish,
+    id = "id_import_finish",
+    .values = .values,
+    data_r = data_r,
+    file_name_r = shiny::reactive(input$file$name),
+    name_r = shiny::reactive(input$name),
+    reset_rv = reset_rv,
+    file_input_outdated_rv = file_input_outdated_rv
+  )
 }

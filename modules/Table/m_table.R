@@ -33,37 +33,8 @@ m_table_ui <- function(id) {
         )
       ),
       # First row always contains selection of dataset
-      htmltools::div(
-        id = ns("row_0"),
-        class = "row-container",
-        htmltools::div(
-          class = "row-content",
-          htmltools::div(
-            class = "grid-center",
-            "0"
-          ),
-          htmltools::div(),
-          htmltools::div(
-            class = "grid-vertical-center",
-            "data"
-          ),
-          htmltools::div(),
-          htmltools::div(
-            # Class needed for disabling
-            class = "operation",
-            shiny::uiOutput(
-              outputId = ns("select_dataset")
-            )
-          ),
-          htmltools::div(
-            class = "grid-center",
-            m_action_button(
-              inputId = ns("open_data"),
-              label = NULL,
-              icon = shiny::icon("table")
-            )
-          )
-        )
+      data_operation_ui(
+        id = ns("id_data_operation")
       )
     ),
     # plus button in uiOutput, so that it appears just when the module is ready.
@@ -90,39 +61,7 @@ m_table <- function(
   
   m_row_env <- new.env()
   
-  dataset_choices_r <- shiny::reactive({
-    .values$dataset_storage$get_ids()
-  })
-  
-  output$select_dataset <- shiny::renderUI({
-    shiny::selectInput(
-      inputId = ns("selected_dataset_object"),
-      label = NULL,
-      choices = dataset_choices_r()
-    )
-  })
-  
-  dataset_object_r <- shiny::reactive({
-    .values$dataset_storage$get_object(shiny::req(input$selected_dataset_object))
-  })
-  
-  data_r <- shiny::reactive({
-    dataset_object_r()$get_dataset()
-  })
-  
-  name_r <- shiny::reactive({
-    dataset_object_r()$get_name()
-  })
-  
-  id_r <- shiny::reactive({
-    dataset_object_r()$get_id()
-  })
-  
-  shiny::observe({
-    .values$dataset_id_rv(id_r())
-  })
-  
-  shiny::observeEvent(data_r(), {
+  shiny::observeEvent(data_operation_return$data_r(), {
     purrr::walk(seq_len(rvs$n_row), function(row_index) {
       shiny::removeUI(
         selector = paste0("#", ns("row_"), row_index)
@@ -131,7 +70,7 @@ m_table <- function(
     
     rvs$n_row <- 0
     
-    rvs$data <- data_r()
+    rvs$data <- data_operation_return$data_r()
   })
   
   output$plus_button <- shiny::renderUI({
@@ -233,44 +172,12 @@ m_table <- function(
     )
     
     rvs$n_row <- rvs$n_row - 1
-  } 
+  }
   
-  shiny::observeEvent(input$open_data, {
-    new <- .values$viewer$append_tab(
-      tab = shiny::tabPanel(
-        title = paste(name_r(), "0", sep = ": "),
-        value = ns(id_r()),
-        DT::dataTableOutput(
-          outputId = ns(id_r() %_% "dataset")
-        ),
-        data_export_ui(
-          id = ns("id_data_export")
-        )
-      )
-    )
-    
-    if (new) {
-      output[[id_r() %_% "dataset"]] <- DT::renderDataTable({
-        DT::datatable(
-          shiny::isolate(data_r())
-        )
-      })
-    }
-  })
-  
-  # Help -----------------------------------------------------------------------
-  shiny::observeEvent(input$help_operation, {
-    .values$help$open("operation")
-  })
-  
-  # Export
-  shiny::callModule(
-    module = data_export,
-    id = "id_data_export",
-    .values = .values,
-    data_r = data_r,
-    name_r = name_r,
-    row_index = 0
+  data_operation_return <- shiny::callModule(
+    module = data_operation,
+    id = "id_data_operation",
+    .values = .values
   )
   
   # Return ---------------------------------------------------------------------

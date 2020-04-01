@@ -18,7 +18,8 @@ data_output_ui <- function(id) {
 }
 
 data_output <- function(
-  input, output, session, .values, data_r, dataset_object, row_index
+  input, output, session, .values, data_r, dataset_object, row_index,
+  check_for_disconnect = TRUE
 ) {
   
   # Important: don't use dataset_object$get_dataset(), because it represents
@@ -39,7 +40,11 @@ data_output <- function(
   })
   
   is_connected_r <- shiny::reactive({
-    .values$dataset_id_rv() == id_r()
+    if (check_for_disconnect) {
+      shiny::req(.values$dataset_id_rv()) == id_r()
+    } else {
+      TRUE
+    }
   })
   
   shiny::observeEvent(data_r(), {

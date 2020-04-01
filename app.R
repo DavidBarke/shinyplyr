@@ -80,13 +80,14 @@ init <- function() {
     # Create an environment that is passed to every module. 
     .values <- new.env()
     
-    .values$tree <- shiny::isolate(shinyExplorer::ExplorerTree$new())
-    
-    .values$dataset_storage = ObjectStorage$new("DatasetObject")
-    
-    shiny::isolate(
-      init_dataset_storage(.values$dataset_storage)
-    )
+    # Init dataset storage as shinyExplorer tree
+    .values$explorer_classes <- init_explorer_classes()
+    shiny::isolate({
+      .values$tree <- shinyExplorer::ExplorerTree$new(
+        root_object = Object$new("home")
+      )
+      init_tree(.values$tree, .values)
+    })
     
     init_constants(.values)
     init_reactive_vals(.values)
