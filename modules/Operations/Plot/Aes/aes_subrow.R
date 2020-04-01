@@ -82,7 +82,7 @@ aes_subrow <- function(
   shiny::observeEvent(toggle_rv(), {
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = .values$anim,
+        anim = .values$ANIM,
         selector = aes_subrows_selector
       )
       
@@ -92,7 +92,7 @@ aes_subrow <- function(
       )
     } else {
       shinyjs::hide(
-        anim = .values$anim,
+        anim = .values$ANIM,
         selector = aes_subrows_selector
       )
       

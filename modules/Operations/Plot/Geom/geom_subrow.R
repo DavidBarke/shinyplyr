@@ -33,12 +33,12 @@ geom_subrow <- function(
   shiny::observeEvent(geom_content_return$toggle_rv(), {
     if (geom_content_return$toggle_rv() %% 2 == 0) {
       shinyjs::show(
-        anim = .values$anim,
+        anim = .values$ANIM,
         selector = geom_subrows_selector
       )
     } else {
       shinyjs::hide(
-        anim = .values$anim,
+        anim = .values$ANIM,
         selector = geom_subrows_selector
       )
     }

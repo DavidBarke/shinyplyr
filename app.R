@@ -79,45 +79,12 @@ init <- function() {
     
     .values$dataset_storage = ObjectStorage$new("DatasetObject")
     
-    .values$anim <- TRUE
-    
-    .values$dataset_id_rv <- shiny::reactiveVal(NULL)
-    
-    .values$transformation$PREDICATES <- c(
-      "select", "rename", "filter", "mutate", "group_by", "summarise", "plot"
-    )
-    
-    .values$plot$GEOM_NAMES <- c(
-      "area", "bin2d", "density2d", "hex", "line", "path", "point",
-      "smooth", "step"
-    )
-    
-    .values$plot$OPTIONAL_AES_NAMES <- c(
-      "alpha", "colour", "fill", "group", "linetype", "shape", "size"
-    )
-    
-    .values$plot$REQUIRED_AES_NAMES <- c(
-      "x", "y", "z"
-    )
-    
-    .values$plot$AES_NAMES <- c(
-      .values$plot$REQUIRED_AES_NAMES, .values$plot$OPTIONAL_AES_NAMES
-    )
-    
-    .values$plot$LAYER <- tibble::tribble(
-      ~layer, ~name,
-      "aes", "Aesthetic",
-      "geom", "Geometry",
-      "facet", "Facets",
-      "coord", "Coordinates",
-      "theme", "Theme"
-    )
-    
-    .values$help_rvs <- shiny::reactiveValues()
-    
     shiny::isolate(
-      fill_dataset_storage(.values$dataset_storage)
+      init_dataset_storage(.values$dataset_storage)
     )
+    
+    init_constants(.values)
+    init_reactive_vals(.values)
     
     shiny::callModule(
       module = help_init,
