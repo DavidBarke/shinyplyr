@@ -206,7 +206,7 @@ m_row <- function(
     new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = tab_name_r(),
-        value = value,
+        value = ns(id_r() %_% "plot"),
         plot_output_ui(
           id = ns(id_r() %_% "plot_output")
         )
