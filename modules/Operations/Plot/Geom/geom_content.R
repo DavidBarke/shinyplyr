@@ -11,7 +11,7 @@ geom_content_ui <- function(id) {
       "Geometry"
     ),
     htmltools::div(
-      class = "grid-vertical-center",
+      class = "grid-center",
       help_button(ns("help_plot_geom"))
     ),
     shiny::uiOutput(

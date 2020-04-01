@@ -16,7 +16,7 @@ facet_subrow_ui <- function(id) {
         "Facet"
       ),
       htmltools::div(
-        class = "grid-vertical-center",
+        class = "grid-center",
         help_button(ns("help_plot_facet"))
       ),
       shiny::selectInput(

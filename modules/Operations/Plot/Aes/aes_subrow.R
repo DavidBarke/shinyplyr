@@ -150,19 +150,20 @@ aes_subrow <- function(
   output$content <- shiny::renderUI({
     ui <- if (toggle_rv() %% 2 == 0) {
       htmltools::tagList(
+        htmltools::div(
+          class = "aes-title-help grid-gap",
+          htmltools::tags$b(
+            class = "grid-vertical-center",
+            "Aesthetic"
+          ),
+          htmltools::div(
+            class = "grid-center",
+            help_button(ns("help_plot_aes"))
+          )
+        ),
         htmltools::tags$b(
           class = "grid-vertical-center",
-          "Aesthetic"
-        ),
-        htmltools::div(
-          class = "grid-vertical-center",
-          help_button(ns("help_plot_aes"))
-        ),
-        htmltools::div(
-          class = "grid-vertical-center",
-          htmltools::tags$label(
-            "Column"
-          )
+          "Column"
         )
       )
     } else {
@@ -172,9 +173,14 @@ aes_subrow <- function(
       
       htmltools::tagList(
         htmltools::div(
-          class = "grid-vertical-center",
+          class = "aes-title-help grid-gap",
           htmltools::tags$b(
+            class = "grid-vertical-center",
             "Aesthetic"
+          ),
+          htmltools::div(
+            class = "grid-center",
+            help_button(ns("help_plot_aes"))
           )
         ),
         htmltools::div(

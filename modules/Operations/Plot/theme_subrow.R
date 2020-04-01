@@ -1,6 +1,10 @@
 theme_subrow_ui <- function(id) {
   ns <- shiny::NS(id)
   
+  themes <- list(
+    "bw", "classic", "dark", "gray", "grey", "light", "linedraw", "minimal"
+  )
+  
   htmltools::div(
     class = "plot-subrow-content",
     shiny::uiOutput(
@@ -16,8 +20,8 @@ theme_subrow_ui <- function(id) {
         "Theme"
       ),
       htmltools::div(
-        class = "grid-vertical-center",
-        help_button(ns("help_plot_them"))
+        class = "grid-center",
+        help_button(ns("help_plot_theme"))
       ),
       shiny::selectInput(
         inputId = ns("theme"),
@@ -41,10 +45,6 @@ theme_subrow <- function(
   output$index <- shiny::renderUI({
     subrow_index
   })
-  
-  themes <- list(
-    "bw", "classic", "dark", "gray", "grey", "light", "linedraw", "minimal"
-  )
   
   theme_fun_r <- shiny::reactive({
     switch(

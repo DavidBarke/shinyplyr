@@ -108,10 +108,6 @@ rename_operation <- function(
       )
     })
     
-    if (shiny::isolate(!subrows_open_r())) {
-      return(shinyjs::hidden(ui))
-    }
-    
     ui
   })
   

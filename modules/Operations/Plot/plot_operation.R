@@ -40,7 +40,7 @@ plot_operation <- function(
     ggplot(data_r(), aes_subrow_return$aes_r()) +
       do.call(geom_subrow_return$geom_fun_r(), geom_subrow_return$geom_args_r()) +
       facet_subrow_return$facet_r() +
-      coord_subrow_return$coord_fun_r()() + 
+      coord_subrow_return$coord_r() + 
       theme_subrow_return$theme_fun_r()()
   })
   

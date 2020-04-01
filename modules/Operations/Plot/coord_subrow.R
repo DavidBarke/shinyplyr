@@ -1,6 +1,13 @@
 coord_subrow_ui <- function(id) {
   ns <- shiny::NS(id)
   
+  coords <- list(
+    Cartesian = "cartesian",
+    "Fixed aspect ratio" = "fixed",
+    Flip = "flip",
+    Polar = "polar"
+  )
+  
   htmltools::div(
     class = "plot-subrow-content",
     shiny::uiOutput(
@@ -25,6 +32,9 @@ coord_subrow_ui <- function(id) {
         choices = list(
           "Select a coordinate system" = coords
         )
+      ),
+      shiny::uiOutput(
+        outputId = ns("details")
       )
     )
   )
@@ -42,20 +52,51 @@ coord_subrow <- function(
     subrow_index
   })
   
-  coords <- list(
-    cartesian = "cartesian",
-    "fixed aspect ratio" = "fixed",
-    flip = "flip",
-    polar = "polar"
-  )
+  output$details <- shiny::renderUI({
+    shiny::req(input$coord %in% c("fixed", "polar"))
+    
+    if (input$coord == "fixed") {
+      shiny::numericInput(
+        inputId = ns("aspect_ratio"),
+        label = NULL,
+        value = 1,
+        min = 0,
+        step = 0.5
+      )
+    } else {
+      shiny::selectInput(
+        inputId = ns("angular_variable"),
+        label = NULL,
+        choices = list("Angular Variable" = list("x", "y"))
+      )
+    }
+  })
   
-  coord_fun_r <- shiny::reactive({
+  safe_aspect_ratio_r <- shiny::reactive({
+    max(shiny::req(input$aspect_ratio), 0.001)
+  })
+  
+  throttled_aspect_ratio_r <- shiny::reactive({
+    shiny::req(input$aspect_ratio)
+  }) %>% throttle(1000)
+  
+  shiny::observeEvent(throttled_aspect_ratio_r(), {
+    if (shiny::req(input$aspect_ratio) <= 0) {
+      shiny::updateNumericInput(
+        session = session,
+        inputId = "aspect_ratio",
+        value = 1
+      )
+    }
+  })
+  
+  coord_r <- shiny::reactive({
     switch(
       shiny::req(input$coord),
-      "cartesian" = ggplot2::coord_cartesian,
-      "fixed" = ggplot2::coord_fixed,
-      "flip" = ggplot2::coord_flip,
-      "polar" = ggplot2::coord_polar
+      "cartesian" = ggplot2::coord_cartesian(),
+      "fixed" = ggplot2::coord_fixed(ratio = safe_aspect_ratio_r()),
+      "flip" = ggplot2::coord_flip(),
+      "polar" = ggplot2::coord_polar(theta = shiny::req(input$angular_variable))
     )
   })
   
@@ -64,6 +105,6 @@ coord_subrow <- function(
   })
   
   return_list <- list(
-    coord_fun_r = coord_fun_r
+    coord_r = coord_r
   )
 }
