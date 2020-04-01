@@ -236,14 +236,15 @@ m_table <- function(
   } 
   
   shiny::observeEvent(input$open_data, {
-    print(.values$viewer)
-    
     new <- .values$viewer$append_tab(
       tab = shiny::tabPanel(
         title = paste(name_r(), "0", sep = ": "),
         value = ns(id_r()),
         DT::dataTableOutput(
           outputId = ns(id_r() %_% "dataset")
+        ),
+        data_export_ui(
+          id = ns("id_data_export")
         )
       )
     )
@@ -261,6 +262,16 @@ m_table <- function(
   shiny::observeEvent(input$help_operation, {
     .values$help$open("operation")
   })
+  
+  # Export
+  shiny::callModule(
+    module = data_export,
+    id = "id_data_export",
+    .values = .values,
+    data_r = data_r,
+    name_r = name_r,
+    row_index = 0
+  )
   
   # Return ---------------------------------------------------------------------
   return_list <- list(
