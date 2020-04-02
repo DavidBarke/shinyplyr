@@ -41,7 +41,8 @@ geom_subrows <- function(
     aes_return_env[[aes]] <- shiny::callModule(
       module = geom_aes_server[[aes_class(aes, .values)]],
       id = aes %_% "value",
-      .values = .values
+      .values = .values,
+      aes = aes
     )
   })
   

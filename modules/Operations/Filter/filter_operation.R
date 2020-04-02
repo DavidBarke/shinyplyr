@@ -21,30 +21,10 @@ filter_operation <- function(
   
   ns <- session$ns
   
-  # Currently unused
-  rvs <- shiny::reactiveValues(
-    column = NULL,
-    operator = NULL,
-    logical_value = NULL,
-    numeric_value = NULL,
-    numeric_value_start = NULL,
-    numeric_value_end = NULL,
-    character_value_in = NULL,
-    character_value_text = NULL,
-    date_value = NULL,
-    date_value_bw = NULL
-  )
-  
   # UI Related -----------------------------------------------------------------
   choices_r <- shiny::reactive({
     names(data_r())
   })
-  
-  input_ids <- c(
-    "column", "operator", "logical_value", "numeric_value",
-    "character_value_in", "character_value_text", "numeric_value_end",
-    "numeric_value_start", "date_value", "date_value_bw"
-  )
   
   output$column <- shiny::renderUI({
     ui <- shiny::selectInput(
@@ -59,26 +39,34 @@ filter_operation <- function(
     ui
   })
   
+  column_r <- shiny::reactive({
+    data_r()[[shiny::req(input$column)]]
+  })
+  
   column_type_r <- shiny::reactive({
-    cls <- class(data_r()[[shiny::req(input$column)]])[1]
-    
-    shiny::req(cls != "NULL")
-    
-    if (cls %in% c("integer", "factor")) cls <- "numeric"
-    
-    cls
+    pillar::type_sum(column_r())
+  })
+  
+  column_type_name_r <- shiny::reactive({
+    helper_column_type_name(column_type_r(), .values)
+  })
+  
+  filter_class_r <- shiny::reactive({
+    helper_filter_class(column_type_r(), .values)
   })
   
   output$operator <- shiny::renderUI({
-    choices <- switch(
-      column_type_r(),
-      "logical" = logical_operator_choices_r(),
-      "numeric" = numeric_operator_choices_r(),
-      "character" = character_operator_choices_r(),
-      "Date" = date_operator_choices_r()
+    shiny::validate(
+      shiny::need(
+        filter_class_r() != "missing",
+        paste("Column type", column_type_name_r(), "is not supported by the
+              filter operation.")
+      )
     )
     
-    ui <- shiny::selectInput(
+    choices <- .values$FILTER_OPERATORS[[filter_class_r()]]
+    
+    shiny::selectInput(
       inputId = ns("operator"),
       label = NULL,
       choices = list(
@@ -86,36 +74,17 @@ filter_operation <- function(
       ),
       selected = fallback(shiny::isolate(input$operator), NULL)
     )
-    
-    ui
-  })
-  
-  logical_operator_choices_r <- shiny::reactive({
-    c("=" = "eq", "!=" = "ne")
-  })
-  
-  numeric_operator_choices_r <- shiny::reactive({
-    c("=" = "eq", "<=" = "le", ">=" = "ge", "<" = "lt", ">" = "gt", "!=" = "ne", "zwischen" = "bw")
-  })
-  
-  character_operator_choices_r <- shiny::reactive({
-    c("=" = "eq", "in" = "in", "~" = "re")
-  })
-  
-  date_operator_choices_r <- shiny::reactive({
-    c("=" = "eq", "zwischen" = "bw")
   })
   
   output$value <- shiny::renderUI({
-    ui <- switch(
-      column_type_r(),
+    switch(
+      filter_class_r(),
       "logical" = logical_value_ui_r(),
       "numeric" = numeric_value_ui_r(),
       "character" = character_value_ui_r(),
-      "Date" = date_value_ui_r()
+      "factor" = factor_value_ui_r(),
+      "date" = date_value_ui_r()
     )
-    
-    ui
   })
   
   logical_value_ui_r <- shiny::reactive({
@@ -123,7 +92,7 @@ filter_operation <- function(
       inputId = ns("logical_value"),
       label = NULL,
       choices = c(true = "true", false = "false"),
-      selected = fallback(rvs$logical_value, "true")
+      selected = fallback(input$logical_value, "true")
     )
   })
   
@@ -138,7 +107,7 @@ filter_operation <- function(
           shiny::numericInput(
             inputId = ns("numeric_value_start"),
             label = NULL,
-            value = fallback(rvs$numeric_value_start, min),
+            value = fallback(input$numeric_value_start, min),
             min = min,
             max = max
           )
@@ -148,7 +117,7 @@ filter_operation <- function(
           shiny::numericInput(
             inputId = ns("numeric_value_end"),
             label = NULL,
-            value = fallback(rvs$numeric_value_end, max),
+            value = fallback(input$numeric_value_end, max),
             min = min,
             max = max
           )
@@ -158,7 +127,7 @@ filter_operation <- function(
       shiny::numericInput(
         inputId = ns("numeric_value"),
         label = NULL,
-        value = fallback(rvs$numeric_value, min),
+        value = fallback(input$numeric_value, min),
         min = min,
         max = max
       )
@@ -170,28 +139,28 @@ filter_operation <- function(
       shiny::selectInput(
         inputId = ns("character_value_in"),
         label = NULL,
-        choices = unique(data_r()[[shiny::req(input$column)]]),
+        choices = unique(column_r()),
         multiple = TRUE,
-        selected = fallback(rvs$character_value_in, NULL)
+        selected = fallback(input$character_value_in, NULL)
       )
     } else {
       shiny::textInput(
         inputId = ns("character_value_text"),
         label = NULL,
-        value = fallback(rvs$character_value_text, NULL)
+        value = fallback(input$character_value_text, NULL)
       )
     }
   })
   
   date_value_ui_r <- shiny::reactive({
-    min <- min(data_r()[[shiny::req(input$column)]])
-    max <- max(data_r()[[shiny::req(input$column)]])
+    min <- min(column_r())
+    max <- max(column_r())
     
     if (shiny::req(input$operator) == "eq") {
       shiny::dateInput(
         inputId = ns("date_value"),
         label = NULL,
-        value = fallback(rvs$date_value, min),
+        value = fallback(input$date_value, min),
         min = min,
         max = max
       )
@@ -199,22 +168,41 @@ filter_operation <- function(
       shiny::dateRangeInput(
         inputId = ns("date_value_bw"),
         label = NULL,
-        start = fallback(rvs$date_value_bw[1], min),
-        end = fallback(rvs$date_value_bw[2], max),
+        start = fallback(input$date_value_bw[1], min),
+        end = fallback(input$date_value_bw[2], max),
         min = min,
         max = max
       )
     }
   })
   
+  factor_value_ui_r <- shiny::reactive({
+    if (shiny::req(input$operator) == "in") {
+      multiple <- TRUE
+      selected <- levels(column_r())
+    } else {
+      multiple <- FALSE
+      selected <- levels(column_r())[1]
+    }
+    
+    shiny::selectInput(
+      inputId = ns("factor_value"),
+      label = NULL,
+      choices = levels(column_r()),
+      multiple = multiple,
+      selected = levels(column_r())
+    )
+  })
+  
   # Logic related --------------------------------------------------------------
   value_r <- shiny::reactive({
     switch(
-      column_type_r(),
+      filter_class_r(),
       "logical" = logical_value_r(),
       "numeric" = numeric_value_r(),
       "character" = character_value_r(),
-      "Date" = date_value_r()
+      "date" = date_value_r(),
+      "factor" = factor_value_r()
     )
   })
   
@@ -249,13 +237,18 @@ filter_operation <- function(
     }
   })
   
+  factor_value_r <- shiny::reactive({
+    shiny::req(input$factor_value)
+  })
+  
   operator_fun_r <- shiny::reactive({
     switch(
-      column_type_r(),
+      filter_class_r(),
       "logical" = logical_operator_fun_r(),
       "numeric" = numeric_operator_fun_r(),
       "character" = character_operator_fun_r(),
-      "Date" = date_operator_fun_r()
+      "date" = date_operator_fun_r(),
+      "factor" = factor_operator_fun_r()
     )
   })
   
@@ -294,6 +287,14 @@ filter_operation <- function(
       shiny::req(input$operator),
       "eq" = `==`,
       "bw" = function(x, value) x >= value[1] & x <= value[2]
+    )
+  })
+  
+  factor_operator_fun_r <- shiny::reactive({
+    switch(
+      shiny::req(input$operator),
+      "eq" = `==`,
+      "in" = `%in%`
     )
   })
   

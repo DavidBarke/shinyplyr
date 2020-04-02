@@ -172,7 +172,7 @@
 
 .geom-content {
   display: grid;
-  grid-template-columns: 25px 70px 30px 1fr 2fr;
+  grid-template-columns: 25px 70px 30px 1fr;
 }
 
 .geom-subrow-content {

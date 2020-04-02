@@ -23,6 +23,7 @@ help_init <- function(input, output, session, .values) {
   
   .values$help$DATA <- tibble::tribble(
     ~topic, ~title, ~desc,
+    "data", "Data", "Explore datasets", 
     "dataset_output", "Dataset Output", "View and export transformation results",
     "filter", "Filter", "Operation: Return rows with matching conditions",
     "group_by", "Group By", "Operation: Group by one or more variables",
@@ -43,6 +44,7 @@ help_init <- function(input, output, session, .values) {
   )
   
   help_ui <- list(
+    data = help_data_ui,
     dataset_output = help_dataset_output_ui,
     filter = help_filter_ui,
     group_by = help_group_by_ui,
@@ -63,6 +65,7 @@ help_init <- function(input, output, session, .values) {
   )
   
   help_server <- list(
+    data = help_data,
     dataset_output = help_dataset_output,
     filter = help_filter,
     group_by = help_group_by,

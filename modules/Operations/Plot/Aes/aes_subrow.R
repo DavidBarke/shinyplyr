@@ -111,7 +111,7 @@ aes_subrow <- function(
   })
   
   all_aes_r <- shiny::reactive({
-    all_aes(geom_r(), n_var_r(), .values)
+    print(all_aes(geom_r(), n_var_r(), .values))
   })
   
   aes_names_r <- shiny::reactive({

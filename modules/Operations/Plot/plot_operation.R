@@ -1,9 +1,12 @@
 plot_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  htmltools::tagList(
+  htmltools::div(
+    class = "plot-op-container grid-gap",
     htmltools::div(
-      class = "plot-op-container grid-gap"
+      shiny::uiOutput(
+        outputId = ns("n_var")
+      )
     )
   )
 }
@@ -36,6 +39,23 @@ plot_operation <- function(
   
   ns <- session$ns
   
+  names_r <- shiny::reactive({
+    names(data_r())
+  })
+  
+  output$n_var <- shiny::renderUI({
+    choices <- 1:2
+    choices <- choices[choices <= length(names_r())]
+    
+    shiny::selectInput(
+      inputId = ns("n_var"),
+      label = NULL,
+      choices = list(
+        "Number of Variables" = as.list(choices)
+      )
+    )
+  })
+  
   plot_r <- shiny::reactive({
     ggplot(data_r(), aes_subrow_return$aes_r()) +
       geom_subrow_return$geom_xxx_r() +
@@ -44,6 +64,8 @@ plot_operation <- function(
       theme_subrow_return$theme_fun_r()()
   })
   
+  n_var_r <- shiny::reactive(as.numeric(shiny::req(input$n_var)))
+  
   aes_subrow_return <- shiny::callModule(
     module = aes_subrow,
     id = "id_aes_subrow",
@@ -51,7 +73,7 @@ plot_operation <- function(
     data_r = data_r,
     row_index = row_index,
     geom_r = geom_subrow_return$geom_r,
-    n_var_r = geom_subrow_return$n_var_r
+    n_var_r = n_var_r
   )
   
   geom_subrow_return <- shiny::callModule(
@@ -60,7 +82,8 @@ plot_operation <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    free_aesthetics_r = aes_subrow_return$free_aesthetics_r 
+    free_aesthetics_r = aes_subrow_return$free_aesthetics_r,
+    n_var_r = n_var_r
   )
   
   facet_subrow_return <- shiny::callModule(

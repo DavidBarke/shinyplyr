@@ -15,16 +15,13 @@ geom_content_ui <- function(id) {
       help_button(ns("help_plot_geom"))
     ),
     shiny::uiOutput(
-      outputId = ns("n_var")
-    ),
-    shiny::uiOutput(
       outputId = ns("geom")
     )
   )
 }
 
 geom_content <- function(
-  input, output, session, .values, data_r
+  input, output, session, .values, data_r, n_var_r
 ) {
   
   ns <- session$ns
@@ -53,23 +50,6 @@ geom_content <- function(
   })
   
   # Outputs --------------------------------------------------------------------
-  names_r <- shiny::reactive({
-    names(data_r())
-  })
-  
-  output$n_var <- shiny::renderUI({
-    choices <- 1:2
-    choices <- choices[choices <= length(names_r())]
-    
-    shiny::selectInput(
-      inputId = ns("n_var"),
-      label = NULL,
-      choices = list(
-        "Number of Variables" = as.list(choices)
-      )
-    )
-  })
-  
   geom_choices <- list(
     "1" = list(
       "Continuous" = list(
@@ -107,14 +87,15 @@ geom_content <- function(
   )
   
   geom_choices_r <- shiny::reactive({
-    geom_choices[[shiny::req(input$n_var)]]
+    geom_choices[[n_var_r()]]
   })
   
   output$geom <- shiny::renderUI({
     shiny::selectInput(
       inputId = ns("geom"),
       label = NULL,
-      choices = geom_choices_r()
+      choices = geom_choices_r(),
+      selected = c("histogram", "point")[n_var_r()]
     )
   })
   
@@ -125,7 +106,7 @@ geom_content <- function(
       "bar" = ggplot2::geom_bar,
       "bin2d" = ggplot2::geom_bin2d,
       "dotplot" = ggplot2::geom_dotplot,
-      "density2d" = ggplot2::geom_density2d,
+      "density2d" = ggplot2::geom_density_2d,
       "hex" = ggplot2::geom_hex,
       "histogram" = ggplot2::geom_histogram,
       "line" = ggplot2::geom_line,
@@ -143,8 +124,7 @@ geom_content <- function(
   return_list <- list(
     toggle_rv = toggle_rv,
     geom_r = shiny::reactive(shiny::req(input$geom)),
-    geom_fun_r = geom_fun_r,
-    n_var_r = shiny::reactive(as.integer(shiny::req(input$n_var)))
+    geom_fun_r = geom_fun_r
   )
   
   return(return_list)

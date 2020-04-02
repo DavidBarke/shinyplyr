@@ -22,7 +22,8 @@ geom_subrow_ui <- function(id) {
 }
 
 geom_subrow <- function(
-  input, output, session, .values, data_r, row_index, free_aesthetics_r
+  input, output, session, .values, data_r, row_index, free_aesthetics_r,
+  n_var_r
 ) {
   
   ns <- session$ns
@@ -55,7 +56,8 @@ geom_subrow <- function(
     module = geom_content,
     id = "id_geom_content",
     .values = .values,
-    data_r = data_r
+    data_r = data_r,
+    n_var_r = n_var_r
   )
   
   geom_subrows_return <- shiny::callModule(
@@ -73,8 +75,7 @@ geom_subrow <- function(
   
   return_list <- list(
     geom_xxx_r = geom_xxx_r,
-    geom_r = geom_content_return$geom_r,
-    n_var_r = geom_content_return$n_var_r
+    geom_r = geom_content_return$geom_r
   )
   
   return(return_list)

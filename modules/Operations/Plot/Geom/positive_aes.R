@@ -1,7 +1,17 @@
 positive_aes_ui <- function(id, aes) {
   ns <- shiny::NS(id)
   
-  value <- 0.5
+  value <- switch(
+    aes,
+    "bins" = 30,
+    "size" = 0.5
+  )
+  
+  step <- switch(
+    aes,
+    "bins" = 1,
+    size = 0.5
+  )
   
   htmltools::tagList(
     shiny::numericInput(
@@ -9,7 +19,7 @@ positive_aes_ui <- function(id, aes) {
       label = NULL,
       value = value,
       min = 0,
-      step = 0.5
+      step = step
     )
   )
 }
@@ -19,6 +29,12 @@ positive_aes <- function(
 ) {
   
   ns <- session$ns
+  
+  default_value <- switch(
+    aes,
+    "bins" = 30,
+    "size" = 0.5
+  )
   
   debounced_value_r <- shiny::reactive({
     shiny::req(input$value)
@@ -36,7 +52,9 @@ positive_aes <- function(
   
   return_list <- list(
     value_r = shiny::reactive({
-      value <- safe_numeric_input_value(fallback(input$value, 0.5))
+      value <- safe_numeric_input_value(fallback(input$value, default_value))
+      if (is.na(value)) value <- default_value
+      print(value)
       max(value, 0)
     })
   )
