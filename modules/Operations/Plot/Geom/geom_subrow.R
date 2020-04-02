@@ -15,9 +15,9 @@ geom_subrow_ui <- function(id) {
         )
       )
     ),
-    geom_subrows_ui(
+    shinyjs::hidden(geom_subrows_ui(
       id = ns("id_geom_subrows")
-    )
+    ))
   )
 }
 

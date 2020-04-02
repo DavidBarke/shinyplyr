@@ -61,7 +61,7 @@ plot_operation <- function(
       geom_subrow_return$geom_xxx_r() +
       facet_subrow_return$facet_r() +
       coord_subrow_return$coord_r() + 
-      theme_subrow_return$theme_fun_r()()
+      theme_subrow_return$theme_r()
   })
   
   n_var_r <- shiny::reactive(as.numeric(shiny::req(input$n_var)))

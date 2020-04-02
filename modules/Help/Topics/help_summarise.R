@@ -10,7 +10,7 @@ help_summarise_ui <- function(id) {
         inputId = ns("help_group_by"),
         label = "group-by operation."
       ),
-      "Enter the name of the column that contains summarised values. Select
+      "Enter the name of the column that shall contain the summarised values. Select
       one of the predefined summary functions and choose the column to which you
       want to apply this function. The columns that can be used depend on the
       summary function selected (for example, you may not apply the mean function 

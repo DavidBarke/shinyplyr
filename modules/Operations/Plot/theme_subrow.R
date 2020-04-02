@@ -46,17 +46,19 @@ theme_subrow <- function(
     subrow_index
   })
   
-  theme_fun_r <- shiny::reactive({
+  theme_name_r <- shiny::reactive(fallback(input$theme, "bw"))
+  
+  theme_r <- shiny::reactive({
     switch(
-      shiny::req(input$theme),
-      "bw" = ggplot2::theme_bw,
-      "classic" = ggplot2::theme_classic,
-      "dark" = ggplot2::theme_dark,
-      "gray" = ggplot2::theme_gray,
-      "grey" = ggplot2::theme_grey,
-      "light" = ggplot2::theme_light,
-      "linedraw" = ggplot2::theme_linedraw,
-      "minimal" = ggplot2::theme_minimal
+      theme_name_r(),
+      "bw" = ggplot2::theme_bw(),
+      "classic" = ggplot2::theme_classic(),
+      "dark" = ggplot2::theme_dark(),
+      "gray" = ggplot2::theme_gray(),
+      "grey" = ggplot2::theme_grey(),
+      "light" = ggplot2::theme_light(),
+      "linedraw" = ggplot2::theme_linedraw(),
+      "minimal" = ggplot2::theme_minimal()
     )
   })
   
@@ -65,6 +67,6 @@ theme_subrow <- function(
   })
   
   return_list <- list(
-    theme_fun_r = theme_fun_r
+    theme_r = theme_r
   )
 }

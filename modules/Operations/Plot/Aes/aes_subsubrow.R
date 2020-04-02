@@ -21,8 +21,14 @@ aes_subsubrow <- function(
     )
   })
   
+  value_r <- shiny::reactive({
+    value <- fallback(input$column, selected_r())
+    
+    if (value %in% choices_r()) value else selected_r()
+  })
+  
   return_list <- list(
-    value_r = shiny::reactive(fallback(input$column, selected_r()))
+    value_r = value_r
   )
   
   return(return_list)

@@ -4,7 +4,7 @@ aes_subrow_ui <- function(id, row_index) {
   htmltools::tagList(
     htmltools::div(
       id = ns("aes_subrow"),
-      class = "plot-subrow-content aes-subrows-open",
+      class = "plot-subrow-content",
       shiny::uiOutput(
         outputId = ns("index"),
         class = "grid-center"
@@ -14,9 +14,11 @@ aes_subrow_ui <- function(id, row_index) {
         class = "grid-gap aes-content"
       )
     ),
-    shiny::uiOutput(
-      outputId = ns("subrows"),
-      class = "subrows-container"
+    shinyjs::hidden(
+      shiny::uiOutput(
+        outputId = ns("subrows"),
+        class = "subrows-container"
+      )
     )
   )
 }
@@ -62,7 +64,7 @@ aes_subrow <- function(
     )
   })
   
-  toggle_rv <- shiny::reactiveVal(0)
+  toggle_rv <- shiny::reactiveVal(1)
   
   toggled_icon_r <- shiny::reactive({
     if (toggle_rv() %% 2 == 0) {
@@ -111,7 +113,7 @@ aes_subrow <- function(
   })
   
   all_aes_r <- shiny::reactive({
-    print(all_aes(geom_r(), n_var_r(), .values))
+    all_aes(geom_r(), n_var_r(), .values)
   })
   
   aes_names_r <- shiny::reactive({

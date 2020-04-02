@@ -35,7 +35,7 @@ geom_content <- function(
     )
   })
   
-  toggle_rv <- shiny::reactiveVal(0)
+  toggle_rv <- shiny::reactiveVal(1)
   
   toggled_icon_r <- shiny::reactive({
     if (toggle_rv() %% 2 == 0) {
@@ -99,9 +99,15 @@ geom_content <- function(
     )
   })
   
+  geom_default_r <- shiny::reactive({
+    if (n_var_r() == 1) "histogram" else "point"
+  })
+  
+  geom_r <- shiny::reactive(fallback(input$geom, geom_default_r()))
+  
   geom_fun_r <- shiny::reactive({
     switch(
-      shiny::req(input$geom),
+      geom_r(),
       "area" = ggplot2::geom_area,
       "bar" = ggplot2::geom_bar,
       "bin2d" = ggplot2::geom_bin2d,
@@ -123,7 +129,7 @@ geom_content <- function(
   
   return_list <- list(
     toggle_rv = toggle_rv,
-    geom_r = shiny::reactive(shiny::req(input$geom)),
+    geom_r = geom_r,
     geom_fun_r = geom_fun_r
   )
   

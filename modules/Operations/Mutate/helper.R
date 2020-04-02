@@ -1,6 +1,6 @@
 helper_mutate_operator_choices <- function(.values) {
   groups <- c("math", "cum", "lgl", "rank")
-  names(groups) <- groups
+  names(groups) <- .values$MUTATE_GROUP_DISPLAY_NAMES[groups]
   
   purrr::map(groups, function(group) {
     indices <- .values$MUTATE_OPERATORS$group == group

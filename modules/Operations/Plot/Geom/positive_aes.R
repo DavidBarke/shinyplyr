@@ -54,7 +54,6 @@ positive_aes <- function(
     value_r = shiny::reactive({
       value <- safe_numeric_input_value(fallback(input$value, default_value))
       if (is.na(value)) value <- default_value
-      print(value)
       max(value, 0)
     })
   )

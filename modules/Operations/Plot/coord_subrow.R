@@ -91,9 +91,13 @@ coord_subrow <- function(
     }
   })
   
+  coord_type_r <- shiny::reactive({
+    fallback(input$coord, "cartesian")
+  })
+  
   coord_r <- shiny::reactive({
     switch(
-      shiny::req(input$coord),
+      coord_type_r(),
       "cartesian" = ggplot2::coord_cartesian(),
       "fixed" = ggplot2::coord_fixed(ratio = safe_aspect_ratio_r()),
       "flip" = ggplot2::coord_flip(),

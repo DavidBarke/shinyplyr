@@ -1,14 +1,8 @@
 init_tree <- function(tree, .values) {
-  .values$import$node <- tree$get_root_node()$add_child(
-    explorer_class_id = "__group__",
-    object = Object$new("Imported datasets"),
-    removable = FALSE,
-    return = "child"
-  )
-  
+  # Add pkgs node
   pkgs_node <- tree$get_root_node()$add_child(
     explorer_class_id = "__group__",
-    object = Object$new("Datasets from packages"),
+    object = Object$new("Package datasets"),
     removable = FALSE,
     return = "child"
   )
@@ -17,6 +11,14 @@ init_tree <- function(tree, .values) {
   add_pkg_datasets("datasets", pkgs_node)
   add_pkg_datasets("ggplot2", pkgs_node)
   add_pkg_datasets("dplyr", pkgs_node)
+  
+  # Add import node
+  .values$import$node <- tree$get_root_node()$add_child(
+    explorer_class_id = "__group__",
+    object = Object$new("Imported datasets"),
+    removable = FALSE,
+    return = "child"
+  )
 }
 
 add_pkg_datasets <- function(pkg, node) {

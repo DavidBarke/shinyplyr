@@ -17,37 +17,37 @@ help_type_ui <- function(id) {
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("logical"),
+        htmltools::tags$td("lgl"),
         htmltools::tags$td(
           "TRUE, FALSE, NA"
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("integer"),
+        htmltools::tags$td("int"),
         htmltools::tags$td(
           "Integer numbers, NA"
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("double"),
+        htmltools::tags$td("dbl"),
         htmltools::tags$td(
           "Real numbers, NA, NaN, Inf"
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("character"),
+        htmltools::tags$td("chr"),
         htmltools::tags$td(
           "Character strings, NA"
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("factor"),
+        htmltools::tags$td("fct"),
         htmltools::tags$td(
           "Categorical values"
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("ordered"),
+        htmltools::tags$td("ord"),
         htmltools::tags$td(
           "Ordered categorial values"
         )

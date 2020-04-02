@@ -88,13 +88,13 @@ facet_subrow <- function(
   })
   
   facet_r <- shiny::reactive({
-    type <- shiny::req(input$facet_type)
+    type <- fallback(input$facet_type, "none")
     if (purrr::is_null(input$facet_vars)) type <- "none"
     
     switch(
       type,
-      none = ggplot2::facet_null(),
-      grid = {
+      "none" = ggplot2::facet_null(),
+      "grid" = {
         if (length(safe_facet_vars_r()) == 1) {
           rows <- safe_facet_vars_r()
           rows <- sym(rows)
@@ -107,7 +107,7 @@ facet_subrow <- function(
           ggplot2::facet_grid(rows = vars(!!rows), cols = vars(!!cols))
         }
       },
-      wrap = ggplot2::facet_wrap(safe_facet_vars_r())
+      "wrap" = ggplot2::facet_wrap(safe_facet_vars_r())
     )
   })
   

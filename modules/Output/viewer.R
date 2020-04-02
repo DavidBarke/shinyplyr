@@ -1,9 +1,15 @@
 viewer_ui <- function(id) {
   ns <- shiny::NS(id)
   
-  shiny::uiOutput(
-    outputId = ns("viewer"),
-    class = "viewer"
+  htmltools::tagList(
+    shiny::uiOutput(
+      outputId = ns("viewer"),
+      class = "viewer"
+    ),
+    m_action_button(
+      inputId = ns("close_all"),
+      label = "Close all tabs"
+    )
   )
 }
 
@@ -24,5 +30,11 @@ viewer <- function(
   
   output$viewer <- shiny::renderUI({
     .values$viewer$tabBox()
+  })
+  
+  shiny::observeEvent(input$close_all, {
+    purrr::walk(.values$viewer$get("open_tab_values"), function(value) {
+      .values$viewer$remove_tab(value)
+    })
   })
 }

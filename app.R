@@ -28,7 +28,7 @@ init <- function() {
     # chdir makes it possible to use relative paths in source statements inside
     # sourced files
     path = "./modules", encoding = "UTF-8", modifiedOnly = FALSE, 
-    chdir = TRUE, verbose = TRUE, recursive = TRUE
+    chdir = TRUE, verbose = FALSE, recursive = TRUE
   )
   
   options(DT.options = list(dom = "lfptp", scrollX = TRUE))

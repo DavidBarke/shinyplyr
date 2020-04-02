@@ -60,7 +60,8 @@ m_row_ui <- function(id, row_container_id, index) {
       ),
       shiny::uiOutput(
         outputId = ns("subrows"),
-        class = "subrows-container grid-gap"
+        class = "subrows-container grid-gap",
+        style = "display: none"
       )
     )
   )
@@ -139,6 +140,8 @@ m_row <- function(
   
   subrow_selector <- paste(row_container_id, " > .subrows-container")
   
+  toggle_rv <- shiny::reactiveVal(1)
+  
   shiny::observeEvent(toggle_rv(), {
     if (toggle_rv() %% 2 == 0) {
       shinyjs::show(
@@ -152,8 +155,6 @@ m_row <- function(
       )
     }
   })
-  
-  toggle_rv <- shiny::reactiveVal(0)
   
   toggled_icon_r <- shiny::reactive({
     if (toggle_rv() %% 2 == 0) {

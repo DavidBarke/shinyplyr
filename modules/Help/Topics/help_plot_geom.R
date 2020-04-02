@@ -4,15 +4,15 @@ help_plot_geom_ui <- function(id) {
   htmltools::tagList(
     htmltools::p(
       "The geometry layer determines how the mapped aesthetics are plotted. The
-      user interface consists of two inputs for selecting the number of required
-      aesthetics and the specific geometry and a table for mapping non-specified
-      optional aesthetics to a static value. All required aesthetics must be mapped
-      to a column of the dataset in the",
+      user interface consists of an input for selecting the specific geometry 
+      and a table for mapping non-specified optional aesthetics to a fixed value. 
+      All required aesthetics ('x' for one-, 'x' and 'y' for two-variable-geometries) 
+      must be mapped to a column of the dataset in the",
       shiny::actionLink(
         inputId = ns("help_plot_aes"),
         label = "aesthetics layer."
       ),
-      "The choices for the static values are dependent on the optional aesthetic."
+      "The choices for the fixed values are dependent on the optional aesthetic."
     ),
     htmltools::h4(
       "Limitations"
