@@ -100,4 +100,21 @@ init_constants <- function(.values) {
     "logical" = c("=" = "eq", "!=" = "ne"),
     "numeric" = c("=" = "eq", "<=" = "le", ">=" = "ge", "<" = "lt", ">" = "gt", "!=" = "ne", "zwischen" = "bw")
   )
+  
+  .values$SUMMARISE_FUN <- tibble::tribble(
+    ~name, ~fun, ~allowed,
+    "mean", base::mean, "numeric",
+    "median", stats::median, "numeric",
+    "sd", stats::sd, "numeric",
+    "IQR", stats::IQR, "numeric",
+    "mad", stats::mad, "numeric",
+    "min", base::min, c("numeric", "date", "factor"),
+    "max", base::max, c("numeric", "date", "factor"),
+    "first", dplyr::first, "__ALL__",
+    "last", dplyr::last, "__ALL__",
+    "n", dplyr::n, "__ALL__",
+    "n_distinct", dplyr::n_distinct, "__ALL__",
+    "any", base::any, "logical",
+    "all", base::all, "logical"
+  )
 }

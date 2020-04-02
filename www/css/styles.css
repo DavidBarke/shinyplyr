@@ -17,6 +17,10 @@
   margin: auto;
 }
 
+.shiny-output-error-grid-center {
+  margin: auto;
+}
+
 .grid-vertical-center {
   margin-top: auto;
   margin-bottom: auto;
@@ -137,6 +141,12 @@
 
 .type-op-container.subrows-closed {
   grid-template-columns: 1fr;
+}
+
+/* Summarise */
+.summarise-op-container {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr 10px 1fr 10px
 }
 
 /* Plot */

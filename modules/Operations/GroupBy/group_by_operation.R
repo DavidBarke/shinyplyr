@@ -2,7 +2,7 @@ group_by_operation_ui <- function(id) {
   ns <- shiny::NS(id)
   
   htmltools::div(
-    class = "group-by-op-container",
+    class = "group-by-op-container grid-gap",
     shiny::uiOutput(
       outputId = ns("columns")
     )
