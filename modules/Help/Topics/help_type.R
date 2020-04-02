@@ -41,12 +41,6 @@ help_type_ui <- function(id) {
         )
       ),
       htmltools::tags$tr(
-        htmltools::tags$td("complex"),
-        htmltools::tags$td(
-          "Complex numbers, NA"
-        )
-      ),
-      htmltools::tags$tr(
         htmltools::tags$td("factor"),
         htmltools::tags$td(
           "Categorical values"

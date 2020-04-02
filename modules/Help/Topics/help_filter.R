@@ -11,34 +11,26 @@ help_filter_ui <- function(id) {
       "
     ),
     htmltools::h4(
-      "Column"
-    ),
-    htmltools::p(
-      "Select the name of a column that is present in the current dataset."
-    ),
-    htmltools::h4(
       "Operator"
     ),
     htmltools::p(
-      "Select an operator. This operator is used for comparing each entry of
-      the selected column against the selected value. The choices for the
-      operator are dependent on the type of the selected column. For example it 
-      is necessary to convert an integer to a factor using the type predicate in
-      a previous transformation step if you need operators for factors."
-    ),
-    htmltools::h4(
-      "Value"
-    ),
-    htmltools::p(
-      "Enter a value. Choices for value are dependent on the selected operator."
+      "The choices for the operator are dependent on the type of the selected 
+      column. For supported column types see:",
+      htmltools::br(),
+      shiny::actionLink(
+        inputId = ns("help_type"),
+        label = "Type operation"
+      ),
+      htmltools::br(),
+      "Columns that posess other data types can't be filtered."
     ),
     htmltools::h4(
       "Limitations"
     ),
     htmltools::tags$ul(
       htmltools::tags$li(
-        "Multiple conditions need multiple transformation steps and are therefore
-        always connected by the logical 'and' operator."
+        "Multiple conditions require you to add multiple transformation steps and 
+        are therefore always connected by the logical 'and' operator."
       ),
       htmltools::tags$li(
         "The value part of the condition can't be another column."
@@ -52,4 +44,8 @@ help_filter <- function(
 ) {
   
   ns <- session$ns
+  
+  shiny::observeEvent(input$help_type, {
+    .values$help$open("type")
+  })
 }

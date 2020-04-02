@@ -77,7 +77,7 @@ init_constants <- function(.values) {
     "int", "integer", as.integer, TRUE, "numeric",
     "dbl", "double", as.double, TRUE, "numeric",
     "chr", "character", as.character, TRUE, "character",
-    "cpl", "complex", as.complex, TRUE, "missing",
+    "cpl", "complex", as.complex, FALSE, "missing",
     "raw", "raw", as.raw, FALSE, "missing",
     "list", "list", as.list, FALSE, "missing",
     "named list", "named list", as.list, FALSE, "missing",
