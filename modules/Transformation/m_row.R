@@ -328,8 +328,7 @@ m_row <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    row_container_id = row_container_id,
-    sr_toggle_r = toggle_rv
+    row_container_id = row_container_id
   )
   
   return_list <- list(

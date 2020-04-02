@@ -3,7 +3,7 @@ rename_operation_ui <- function(id) {
   
   shiny::uiOutput(
     outputId = ns("op_container"),
-    class = "rename-op-container grid-gap"
+    class = "rename-op-container grid-gap subrows-closed"
   )
 }
 
@@ -112,10 +112,10 @@ rename_operation <- function(
   })
   
   new_names_r <- shiny::reactive({
-    new_names <- purrr::map_chr(seq_along(old_names_r()), function(index) {
+    new_names <- purrr::map2_chr(old_names_r(), seq_along(old_names_r()), function(old_name, index) {
       # Extra line is necessary, because req would stop when detecting ""
-      shiny::req(!purrr::is_null(input[["new_name" %_% index]]))
-      stringr::str_trim(input[["new_name" %_% index]])
+      new_name <- fallback(input[["new_name" %_% index]], old_name)
+      stringr::str_trim(new_name)
     })
   })
   

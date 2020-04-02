@@ -34,7 +34,7 @@ plot_subrows_ui <- function(id) {
 }
 
 plot_operation <- function(
-  input, output, session, .values, data_r, row_index, row_container_id, sr_toggle_rv
+  input, output, session, .values, data_r, row_index, row_container_id
 ) {
   
   ns <- session$ns
