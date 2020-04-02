@@ -4,8 +4,3 @@ Data:
 	Erklärungen (Rechtsclick, Doppelclick)
 Mutate:
 	Operator, der zwei Spalten verknüpft und eine neue erstellt
-Summarise:
-	Auswahl von summary-Funktionen basierend auf typ
-Filter:
-	Typ über pillar::type_sum bestimmen
-	Faktor als Typ ergänzen

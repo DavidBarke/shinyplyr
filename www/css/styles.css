@@ -143,6 +143,12 @@
   grid-template-columns: 1fr;
 }
 
+/* Mutate */
+.mutate-op-container {
+  display: grid;
+  grid-template-columns: minmax(200px, 20%) 30px minmax(120px, 20%) 10px 1fr 10px
+}
+
 /* Summarise */
 .summarise-op-container {
   display: grid;

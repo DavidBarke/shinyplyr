@@ -85,7 +85,7 @@ summarise_operation <- function(
     
     shiny::validate(
       shiny::need(
-        length(allowed_column_names_r()) > 0,
+        allowed_column_names_r(),
         "Dataset has no column with an appropriate type for the selected 
         summary function."
       ),

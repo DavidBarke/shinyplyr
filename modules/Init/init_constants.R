@@ -117,4 +117,35 @@ init_constants <- function(.values) {
     "any", base::any, "logical",
     "all", base::all, "logical"
   )
+  
+  .values$MUTATE_OPERATORS <- tibble::tribble(
+    ~name, ~op, ~group, ~type, ~fun, ~allowed,
+    "ceiling", "ceiling", "math", "single", base::ceiling, "dbl",
+    "cumall", "cumall", "cum", "single", dplyr::cumall, "lgl",
+    "cumany", "cumany", "cum", "single", dplyr::cumany, "lgl",
+    "cume_dist", "cume_dist", "rank", "single", dplyr::cume_dist, c("int", "dbl"),
+    "cummax", "cummax", "cum", "single", base::cummax, c("int", "dbl"),
+    "cummean", "cummean", "cum", "single", dplyr::cummean, c("int", "dbl"),
+    "cummin", "cummin", "cum", "single", base::cummin, c("int", "dbl"),
+    "cumprod", "cumprod", "cum", "single", base::cumprod, c("int", "dbl"),
+    "cumsum", "cumsum", "cum", "single", base::cumsum, c("int", "dbl"),
+    "dense_rank", "dense_rank", "rank", "single", dplyr::dense_rank, c("int", "dbl"),
+    "floor", "floor", "math", "single", base::floor, "dbl",
+    "min_rank", "min_rank", "rank", "single", dplyr::min_rank, c("int", "dbl"),
+    "minus", "-", "math", "single", base::`-`, c("int", "dbl"),
+    "negate", "!", "lgl", "single", base::`!`, "lgl",
+    "percent_rank", "rank", "percent_rank", "single", dplyr::percent_rank, c("int", "dbl"),
+    "prod", "*", "math", "multiple", function(...) Reduce(base::`*`, list(...)), c("int", "dbl"),
+    "reciprocal", "^-1", "math", "single", function(x) x^-1, c("int", "dbl"),
+    "round", "round", "math", "single", base::round, "dbl",
+    "row_number", "row_number", "rank", "single", dplyr::row_number, c("int", "dbl"),
+    "sum", "+", "math", "multiple", function(...) Reduce(base::`+`, list(...)), c("int", "dbl")
+  )
+  
+  .values$MUTATE_GROUP_DISPLAY_NAMES <- list(
+    cum = "Cumulative",
+    lgl = "Logical",
+    math = "Arithmetical",
+    rank = "Ranking"
+  )
 }
