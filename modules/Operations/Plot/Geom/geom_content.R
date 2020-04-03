@@ -66,7 +66,8 @@ geom_content <- function(
       ),
       "Continuous X, Continuous Y" = list(
         "point",
-        "smooth"
+        "smooth",
+        "col"
       ),
       "Continous Bivariate Distribution" = list(
         "bin2d",
@@ -111,6 +112,7 @@ geom_content <- function(
       "area" = ggplot2::geom_area,
       "bar" = ggplot2::geom_bar,
       "bin2d" = ggplot2::geom_bin2d,
+      "col" = ggplot2::geom_col,
       "dotplot" = ggplot2::geom_dotplot,
       "density2d" = ggplot2::geom_density_2d,
       "hex" = ggplot2::geom_hex,

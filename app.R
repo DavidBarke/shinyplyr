@@ -81,6 +81,13 @@ init <- function() {
             id = "id_tab_rds_import"
           )
         )
+      ),
+      shiny::tabPanel(
+        title = "About",
+        value = "about",
+        tab_about_ui(
+          id = "id_tab_about"
+        )
       )
     ),
     shiny::fluidPage(
@@ -155,6 +162,12 @@ init <- function() {
     shiny::callModule(
       module = tab_rds_import,
       id = "id_tab_rds_import",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_about,
+      id = "id_tab_about",
       .values = .values
     )
     

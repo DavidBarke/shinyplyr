@@ -8,6 +8,7 @@ init_constants <- function(.values) {
     "area", "filled", character(),
     "bar", "filled", character(),
     "bin2d", "bin2d", "bins",
+    "col", "filled", character(),
     "density2d", "filled", character(),
     "dotplot", "dotplot", character(),
     "hex", "filled", "bins",

@@ -63,7 +63,7 @@ select_operation <- function(
         shiny::textInput(
           inputId = ns("text_val"),
           label = NULL,
-          placeholder = choices_r()[1]
+          placeholder = paste("e.g.", choices_r()[1])
         )
       ),
       htmltools::div(
