@@ -5,8 +5,8 @@ account: davidbarke
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2030039
-bundleId: 2964991
+bundleId: 2965684
 url: https://davidbarke.shinyapps.io/shinyplyr/
-when: 1585929438.21008
+when: 1585939852.12871
 asMultiple: FALSE
 asStatic: FALSE

@@ -36,7 +36,7 @@ init <- function() {
   
   # UI -------------------------------------------------------------------------
   ui <- htmltools::div(
-    shinyWidgets::setBackgroundColor(),
+    shinyWidgets::setBackgroundColor("white"),
     shinyWidgets::useShinydashboard(),
     htmltools::tags$head(
       shiny::includeCSS("www/css/styles.css")
