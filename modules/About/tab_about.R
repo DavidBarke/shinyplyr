@@ -33,6 +33,13 @@ tab_about_ui <- function(id) {
         "The Viewer is a shinydashboard::tabBox embedded in an R6 class. It
         tracks all open tabs and adds a close button to each tab."
       )
+    ),
+    htmltools::p(
+      "If you are interested in the code, you should visit my",
+      htmltools::a(
+        href = "https://github.com/DavidBarke/shinyplyr", "Github repo."
+      ),
+      "If you experience any errors, feel free to file an issue."
     )
   )
 }

@@ -24,7 +24,6 @@ help_init <- function(input, output, session, .values) {
   .values$help$DATA <- tibble::tribble(
     ~topic, ~title, ~desc,
     "data", "Data", "Explore datasets", 
-    "dataset_output", "Dataset Output", "View and export transformation results",
     "filter", "Filter", "Operation: Return rows with matching conditions",
     "getting_started", "Getting started", "Getting started",
     "gs_data", "Getting started: Data", "Getting started: Data",
@@ -48,7 +47,6 @@ help_init <- function(input, output, session, .values) {
   
   help_ui <- list(
     data = help_data_ui,
-    dataset_output = help_dataset_output_ui,
     filter = help_filter_ui,
     getting_started = help_getting_started_ui,
     gs_data = help_gs_data_ui,
@@ -72,7 +70,6 @@ help_init <- function(input, output, session, .values) {
   
   help_server <- list(
     data = help_data,
-    dataset_output = help_dataset_output,
     filter = help_filter,
     getting_started = help_getting_started,
     gs_data = help_gs_data,
