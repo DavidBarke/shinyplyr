@@ -4,7 +4,7 @@
 The Shiny app created by the code in this repository is my contribution to the Shiny Contest 2020. If you are seeing this page, you are probably interested in the code behind the app. If not, here are two links to the
 
 * [Shiny app](https://davidbarke.shinyapps.io/shinyplyr/) 
-* [RStudio Community blog post](https://community.rstudio.com)
+* [RStudio Community blog post](https://community.rstudio.com/t/shinyplyr-data-transformation-and-visualisation-2020-shiny-contest-submission/59776)
   
 ### Folder structure
 
