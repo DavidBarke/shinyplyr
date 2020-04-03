@@ -1,6 +1,18 @@
 Home:
-	Getting started
-Data:
-	Erklärungen (Rechtsclick, Doppelclick)
-Mutate:
-	Operator, der zwei Spalten verknüpft und eine neue erstellt
+	Getting started:
+		Daten: Rechtsclick, Doppelclick
+		Transformation table: Operationen
+		Import
+	About:
+		Person
+Plot:
+	Spaltenauswahl eingrenzen
+Filter:
+	Handling von NA
+Text:
+	shinyplyr
+Transform tabular data and create plots with an interface you are used to from dplyr and ggplot2. A file explorer and a dynamic help system are as well introduced.
+
+**Data** 
+All datasets from the packages datasets, dplyr and ggplot2 are available per default. Custom datasets may be uploaded using the import interface. The import supports rds- and csv-files. Note that rds-files should be generated with an R version >= 3.5.0 .
+

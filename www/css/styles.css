@@ -258,7 +258,8 @@ div .collapsible-tab-box {
 
 .help-page {
   text-align: justify;
-  max-width: 700px;
+  max-width: 40vw;
+  width: max-content;
   margin: auto;
 }
 

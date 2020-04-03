@@ -15,14 +15,13 @@ help_filter_ui <- function(id) {
     ),
     htmltools::p(
       "The choices for the operator are dependent on the type of the selected 
-      column. For supported column types see:",
+      column. Columns that posess other data types can't be filtered. For 
+      supported column types see:",
       htmltools::br(),
       shiny::actionLink(
         inputId = ns("help_type"),
         label = "Type operation"
-      ),
-      htmltools::br(),
-      "Columns that posess other data types can't be filtered."
+      )
     ),
     htmltools::h4(
       "Limitations"

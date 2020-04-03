@@ -11,6 +11,7 @@ help_page_ui <- function(id, content, desc) {
       )
     ),
     content,
+    htmltools::hr(),
     shiny::actionLink(
       inputId = ns("index"),
       label = "Index"

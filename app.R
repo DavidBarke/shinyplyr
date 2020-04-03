@@ -42,21 +42,25 @@ init <- function() {
       shiny::includeCSS("www/css/styles.css")
     ),
     shiny::navbarPage(
+      id = "navbar",
       title = "shinyplyr",
       shiny::tabPanel(
         title = "Home",
+        value = "home",
         tab_home_ui(
           id = "id_tab_home"
         )
       ),
       shiny::tabPanel(
         title = "Data",
+        value = "data",
         tab_data_ui(
           id = "id_tab_data"
         )
       ),
       shiny::tabPanel(
         title = "Transformation",
+        value = "transformation",
         tab_transformation_ui(
           id = "id_tab_transformation"
         )
@@ -65,12 +69,14 @@ init <- function() {
         title = "Import",
         shiny::tabPanel(
           title = "csv",
+          value = "import_csv",
           tab_csv_import_ui(
             id = "id_tab_csv_import"
           )
         ),
         shiny::tabPanel(
           title = "rds",
+          value = "import_rds", 
           tab_rds_import_ui(
             id = "id_tab_rds_import"
           )
@@ -100,6 +106,18 @@ init <- function() {
       )
       init_tree(.values$tree, .values)
     })
+    
+    .values$navbar <- list(
+      session = session,
+      id = "navbar",
+      open = function(value) {
+        shiny::updateNavbarPage(
+          session = .values$navbar$session,
+          inputId = .values$navbar$id,
+          selected = value
+        )
+      }
+    )
     
     init_constants(.values)
     init_reactive_vals(.values)
