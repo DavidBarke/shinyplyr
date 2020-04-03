@@ -37,7 +37,9 @@ help_gs_transformation_ui <- function(id) {
     htmltools::p(
       "How about changing the column names to upper case? Add a new transformation
       row and choose the 'rename' operation. Click the toggle button to open
-      the rename table and enter 'Manufacturer' and 'Model'."
+      the rename table and enter 'Manufacturer' and 'Model'. Note that the previous
+      column is not editable anymore. If you want to edit it again, you must
+      remove all follwing columns."
     ),
     htmltools::h4("Type"),
     htmltools::p(

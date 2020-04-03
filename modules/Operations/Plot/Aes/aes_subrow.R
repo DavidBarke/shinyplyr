@@ -35,23 +35,47 @@ aes_subrow <- function(
     names(data_r())
   })
   
-  purrr::walk2(.values$plot$AES_NAMES, seq_along(.values$plot$AES_NAMES), function(aes, index) {
-    if (aes %in% .values$plot$REQUIRED_AES_NAMES) {
-      selected_r <- shiny::reactive(choices_r()[index])
-      .choices_r <- shiny::reactive(list("Select a column" = as.list(choices_r())))
-    } else {
-      selected_r <- shiny::reactive("NULL")
-      .choices_r <- shiny::reactive({
-        list("Select a column or NULL" = as.list(c("NULL", choices_r())))
-      })
-    }
-    
-    aes_return_env[[aes]] <- shiny::callModule(
+  is_discrete_column_r <- shiny::reactive({
+    purrr::map_lgl(choices_r(), function(col) {
+      is_discrete(data_r()[[col]])
+    })
+  })
+  
+  is_positive_column_r <- shiny::reactive({
+    purrr::map_lgl(choices_r(), function(col) {
+      x <- data_r()[[col]]
+      !is_discrete(x) && all(x >= 0)
+    })
+  })
+  
+  discrete_choices_r <- shiny::reactive({
+    choices_r()[is_discrete_column_r()]
+  })
+  
+  continuous_choices_r <- shiny::reactive({
+    choices_r()[!is_discrete_column_r()]
+  })
+  
+  positive_choices_r <- shiny::reactive({
+    choices_r()[is_positive_column_r()]
+  })
+  
+  geom_allowed_r <- shiny::reactive({
+    helper_aes_geom_allowed(geom_r(), .values)
+  })
+  
+  purrr::pmap(.values$plot$AES, function(...) {
+    aes_row <- list(...)
+    aes_return_env[[aes_row$name]] <- shiny::callModule(
       module = aes_subsubrow,
-      id = aes %_% "subsubrow",
+      id = aes_row$name %_% "subsubrow",
       .values = .values,
-      choices_r = .choices_r,
-      selected_r = selected_r
+      aes_row = aes_row,
+      choices_r = choices_r,
+      discrete_choices_r = discrete_choices_r,
+      continuous_choices_r = continuous_choices_r,
+      positive_choices_r = positive_choices_r,
+      geom_allowed_r = geom_allowed_r
     )
   })
   
@@ -236,9 +260,23 @@ aes_subrow <- function(
     .values$help$open("plot_aes")
   })
   
+  message_r <- shiny::reactive({
+    if (length(choices_r()) == 0) return(
+      "At least one column is required for plotting."
+    )
+    
+    if (any(is.na(selected_aes_vals_r()))) return(
+      "At least one required aesthetic can't be set, because there is no
+      column with appropriate column type."
+    )
+    
+    NULL
+  })
+  
   return_list <- list(
     aes_r = aes_r,
-    free_aesthetics_r = free_aes_names_r
+    free_aesthetics_r = free_aes_names_r,
+    message_r = message_r
   )
   
   return(return_list)

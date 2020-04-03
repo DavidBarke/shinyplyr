@@ -3,6 +3,9 @@ plot_output_ui <- function(id) {
   
   htmltools::tagList(
     shiny::uiOutput(
+      outputId = ns("message")
+    ),
+    shiny::uiOutput(
       outputId = ns("connected_state")
     ),
     shiny::plotOutput(
@@ -12,7 +15,7 @@ plot_output_ui <- function(id) {
 }
 
 plot_output <- function(
-  input, output, session, .values, plot_r, dataset_object, tab_value
+  input, output, session, .values, plot_r, dataset_object, tab_value, message_r
 ) {
   
   force(tab_value)
@@ -41,7 +44,12 @@ plot_output <- function(
     }
   })
   
+  output$message <- shiny::renderUI({
+    htmltools::div(message_r())
+  })
+  
   output$plot <- shiny::renderPlot({
+    shiny::req(purrr::is_null(message_r()))
     shiny::req(is_connected_r())
     shiny::req(plot_r())
     plot_r()

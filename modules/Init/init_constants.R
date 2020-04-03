@@ -4,20 +4,20 @@ init_constants <- function(.values) {
   )
   
   .values$plot$GEOM <- tibble::tribble(
-    ~name, ~class, ~optional,
-    "area", "filled", character(),
-    "bar", "filled", character(),
-    "bin2d", "bin2d", "bins",
-    "col", "filled", character(),
-    "density2d", "filled", character(),
-    "dotplot", "dotplot", character(),
-    "hex", "filled", "bins",
-    "histogram", "filled", "bins",
-    "line", "path", character(),
-    "path", "path", character(),
-    "point", "point", character(),
-    "smooth", "filled", character(),
-    "step", "path", "direction"
+    ~name, ~class, ~optional, ~allowed_x, ~allowed_y,
+    "area", "filled", character(), "__ALL__", "__ALL__",
+    "bar", "filled", character(), "__ALL__", NA,
+    "bin2d", "bin2d", "bins", "__ALL__", "__ALL__",
+    "col", "filled", character(), "__ALL__", "__ALL__",
+    "density2d", "filled", character(), "positive", "positive",
+    "dotplot", "dotplot", character(), "__ALL__", NA,
+    "hex", "filled", "bins", "__ALL__", "__ALL__",
+    "histogram", "filled", "bins", "continuous", NA,
+    "line", "path", character(), "__ALL__", "__ALL__",
+    "path", "path", character(), "__ALL__", "__ALL__",
+    "point", "point", character(), "__ALL__", "__ALL__",
+    "smooth", "filled", character(), "__ALL__", "__ALL__",
+    "step", "path", "direction", "__ALL__", "__ALL__"
   )
   
   .values$plot$GEOM_CLASS_OPTIONAL_AES <- list(
@@ -31,6 +31,24 @@ init_constants <- function(.values) {
   .values$plot$REQUIRED_AES <- list(
     "x", c("x", "y"), c("x", "y", "z")
   )
+  
+  .values$plot$AES <- tibble::tribble(
+    ~name, ~class, ~allowed, ~is_aes, ~is_required,
+    "x", NA, "__ALL__", TRUE, TRUE,
+    "y", NA, "__ALL__", TRUE, TRUE,
+    "alpha", "percentage", "continuous", TRUE, FALSE,
+    "bins", "positive", "__ALL__", TRUE, FALSE,
+    "colour", "colour", "__ALL__", TRUE, FALSE,
+    "direction", "direction", NA, FALSE, FALSE,
+    "fill", "colour", "__ALL__", TRUE, FALSE,
+    "group", NA, "__ALL__", TRUE, FALSE,
+    "linetype", "linetype", "discrete", TRUE, FALSE,
+    "shape", "shape", "discrete", TRUE, FALSE,
+    "show.legend", "show.legend", NA, FALSE, FALSE,
+    "size", "positive", "continuous", TRUE, FALSE
+  )
+  
+  .values$plot$AES$index <- seq_len(nrow(.values$plot$AES))
   
   .values$plot$AES_CLASSES <- c(
     alpha = "percentage",

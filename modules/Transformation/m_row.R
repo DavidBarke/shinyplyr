@@ -222,7 +222,8 @@ m_row <- function(
         .values = .values,
         plot_r = plot_operation_return$plot_r,
         dataset_object = dataset_object_r(),
-        tab_value = ns(id_r() %_% "plot")
+        tab_value = ns(id_r() %_% "plot"),
+        message_r = plot_operation_return$message_r
       )
     }
   })

@@ -21,7 +21,7 @@ tab_about_ui <- function(id) {
     htmltools::tags$ul(
       htmltools::tags$li(
         "The Transformation Table shows how to dynamically call Shiny modules. The
-        robust layout is created with the css grid system."
+        robust layout is created with the CSS Grid Layout."
       ),
       htmltools::tags$li(
         "The Dataset Explorer is created with the",

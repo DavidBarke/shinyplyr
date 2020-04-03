@@ -1,4 +1,8 @@
 /* General */
+table {
+  border-collapse: separate;
+  border-spacing: 15px 0;
+}
 
 /* Use grid-center inside of grid instead */
 /* Needs relative positioning of parent */
@@ -261,11 +265,6 @@ div .collapsible-tab-box {
   max-width: 40vw;
   width: max-content;
   margin: auto;
-}
-
-.help-page table {
-  border-collapse: separate;
-  border-spacing: 15px 0;
 }
 
 .viewer > .col-sm-12 {
