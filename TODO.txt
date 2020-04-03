@@ -1,7 +1,3 @@
-Plot:
-	Spaltenauswahl eingrenzen
-Filter:
-	Handling von NA
 Text:
 	shinyplyr
 Transform tabular data and create plots with an interface you are used to from dplyr and ggplot2. A file explorer and a dynamic help system are as well introduced.

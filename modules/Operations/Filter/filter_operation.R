@@ -64,7 +64,10 @@ filter_operation <- function(
       )
     )
     
-    choices <- .values$FILTER_OPERATORS[[filter_class_r()]]
+    choices <- c(
+      .values$FILTER_OPERATORS[[filter_class_r()]],
+      c("is NA" = "is_na", "is not NA" = "not_is_na")
+    )
     
     shiny::selectInput(
       inputId = ns("operator"),
@@ -77,14 +80,18 @@ filter_operation <- function(
   })
   
   output$value <- shiny::renderUI({
-    switch(
-      filter_class_r(),
-      "logical" = logical_value_ui_r(),
-      "numeric" = numeric_value_ui_r(),
-      "character" = character_value_ui_r(),
-      "factor" = factor_value_ui_r(),
-      "date" = date_value_ui_r()
-    )
+    if (shiny::req(input$operator) %in% c("is_na", "not_is_na")) {
+      NULL
+    } else {
+      switch(
+        filter_class_r(),
+        "logical" = logical_value_ui_r(),
+        "numeric" = numeric_value_ui_r(),
+        "character" = character_value_ui_r(),
+        "factor" = factor_value_ui_r(),
+        "date" = date_value_ui_r()
+      )
+    }
   })
   
   logical_value_ui_r <- shiny::reactive({
@@ -196,13 +203,25 @@ filter_operation <- function(
   
   # Logic related --------------------------------------------------------------
   value_r <- shiny::reactive({
+    if (shiny::req(input$operator) %in% c("is_na", "not_is_na")) {
+      is_na_value_r()
+    } else {
+      switch(
+        filter_class_r(),
+        "logical" = logical_value_r(),
+        "numeric" = numeric_value_r(),
+        "character" = character_value_r(),
+        "date" = date_value_r(),
+        "factor" = factor_value_r()
+      )
+    }
+  })
+  
+  is_na_value_r <- shiny::reactive({
     switch(
-      filter_class_r(),
-      "logical" = logical_value_r(),
-      "numeric" = numeric_value_r(),
-      "character" = character_value_r(),
-      "date" = date_value_r(),
-      "factor" = factor_value_r()
+      shiny::req(input$operator),
+      "is_na" = TRUE,
+      "not_is_na" = FALSE
     )
   })
   
@@ -242,14 +261,22 @@ filter_operation <- function(
   })
   
   operator_fun_r <- shiny::reactive({
-    switch(
-      filter_class_r(),
-      "logical" = logical_operator_fun_r(),
-      "numeric" = numeric_operator_fun_r(),
-      "character" = character_operator_fun_r(),
-      "date" = date_operator_fun_r(),
-      "factor" = factor_operator_fun_r()
-    )
+    if (shiny::req(input$operator) %in% c("is_na", "not_is_na")) {
+      is_na_operator_fun_r()
+    } else {
+      switch(
+        filter_class_r(),
+        "logical" = logical_operator_fun_r(),
+        "numeric" = numeric_operator_fun_r(),
+        "character" = character_operator_fun_r(),
+        "date" = date_operator_fun_r(),
+        "factor" = factor_operator_fun_r()
+      )
+    }
+  })
+  
+  is_na_operator_fun_r <- shiny::reactive({
+    function(x, value) is.na(x) == value
   })
   
   logical_operator_fun_r <- shiny::reactive({

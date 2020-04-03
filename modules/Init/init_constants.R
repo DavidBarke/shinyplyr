@@ -114,10 +114,10 @@ init_constants <- function(.values) {
   
   .values$FILTER_OPERATORS <- list(
     "character" = c("=" = "eq", "in" = "in", "~" = "re"),
-    "date" = c("=" = "eq", "zwischen" = "bw"),
+    "date" = c("=" = "eq", "between" = "bw"),
     "factor" = c("=" = "eq", "in" = "in"),
     "logical" = c("=" = "eq", "!=" = "ne"),
-    "numeric" = c("=" = "eq", "<=" = "le", ">=" = "ge", "<" = "lt", ">" = "gt", "!=" = "ne", "zwischen" = "bw")
+    "numeric" = c("=" = "eq", "<=" = "le", ">=" = "ge", "<" = "lt", ">" = "gt", "!=" = "ne", "between" = "bw")
   )
   
   .values$SUMMARISE_FUN <- tibble::tribble(
