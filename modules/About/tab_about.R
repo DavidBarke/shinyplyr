@@ -14,8 +14,8 @@ tab_about_ui <- function(id) {
       R and Shiny, when I started working as a student assistant at the
       Institute for Quality Science at my university in late 2017. Since then I have
       developed and supervised two lectures: Introduction to Data Analtytics with R 
-      and Applied Data Science for Quality Engineering. This application comprimises 
-      many things I have learned in the last two and a half years and shows some
+      and Applied Data Science for Quality Engineering. This application compresses 
+      many things together that I have learned in the last two and a half years and shows some
       unique features:"
     ),
     htmltools::tags$ul(
