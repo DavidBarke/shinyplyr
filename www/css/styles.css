@@ -99,6 +99,10 @@ table {
   box-shadow: unset;  
 }
 
+.m-toggle-btn button {
+  box-shadow: unset;
+}
+
 /* Select */
 .select-op-container {
   display: grid;
@@ -130,12 +134,6 @@ table {
 }
 
 /* Type */
-.type-op-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  height: 100%;
-}
-
 .type-subrows .subrow-content {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -143,8 +141,20 @@ table {
   margin-right: -40px;
 }
 
-.type-op-container.subrows-closed {
+.type-op-container {
+  height: 100%;
+}
+
+.type-op-sr-open {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 100%;
+}
+
+.type-op-sr-closed {
+  display: grid;
   grid-template-columns: 1fr;
+  height: 100%;
 }
 
 /* Mutate */

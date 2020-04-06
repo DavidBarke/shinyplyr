@@ -12,7 +12,7 @@ m_row_ui <- function(id, row_container_id, index) {
           index
         ),
         shiny::uiOutput(
-          outputId = ns("sr_toggle"),
+          outputId = ns("toggle_button"),
           class = "grid-center"
         ),
         htmltools::div(
@@ -58,10 +58,12 @@ m_row_ui <- function(id, row_container_id, index) {
           )
         )
       ),
-      shiny::uiOutput(
-        outputId = ns("subrows"),
-        class = "subrows-container grid-gap",
-        style = "display: none"
+      m_toggle_ui(
+        id = ns("id_m_toggle"),
+        ui = shiny::uiOutput(
+          outputId = ns("subrows"),
+          class = "subrows-container grid-gap"
+        )
       )
     )
   )
@@ -123,49 +125,14 @@ m_row <- function(
     )
   })
   
-  output$sr_toggle <- shiny::renderUI({
+  output$toggle_button <- shiny::renderUI({
     if (shiny::req(input$operation) %in%
         c("rename", "type", "plot")
     ) {
-      htmltools::div(
-        class = "sr-toggle-btn",
-        m_action_button(
-          inputId = ns("sr_toggle"),
-          label = NULL,
-          icon = toggled_icon_r()
-        )
+      m_toggle_button(
+        id = ns("id_m_toggle")
       )
     }
-  })
-  
-  subrow_selector <- paste(row_container_id, " > .subrows-container")
-  
-  toggle_rv <- shiny::reactiveVal(1)
-  
-  shiny::observeEvent(toggle_rv(), {
-    if (toggle_rv() %% 2 == 0) {
-      shinyjs::show(
-        anim = .values$ANIM,
-        selector = subrow_selector
-      )
-    } else {
-      shinyjs::hide(
-        anim = .values$ANIM,
-        selector = subrow_selector
-      )
-    }
-  })
-  
-  toggled_icon_r <- shiny::reactive({
-    if (toggle_rv() %% 2 == 0) {
-      shiny::icon("caret-down")
-    } else {
-      shiny::icon("caret-right")
-    }
-  })
-  
-  shiny::observeEvent(input$sr_toggle, {
-    toggle_rv(toggle_rv() + 1)
   })
   
   output$subrows <- shiny::renderUI({
@@ -270,6 +237,12 @@ m_row <- function(
     remove_row_fun()
   })
   
+  toggle_return <- shiny::callModule(
+    module = m_toggle,
+    id = "id_m_toggle",
+    .values = .values
+  )
+  
   select_operation_return <- shiny::callModule(
     module = select_operation,
     id = "id_select_operation",
@@ -283,7 +256,7 @@ m_row <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    sr_toggle_r = toggle_rv
+    subrows_open_r = toggle_return$open_r
   )
   
   type_operation_return <- shiny::callModule(
@@ -292,7 +265,7 @@ m_row <- function(
     .values = .values,
     data_r = data_r,
     row_index = row_index,
-    sr_toggle_r = toggle_rv
+    subrows_open_r = toggle_return$open_r
   )
   
   filter_operation_return <- shiny::callModule(

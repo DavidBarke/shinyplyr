@@ -1,11 +1,8 @@
-geom_content_ui <- function(id) {
+geom_content_ui <- function(id, toggle_button) {
   ns <- shiny::NS(id)
   
   htmltools::tagList(
-    shiny::uiOutput(
-      outputId = ns("toggle_btn"),
-      class = "sr-toggle-btn grid-vertical-center"
-    ),
+    toggle_button,
     htmltools::tags$b(
       class = "grid-vertical-center",
       "Geometry"
@@ -25,29 +22,6 @@ geom_content <- function(
 ) {
   
   ns <- session$ns
-  
-  # Toggle geom subrows --------------------------------------------------------
-  output$toggle_btn <- shiny::renderUI({
-    m_action_button(
-      inputId = ns("sr_toggle"),
-      label = NULL,
-      icon = toggled_icon_r()
-    )
-  })
-  
-  toggle_rv <- shiny::reactiveVal(1)
-  
-  toggled_icon_r <- shiny::reactive({
-    if (toggle_rv() %% 2 == 0) {
-      shiny::icon("caret-down")
-    } else {
-      shiny::icon("caret-right")
-    }
-  })
-  
-  shiny::observeEvent(input$sr_toggle, {
-    toggle_rv(toggle_rv() + 1)
-  })
   
   # Outputs --------------------------------------------------------------------
   geom_choices <- list(
@@ -130,7 +104,6 @@ geom_content <- function(
   })
   
   return_list <- list(
-    toggle_rv = toggle_rv,
     geom_r = geom_r,
     geom_fun_r = geom_fun_r
   )

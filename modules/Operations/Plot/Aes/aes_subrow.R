@@ -14,7 +14,8 @@ aes_subrow_ui <- function(id, row_index) {
         class = "grid-gap aes-content"
       )
     ),
-    shinyjs::hidden(
+    m_toggle_ui(
+      id = ns("id_m_toggle"),
       shiny::uiOutput(
         outputId = ns("subrows"),
         class = "subrows-container"
@@ -79,56 +80,6 @@ aes_subrow <- function(
     )
   })
   
-  # Toggle aes subrows ---------------------------------------------------------
-  output$subrows_toggle_btn <- shiny::renderUI({
-    m_action_button(
-      inputId = ns("sr_toggle"),
-      label = NULL,
-      icon = toggled_icon_r()
-    )
-  })
-  
-  toggle_rv <- shiny::reactiveVal(1)
-  
-  toggled_icon_r <- shiny::reactive({
-    if (toggle_rv() %% 2 == 0) {
-      shiny::icon("caret-down")
-    } else {
-      shiny::icon("caret-right")
-    }
-  })
-  
-  shiny::observeEvent(input$sr_toggle, {
-    toggle_rv(toggle_rv() + 1)
-  })
-  
-  aes_subrows_selector <- paste0("#", ns("subrows"))
-  aes_subrow_container_selector <-  paste0("#", ns("aes_subrow"))
-  
-  shiny::observeEvent(toggle_rv(), {
-    if (toggle_rv() %% 2 == 0) {
-      shinyjs::show(
-        anim = .values$ANIM,
-        selector = aes_subrows_selector
-      )
-      
-      shinyjs::addClass(
-        class = "aes-subrows-open",
-        selector = aes_subrow_container_selector
-      )
-    } else {
-      shinyjs::hide(
-        anim = .values$ANIM,
-        selector = aes_subrows_selector
-      )
-      
-      shinyjs::removeClass(
-        class = "aes-subrows-open",
-        selector = aes_subrow_container_selector
-      )
-    }
-  })
-  
   # Outputs --------------------------------------------------------------------
   subrow_index <- paste(row_index, 1, sep = ".")
   
@@ -174,7 +125,7 @@ aes_subrow <- function(
   })
   
   output$content <- shiny::renderUI({
-    ui <- if (toggle_rv() %% 2 == 0) {
+    ui <- if (toggle_return$open_r()) {
       htmltools::tagList(
         htmltools::div(
           class = "aes-title-help grid-gap",
@@ -217,11 +168,9 @@ aes_subrow <- function(
     }
     
     htmltools::tagList(
-      htmltools::div(
-        shiny::uiOutput(
-          outputId = ns("subrows_toggle_btn"),
-          class = "sr-toggle-btn"
-        )
+      m_toggle_button(
+        id = ns("id_m_toggle"),
+        class = "grid-center"
       ),
       ui
     )
@@ -272,6 +221,12 @@ aes_subrow <- function(
     
     NULL
   })
+  
+  toggle_return <- shiny::callModule(
+    module = m_toggle,
+    id = "id_m_toggle",
+    .values = .values
+  )
   
   return_list <- list(
     aes_r = aes_r,

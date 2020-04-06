@@ -3,7 +3,7 @@ type_operation_ui <- function(id) {
   
   shiny::uiOutput(
     outputId = ns("op_container"),
-    class = "type-op-container grid-gap"
+    class = "type-op-container"
   )
 }
 
@@ -17,35 +17,15 @@ type_subrows_ui <- function(id) {
 }
 
 type_operation <- function(
-  input, output, session, .values, data_r, row_index, sr_toggle_rv
+  input, output, session, .values, data_r, row_index, subrows_open_r
 ) {
   
   ns <- session$ns
   
-  subrows_open_r <- shiny::reactive({
-    sr_toggle_rv() %% 2 == 0
-  })
-  
-  shiny::observeEvent(subrows_open_r(), {
-    # Op container's class is dependent on visible state of subrows
-    selector <- paste0("#", ns("op_container"))
-    
-    if (subrows_open_r()) {
-      shinyjs::removeClass(
-        class = "subrows-closed",
-        selector = selector
-      )
-    } else {
-      shinyjs::addClass(
-        class = "subrows-closed",
-        selector = selector
-      )
-    }
-  })
-  
   output$op_container <- shiny::renderUI({
     if (subrows_open_r()) {
-      htmltools::tagList(
+      htmltools::div(
+        class = "type-op-sr-open grid-gap",
         htmltools::div(
           class = "grid-vertical-center",
           htmltools::tags$b(
@@ -66,11 +46,9 @@ type_operation <- function(
         )
       )
     } else {
-      htmltools::div(
-        class = "grid-vertical-center",
-        shiny::uiOutput(
-          outputId = ns("type_overview")
-        )
+      shiny::uiOutput(
+        outputId = ns("type_overview"),
+        class = "type-op-sr-closed grid-vertical-center"
       )
     }
   })
@@ -148,10 +126,6 @@ type_operation <- function(
         )
       }
     )
-    
-    if (shiny::isolate(!subrows_open_r())) {
-      return(shinyjs::hidden(ui))
-    }
     
     ui
   })

@@ -17,14 +17,10 @@ rename_subrows_ui <- function(id) {
 }
 
 rename_operation <- function(
-  input, output, session, .values, data_r, row_index, sr_toggle_rv
+  input, output, session, .values, data_r, row_index, subrows_open_r
 ) {
   
   ns <- session$ns
-  
-  subrows_open_r <- shiny::reactive({
-    sr_toggle_rv() %% 2 == 0
-  })
   
   shiny::observeEvent(subrows_open_r(), {
     # Op container's class is dependent on visible state of subrows

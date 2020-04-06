@@ -11,13 +11,20 @@ geom_subrow_ui <- function(id) {
       htmltools::div(
         class = "grid-gap geom-content",
         geom_content_ui(
-          id = ns("id_geom_content")
+          id = ns("id_geom_content"),
+          toggle_button = m_toggle_button(
+            id = ns("id_m_toggle"),
+            class = "grid-center"
+          )
         )
       )
     ),
-    shinyjs::hidden(geom_subrows_ui(
-      id = ns("id_geom_subrows")
-    ))
+    m_toggle_ui(
+      id = ns("id_m_toggle"),
+      geom_subrows_ui(
+        id = ns("id_geom_subrows")
+      )
+    )
   )
 }
 
@@ -28,28 +35,15 @@ geom_subrow <- function(
   
   ns <- session$ns
   
-  # Toggle geom subrows ---------------------------------------------------------
-  geom_subrows_selector <- paste0("#", ns("id_geom_subrows"), "-subrows")
-  
-  shiny::observeEvent(geom_content_return$toggle_rv(), {
-    if (geom_content_return$toggle_rv() %% 2 == 0) {
-      shinyjs::show(
-        anim = .values$ANIM,
-        selector = geom_subrows_selector
-      )
-    } else {
-      shinyjs::hide(
-        anim = .values$ANIM,
-        selector = geom_subrows_selector
-      )
-    }
-  })
-  
   # Output ------------------------------
   subrow_index <- paste(row_index, 2, sep = ".")
   
   output$index <- shiny::renderUI({
     subrow_index
+  })
+  
+  geom_xxx_r <- shiny::reactive({
+    do.call(geom_content_return$geom_fun_r(), geom_subrows_return$geom_args_r())
   })
   
   geom_content_return <- shiny::callModule(
@@ -69,9 +63,11 @@ geom_subrow <- function(
     free_aesthetics_r = free_aesthetics_r
   )
   
-  geom_xxx_r <- shiny::reactive({
-    do.call(geom_content_return$geom_fun_r(), geom_subrows_return$geom_args_r())
-  })
+  shiny::callModule(
+    module = m_toggle,
+    id = "id_m_toggle",
+    .values = .values
+  )
   
   return_list <- list(
     geom_xxx_r = geom_xxx_r,
