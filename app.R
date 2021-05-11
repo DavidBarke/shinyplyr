@@ -75,6 +75,13 @@ init <- function() {
           )
         ),
         shiny::tabPanel(
+          title = "xls/xlsx",
+          value = "import_xls",
+          tab_xls_import_ui(
+            id = "id_tab_xls_import"
+          )
+        ),
+        shiny::tabPanel(
           title = "rds",
           value = "import_rds", 
           tab_rds_import_ui(
@@ -156,6 +163,12 @@ init <- function() {
     shiny::callModule(
       module = tab_csv_import,
       id = "id_tab_csv_import",
+      .values = .values
+    )
+    
+    shiny::callModule(
+      module = tab_xls_import,
+      id = "id_tab_xls_import",
       .values = .values
     )
     
