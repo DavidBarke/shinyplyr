@@ -14,6 +14,7 @@ library(stringr)
 library(ggplot2)
 
 library(readr)
+library(readxl)
 library(writexl)
 
 # install with remotes::install_github("DavidBarke/shinyExplorer")
